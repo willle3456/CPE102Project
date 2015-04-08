@@ -1,0 +1,188 @@
+Files:
+action.py
+	objects:
+	objects used:
+		point
+		worldmodel
+		entity
+			all objects in entity
+	fcns:
+		sign
+		adjacent
+		next_position
+		blob_next_positionobjects:
+        objects used:
+        fcns:
+
+builder.py
+	objects:
+	objects used:
+	fcns:
+builder_controller.py
+	objects:
+        objects used:
+        fcns:
+controller.py
+	objects:
+        objects used:
+        fcns:
+entities.py
+	objects:
+        objects used:
+        fcns:
+image_store.py
+	objects:
+        objects used:
+        fcns:
+keys.py
+	objects:
+        objects used:
+        fcns:
+main.py
+	objects:
+        objects used:
+        fcns:
+mouse_button.py
+	objects:
+        objects used:
+        fcns:
+occ.grid.py
+	objects:
+        objects used:
+        fcns:
+ordered_list.py
+	objects:
+        objects used:
+        fcns:
+point.py
+	objects:
+        objects used:
+        fcns:
+worldmodel.py
+	objects:
+        objects used:
+        fcns:
+worldview.py
+	objects:
+        objects used:
+        fcns:
+
+
+-----------------------------------------------------
+class: Background
+methods:
+fields:
+	name
+	imgs
+	current_img
+
+class: MinerNotFull
+methods:
+fields:
+	name
+	position
+	rate
+	imgs
+	current_img
+	resource_limit
+	resource_count
+	resource_count
+	animation_rate
+	pending_action
+classs: MinerFull
+methods:
+fields:
+	name
+	position
+	rate
+	imgs
+	current_img
+	resource_limit
+	resource_count
+	animation_rate
+	pending_actions
+classs: Vein
+methods:
+fields:
+	name
+	position
+	rate
+	imgs
+	current_img
+	resource_distance
+	pending_actions
+classs: Ore
+methods:
+fields:
+	name
+	position
+	imgs
+	current_img
+	resource_limit
+	resource_count
+	rate
+	pending_actions
+classs: Blacksmith
+methods:
+fields:
+	name
+	position
+	imgs
+	current_img
+	resource_limit
+	resource_count
+	rate
+	resource_distance
+	pending_actions
+classs: Obstacle
+methods:
+fields:
+	name
+	position
+	imgs
+	current_img
+classs: OreBlob
+methods:
+fields:
+	name
+	position
+	rate
+	imgs
+	current_img
+	animation_rate
+	pending_action
+classs: Quake
+methods:
+fields:
+	name
+	position
+	imgs
+	current_img
+	animation_rate
+	pending_actions
+classs: Point
+methods:
+fields:
+	x
+	y
+classs: WorldModel
+methods:
+fields:
+	background
+	num_rows
+	num_cols
+	occupancy
+	entities
+	action_queue
+classs: WorldView
+methods:
+fields:
+	viewport
+	screen
+	mouse_pt
+	world
+	tile_width
+	tile_height
+	num_rows
+	num_cols
+	mouse_img
