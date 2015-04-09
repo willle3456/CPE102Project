@@ -15,7 +15,7 @@ class WorldModel:
       self.action_queue = ordered_list.OrderedList()
       
     def add_entity(self, entity):
-       pt = entities.get_position(entity)
+       pt = entity.get_position()
        if self.within_bounds(pt):
           old_entity = occ_grid.get_cell(self.occupancy, pt)
           if old_entity != None:
@@ -34,7 +34,7 @@ class WorldModel:
           occ_grid.get_cell(self.occupancy, pt) != None)
           
     def find_nearest(self, pt, type):
-       oftype = [(e, distance_sq(pt, entities.get_position(e)))
+       oftype = [(e, distance_sq(pt, e.get_position()))
           for e in self.entities if isinstance(e, type)]
 
        return nearest_entity(oftype)
@@ -42,23 +42,23 @@ class WorldModel:
     def move_entity(self, entity, pt):
         tiles = []
         if self.within_bounds(pt):
-            old_pt = entities.get_position(entity)
+            old_pt = entity.get_position()
             occ_grid.set_cell(self.occupancy, old_pt, None)
             tiles.append(old_pt)
             occ_grid.set_cell(self.occupancy, pt, entity)
             tiles.append(pt)
-            entities.set_position(entity, pt)
+            entity.set_position(pt)
 
         return tiles
         
     def remove_entity(self, entity):
-        self.remove_entity_at(entities.get_position(entity))
+        self.remove_entity_at(entity.get_position())
         
     def remove_entity_at(self, pt):
         if (self.within_bounds(pt) and
             occ_grid.get_cell(self.occupancy, pt) != None):
             entity = occ_grid.get_cell(self.occupancy, pt)
-            entities.set_position(entity, point.Point(-1, -1))
+            entity.set_position(point.Point(-1, -1))
             self.entities.remove(entity)
             occ_grid.set_cell(self.occupancy, pt, None)
         
