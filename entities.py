@@ -8,7 +8,10 @@ class Background:
 
     def get_images(self):
         return self.imgs
-      
+        
+    def get_image(self):
+        return self.imgs[self.current_img]
+        
 
 
 class MinerNotFull:
@@ -32,6 +35,18 @@ class MinerNotFull:
 
     def get_images(self):
         return self.imgs
+        
+    def get_image(self):
+        return self.imgs[self.current_img]
+    
+    def get_rate(self):
+        return self.rate
+        
+    def set_resource_count(self, n):
+        self.resource_count = n
+        
+    def get_resource_count(self):
+        return self.resource_count
       
     
 
@@ -56,6 +71,18 @@ class MinerFull:
 
     def get_images(self):
         return self.imgs
+        
+    def get_image(self):
+        return self.imgs[self.current_img]
+        
+    def get_rate(self):
+        return self.rate
+        
+    def set_resource_count(self, n):
+        self.resource_count = n
+        
+    def get_resource_count(self):
+        return self.resource_count
       
 
 class Vein:
@@ -76,6 +103,12 @@ class Vein:
 
     def get_images(self):
         return self.imgs
+        
+    def get_image(self):
+        return self.imgs[self.current_img]
+        
+    def get_rate(self):
+        return self.rate
       
 
 class Ore:
@@ -95,7 +128,12 @@ class Ore:
 
     def get_images(self):
         return self.imgs
+        
+    def get_image(self):
+        return self.imgs[self.current_img]
       
+    def get_rate(self):
+        return self.rate
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
@@ -118,7 +156,18 @@ class Blacksmith:
 
     def get_images(self):
         return self.imgs
+        
+    def get_image(self):
+        return self.imgs[self.current_img]
       
+    def get_rate(self):
+        return self.rate
+        
+    def set_resource_count(self, n):
+        self.resource_count = n
+        
+    def get_resource_count(self):
+        return self.resource_count
 
 class Obstacle:
     def __init__(self, name, position, imgs):
@@ -135,6 +184,9 @@ class Obstacle:
 
     def get_images(self):
         return self.imgs
+    
+    def get_image(self):
+        return self.imgs[self.current_img]
       
 
 class OreBlob:
@@ -155,6 +207,12 @@ class OreBlob:
 
     def get_images(self):
         return self.imgs
+        
+    def get_image(self):
+        return self.imgs[self.current_img]
+        
+    def get_rate(self):
+        return self.rate
       
 
 class Quake:
@@ -174,25 +232,13 @@ class Quake:
 
     def get_images(self):
         return self.imgs
+        
+    def get_image(self):
+        return self.imgs[self.current_img]
       
 
 
 
-
-
-def get_image(entity):
-   return entity.imgs[entity.current_img]
-
-
-def get_rate(entity):
-   return entity.rate
-
-
-def set_resource_count(entity, n):
-   entity.resource_count = n
-
-def get_resource_count(entity):
-   return entity.resource_count
 
 
 def get_resource_limit(entity):

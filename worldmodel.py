@@ -85,7 +85,7 @@ class WorldModel:
         
     def get_background_image(self, pt): #worldview
         if self.within_bounds(pt):
-            return entities.get_image(occ_grid.get_cell(self.background, pt))
+            return occ_grid.get_cell(self.background, pt).get_image()
 
 
     def get_background(self, pt):
