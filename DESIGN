@@ -1,117 +1,47 @@
 class: Background
 methods:
-fields:
-	name
-	imgs
-	current_img
+
 
 class: MinerNotFull
 methods:
-fields:
-	name
-	position
-	rate
-	imgs
-	current_img
-	resource_limit
-	resource_count
-	resource_count
-	animation_rate
-	pending_action
-classs: MinerFull
+    next_position
+    miner_to_ore
+    create_miner_not_full_action
+
+class: MinerFull
 methods:
-fields:
-	name
-	position
-	rate
-	imgs
-	current_img
-	resource_limit
-	resource_count
-	animation_rate
-	pending_actions
+    next_position
+    miner_to_smith
+    create_miner_full_action
+    
 classs: Vein
 methods:
-fields:
-	name
-	position
-	rate
-	imgs
-	current_img
-	resource_distance
-	pending_actions
+
 classs: Ore
 methods:
-fields:
-	name
-	position
-	imgs
-	current_img
-	resource_limit
-	resource_count
-	rate
-	pending_actions
+
 classs: Blacksmith
 methods:
-fields:
-	name
-	position
-	imgs
-	current_img
-	resource_limit
-	resource_count
-	rate
-	resource_distance
-	pending_actions
+
 classs: Obstacle
 methods:
-fields:
-	name
-	position
-	imgs
-	current_img
+
 classs: OreBlob
 methods:
-fields:
-	name
-	position
-	rate
-	imgs
-	current_img
-	animation_rate
-	pending_action
+    blob_next_position
+    blob_to_vein
+    create_ore_blob_action
+    
 classs: Quake
 methods:
-fields:
-	name
-	position
-	imgs
-	current_img
-	animation_rate
-	pending_actions
+
 classs: Point
 methods:
-fields:
-	x
-	y
+
 classs: WorldModel
 methods:
-fields:
-	background
-	num_rows
-	num_cols
-	occupancy
-	entities
-	action_queue
+
 classs: WorldView
 methods:
-fields:
-	viewport
-	screen
-	mouse_pt
-	world
-	tile_width
-	tile_height
-	num_rows
-	num_cols
-	mouse_img
+
+
