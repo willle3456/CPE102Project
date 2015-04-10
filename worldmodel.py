@@ -19,7 +19,7 @@ class WorldModel:
        if self.within_bounds(pt):
           old_entity = occ_grid.get_cell(self.occupancy, pt)
           if old_entity != None:
-             entities.clear_pending_actions(old_entity)
+             old_entity.clear_pending_actions()
           occ_grid.set_cell(self.occupancy, pt, entity)
           self.entities.append(entity)
 
@@ -29,7 +29,7 @@ class WorldModel:
           pt.y >= 0 and pt.y < self.num_rows)
 
 
-    def is_occupied(self, pt): #worldview
+    def is_occupied(self, pt): # isinstance
        return (self.within_bounds(pt) and
           occ_grid.get_cell(self.occupancy, pt) != None)
           
