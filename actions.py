@@ -32,9 +32,6 @@ def sign(x):
       return 0
 
 
-def adjacent(pt1, pt2):
-   return ((pt1.x == pt2.x and abs(pt1.y - pt2.y) == 1) or
-      (pt1.y == pt2.y and abs(pt1.x - pt2.x) == 1))
 
 
 def next_position(world, entity_pt, dest_pt):
@@ -74,7 +71,7 @@ def miner_to_ore(world, entity, ore):
    if not ore:
       return ([entity_pt], False)
    ore_pt = ore.get_position()
-   if adjacent(entity_pt, ore_pt):
+   if entity_pt.adjacent(ore_pt):
       entity.set_resource_count(
          1 + entity.get_resource_count())
       remove_entity(world, ore)
@@ -89,7 +86,7 @@ def miner_to_smith(world, entity, smith):
    if not smith:
       return ([entity_pt], False)
    smith_pt = smith.get_position()
-   if adjacent(entity_pt, smith_pt):
+   if entity_pt.adjacent(smith_pt):
       smith.set_resource_count(
          smith.get_resource_count() +
          entity.get_resource_count())
@@ -145,7 +142,7 @@ def blob_to_vein(world, entity, vein):
    if not vein:
       return ([entity_pt], False)
    vein_pt = vein.get_position()
-   if adjacent(entity_pt, vein_pt):
+   if entity_pt.adjacent(vein_pt):
       remove_entity(world, vein)
       return ([vein_pt], True)
    else:
