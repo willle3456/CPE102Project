@@ -61,12 +61,12 @@ def save_entities(world, file):
       file.write(entities.entity_string(entity) + '\n')
 
 
-def save_background(world, file):
+def save_background(world, file): #possible mistake in world.get_background line
    for row in range(0, world.num_rows):
       for col in range(0, world.num_cols):
          file.write('background ' +
-            entities.get_name(
-               worldmodel.get_background(world, point.Point(col, row))) +
+            world.get_background(point.Point(col, row)).get_name(
+               ) +
             ' ' + str(col) + ' ' + str(row) + '\n')
 
 
