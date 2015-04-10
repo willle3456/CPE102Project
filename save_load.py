@@ -57,16 +57,16 @@ def save_world(world, file):
    save_background(world, file)
 
 def save_entities(world, file):
-   for entity in worldmodel.get_entities(world):
+   for entity in world.get_entities():
       file.write(entities.entity_string(entity) + '\n')
 
 
-def save_background(world, file):
+def save_background(world, file): #possible mistake in world.get_background line
    for row in range(0, world.num_rows):
       for col in range(0, world.num_cols):
          file.write('background ' +
-            entities.get_name(
-               worldmodel.get_background(world, point.Point(col, row))) +
+            world.get_background(point.Point(col, row)).get_name(
+               ) +
             ' ' + str(col) + ' ' + str(row) + '\n')
 
 
@@ -84,7 +84,7 @@ def add_background(world, properties, i_store):
    if len(properties) >= BGND_NUM_PROPERTIES:
       pt = point.Point(int(properties[BGND_COL]), int(properties[BGND_ROW]))
       name = properties[BGND_NAME]
-      worldmodel.set_background(world, pt,
+      world.set_background(pt,
          entities.Background(name, image_store.get_images(i_store, name)))
 
 
