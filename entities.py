@@ -1,4 +1,26 @@
 import point
+import worldmodel
+import pygame
+import math
+import random
+import point
+import image_store
+
+BLOB_RATE_SCALE = 4
+BLOB_ANIMATION_RATE_SCALE = 50
+BLOB_ANIMATION_MIN = 1
+BLOB_ANIMATION_MAX = 3
+
+ORE_CORRUPT_MIN = 20000
+ORE_CORRUPT_MAX = 30000
+
+QUAKE_STEPS = 10
+QUAKE_DURATION = 1100
+QUAKE_ANIMATION_RATE = 100
+
+VEIN_SPAWN_DELAY = 500
+VEIN_RATE_MIN = 8000
+VEIN_RATE_MAX = 17000
 
 class Background:
     def __init__(self, name, imgs):
@@ -202,7 +224,42 @@ class Vein:
             
     def next_image(self):
         self.current_img = (self.current_img + 1) % len(self.imgs)
-       
+        
+    def schedule_action(self, world, action, time):
+        self.add_pending_action(action)
+        world.schedule_action(action, time)
+        
+    def schedule_vein(self, world, ticks, i_store):
+        self.schedule_action(world,self.create_vein_action(world,i_store),
+        ticks + vein.get_rate())
+
+    def create_vein_action(self, world, i_store):
+       def action(current_ticks):
+          self.remove_pending_action(action)
+
+          open_pt = world.find_open_around(self.get_position(),
+             self.get_resource_distance())
+          if open_pt:
+             ore = create_ore(world,
+                "ore - " + self.get_name() + " - " + str(current_ticks),
+                open_pt, current_ticks, i_store)
+             world.add_entity(ore)
+             tiles = [open_pt]
+          else:
+             tiles = []
+
+          self.schedule_action(world,
+             self.create_vein_action(world, i_store),
+             current_ticks + entity.get_rate())
+          return tiles
+       return action  
+
+    def remove_entity(self, world):
+       for action in self.get_pending_actions():
+          world.unschedule_action(action)
+       self.clear_pending_actions()
+       world.remove_entity(self) 
+     
       
 
 class Ore:
@@ -253,6 +310,30 @@ class Ore:
             
     def next_image(self):
         self.current_img = (self.current_img + 1) % len(self.imgs)
+        
+    def schedule_action(self, world, action, time):
+       self.add_pending_action(action)
+       world.schedule_action(action, time)
+       
+       
+    def schedule_ore(self, world, ticks, i_store):
+       schedule_action(world, ore,
+          self.create_ore_transform_action(world, i_store),
+          ticks + ore.get_rate())
+          
+    def create_ore_transform_action(self, world, i_store):
+       def action(current_ticks):
+          self.remove_pending_action(action)
+          blob = world.create_blob(self.get_name() + " -- blob",
+             self.get_position(),
+             self.get_rate() // BLOB_RATE_SCALE,
+             current_ticks, i_store)
+
+          world.remove_entity(entity)
+          world.add_entity(blob)
+
+          return [blob.get_position()]
+       return action
 
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
@@ -395,6 +476,65 @@ class OreBlob:
             
     def next_image(self):
         self.current_img = (self.current_img + 1) % len(self.imgs)
+        
+    def schedule_action(self, world, action, time):
+           self.add_pending_action(action)
+           world.schedule_action(action, time)
+           
+    def create_animation_action(self, world, repeat_count):
+       def action(current_ticks):
+          self.remove_pending_action(action)
+
+          self..next_image()
+
+          if repeat_count != 1:
+             self.schedule_action(world,
+                self.create_animation_action(world, max(repeat_count - 1, 0)),
+                current_ticks + self.get_animation_rate())
+
+          return [self.get_position()]
+       return action
+       
+    def schedule_blob(self, world, ticks, i_store):
+       self.schedule_action(world, create_ore_blob_action(world, blob, i_store),
+          ticks + blob.get_rate())
+       schedule_animation(world, blob)
+       
+    def create_ore_blob_action(self, world, i_store):
+       def action(current_ticks):
+          self.remove_pending_action(action)
+
+          entity_pt = self.get_position()
+          vein = world.find_nearest(entity_pt, entities.Vein)
+          (tiles, found) = blob_to_vein(world, entity, vein)
+
+          next_time = current_ticks + entity.get_rate()
+          if found:
+             quake = create_quake(world, tiles[0], current_ticks, i_store)
+             world.add_entity(quake)
+             next_time = current_ticks + entity.get_rate() * 2
+
+          schedule_action(world, entity,
+             create_ore_blob_action(world, entity, i_store),
+             next_time)
+
+          return tiles
+       return action
+       
+    def blob_to_vein(self, world, vein):
+       entity_pt = self.get_position()
+       if not vein:
+          return ([entity_pt], False)
+       vein_pt = vein.get_position()
+       if entity_pt.adjacent(vein_pt):
+          world.remove_entity(vein)
+          return ([vein_pt], True)
+       else:
+          new_pt = world.blob_next_position(entity_pt, vein_pt)
+          old_entity = world.get_tile_occupant(new_pt)
+          if isinstance(old_entity, entities.Ore):
+             world.remove_entity(old_entity)
+          return (world.move_entity(entity, new_pt), False)
       
 
 class Quake:
@@ -444,6 +584,42 @@ class Quake:
             
     def next_image(self):
         self.current_img = (self.current_img + 1) % len(self.imgs)
+        
+    def schedule_quake(self, world, ticks):
+        schedule_animation(world, quake, QUAKE_STEPS) 
+        schedule_action(world, quake, self.create_entity_death_action(world),
+        ticks + QUAKE_DURATION)
+        
+    def schedule_animation(self, world, repeat_count=0):
+        self.schedule_action(world,
+        create_animation_action(world, entity, repeat_count),
+        entity.get_animation_rate())
+        
+    def schedule_action(self, world, action, time):
+       self.add_pending_action(action)
+       world.schedule_action(action, time)
+       
+    def create_animation_action(self, world, repeat_count):
+       def action(current_ticks):
+          self.remove_pending_action(action)
+
+          self..next_image()
+
+          if repeat_count != 1:
+             self.schedule_action(world,
+                self.create_animation_action(world, max(repeat_count - 1, 0)),
+                current_ticks + self.get_animation_rate())
+
+          return [self.get_position()]
+       return action
+       
+    def create_entity_death_action(self, world):
+       def action(current_ticks):
+          self.remove_pending_action(action)
+          pt = entity.get_position()
+          remove_entity(world, entity)
+          return [pt]
+       return action
       
 
 

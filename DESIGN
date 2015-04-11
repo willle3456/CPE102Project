@@ -67,6 +67,8 @@ methods:
     find_open_around #hesitant
     create_vein_action
     remove_entity
+    schedule_vein
+    schedule_action
     
     set_position
     get_position
