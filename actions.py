@@ -34,9 +34,42 @@ def sign(x):
 
 
 
+<<<<<<< HEAD
 
 
 
+=======
+def blob_next_position(world, entity_pt, dest_pt):
+   horiz = sign(dest_pt.x - entity_pt.x)
+   new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
+
+   if horiz == 0 or (world.is_occupied(new_pt) and
+      not isinstance(world.get_tile_occupant(new_pt),
+      entities.Ore)):
+      vert = sign(dest_pt.y - entity_pt.y)
+      new_pt = point.Point(entity_pt.x, entity_pt.y + vert)
+
+      if vert == 0 or (world.is_occupied(new_pt) and
+         not isinstance(world.get_tile_occupant(new_pt),
+         entities.Ore)):
+         new_pt = point.Point(entity_pt.x, entity_pt.y)
+
+   return new_pt
+def blob_to_vein(world, entity, vein):
+   entity_pt = entity.get_position()
+   if not vein:
+      return ([entity_pt], False)
+   vein_pt = vein.get_position()
+   if entity_pt.adjacent(vein_pt):
+      remove_entity(world, vein)
+      return ([vein_pt], True)
+   else:
+      new_pt = blob_next_position(world, entity_pt, vein_pt)
+      old_entity = world.get_tile_occupant(new_pt)
+      if isinstance(old_entity, entities.Ore):
+         remove_entity(world, old_entity)
+      return (world.move_entity(entity, new_pt), False)
+>>>>>>> 3020def16a1217794377b53156484a662c92fb68
 
 
 def create_ore_blob_action(world, entity, i_store):
@@ -61,10 +94,85 @@ def create_ore_blob_action(world, entity, i_store):
    return action
 
 
+<<<<<<< HEAD
 
 
 
 
+=======
+def find_open_around(world, pt, distance):
+   for dy in range(-distance, distance + 1):
+      for dx in range(-distance, distance + 1):
+         new_pt = point.Point(pt.x + dx, pt.y + dy)
+
+         if (world.within_bounds(new_pt) and
+            (not world.is_occupied(new_pt))):
+            return new_pt
+
+   return None
+
+
+def create_vein_action(world, entity, i_store):
+   def action(current_ticks):
+      entity.remove_pending_action(action)
+
+      open_pt = find_open_around(world, entity.get_position(),
+         entity.get_resource_distance())
+      if open_pt:
+         ore = create_ore(world,
+            "ore - " + entity.get_name() + " - " + str(current_ticks),
+            open_pt, current_ticks, i_store)
+         world.add_entity(ore)
+         tiles = [open_pt]
+      else:
+         tiles = []
+
+      schedule_action(world, entity,
+         create_vein_action(world, entity, i_store),
+         current_ticks + entity.get_rate())
+      return tiles
+   return action
+
+
+def create_animation_action(world, entity, repeat_count):
+   def action(current_ticks):
+      entity.remove_pending_action(action)
+
+      entity.next_image()
+
+      if repeat_count != 1:
+         schedule_action(world, entity,
+            create_animation_action(world, entity, max(repeat_count - 1, 0)),
+            current_ticks + entity.get_animation_rate())
+
+      return [entity.get_position()]
+   return action
+
+
+def create_entity_death_action(world, entity):
+   def action(current_ticks):
+      entity.remove_pending_action(action)
+      pt = entity.get_position()
+      remove_entity(world, entity)
+      return [pt]
+   return action
+
+
+def create_ore_transform_action(world, entity, i_store):
+   def action(current_ticks):
+      entity.remove_pending_action(action)
+      blob = create_blob(world, entity.get_name() + " -- blob",
+         entity.get_position(),
+         entity.get_rate() // BLOB_RATE_SCALE,
+         current_ticks, i_store)
+
+      remove_entity(world, entity)
+      world.add_entity(blob)
+
+      return [blob.get_position()]
+   return action
+
+>>>>>>> 3020def16a1217794377b53156484a662c92fb68
 
 def remove_entity(world, entity):
    for action in entity.get_pending_actions():
@@ -80,6 +188,28 @@ def schedule_blob(world, blob, ticks, i_store):
       ticks + blob.get_rate())
    schedule_animation(world, blob)
 
+<<<<<<< HEAD
+=======
+def create_ore(world, name, pt, ticks, i_store):
+   ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
+      random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
+   schedule_ore(world, ore, ticks, i_store)
+
+   return ore
+
+
+def schedule_ore(world, ore, ticks, i_store):
+   schedule_action(world, ore,
+      create_ore_transform_action(world, ore, i_store),
+      ticks + ore.get_rate())
+
+
+def create_quake(world, pt, ticks, i_store):
+   quake = entities.Quake("quake", pt,
+      image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
+   schedule_quake(world, quake, ticks)
+   return quake
+>>>>>>> 3020def16a1217794377b53156484a662c92fb68
 
 
 

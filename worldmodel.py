@@ -119,6 +119,19 @@ class WorldModel:
 
     def get_entities(self):
         return self.entities
+
+    def next_position(self, entity_pt, dest_pt):
+        horiz = sign(dest_pt.x - entity_pt.x)
+        new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
+
+        if horiz == 0 or self.is_occupied(new_pt):
+            vert = sign(dest_pt.y - entity_pt.y)
+            new_pt = point.Point(entity_pt.x, entity_pt.y + vert)
+
+        if vert == 0 or self.is_occupied(new_pt):
+            new_pt = point.Point(entity_pt.x, entity_pt.y)
+
+        return new_pt
         
     def create_vein(self, name, pt, ticks, i_store):
         vein = entities.Vein("vein" + name,
