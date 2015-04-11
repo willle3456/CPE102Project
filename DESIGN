@@ -1,5 +1,9 @@
 class: Background
 methods:
+    get_images
+    get_image
+    get_name
+    next_image
 
 
 class: MinerNotFull
@@ -7,41 +11,231 @@ methods:
     next_position
     miner_to_ore
     create_miner_not_full_action
+    try_transform_miner_not_full
+    create_miner_action
+    create_animation_action
+    remove_entity
+    schedule_miner
+    sign
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    set_resource_count
+    get_resource_count
+    get_resource_limit
+    get_name
+    get_animation_rate
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
 
 class: MinerFull
 methods:
     next_position
     miner_to_smith
     create_miner_full_action
+    try_transform_miner_full
+    create_miner_action
+    create_animation_action
+    remove_entity
+    schedule_miner
+    sign
     
-classs: Vein
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    set_resource_count
+    get_resource_count
+    get_resource_limit
+    get_name
+    get_animation_rate
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
+    
+class: Vein
 methods:
+    find_open_around #hesitant
+    create_vein_action
+    remove_entity
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    get_resource_distance
+    get_name
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
 
-classs: Ore
+class: Ore
 methods:
+    create_ore_transform_action
+    remove_entity
+    create_ore
+    schedule_ore
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    get_name
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
 
-classs: Blacksmith
+class: Blacksmith
 methods:
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    set_resource_count
+    get_resource_count
+    get_resource_limit
+    get_resource_distance
+    get_name
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
 
-classs: Obstacle
+class: Obstacle
 methods:
+    remove_entity
+    set_position
+    get_position
+    get_images
+    get_image
+    get_name
+    next_image
 
-classs: OreBlob
+class: OreBlob
 methods:
     blob_next_position
     blob_to_vein
     create_ore_blob_action
+    create_animation_action
+    remove_entity
+    create_blob
+    schedule_blob
+    sign
     
-classs: Quake
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    get_name
+    get_animation_rate
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
+    
+class: Quake
 methods:
+    create_animation_action
+    create_entity_death_action
+    remove_entity
+    create_quake #hesitant
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_name
+    get_animation_rate
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
 
-classs: Point
+class: Point
 methods:
+    distance_sq
+    adjacent
 
-classs: WorldModel
+class: WorldModel
 methods:
+    try_transform_miner #hesitant
+    create_quake #hesitant
+    schedule_quake#hesitant
+    create_vein #hesitant
+    schedule_vein#hesitant
+    schedule_action#either here or in every entity
+    schedule_animation# either here or in every entity
+    clear_pending_actions# either here or in every entity
+    
+    add_entity
+    within_bounds
+    is_occupied
+    find_nearest
+    move_entity
+    remove_entity
+    remove_entity_at
+    schedule_action
+    unschedule_action
+    update_on_time
+    get_background_image
+    get_background
+    set_background
+    get_tile_occupant
+    get_entities
 
-classs: WorldView
+class: WorldView
 methods:
+    draw_background
+    draw_entities
+    draw_viewport
+    update_tile
+    get_tile_image
+    create_mouse_surface
+    update_mouse_cursor
+    mouse_move
+    update_view
+    update_view_tiles
+
+class: OrderedList
+methods:
+    insert
+    remove
+    head
+    pop
+    
+class: Grid
+methods:
+    set_cell
+    get_cell
+    
+NO CLASS----------
+    
+viewport_to_world
+world_to_viewport
+clamp
+create_shifted_viewport
+
+ 
+    
 
 
