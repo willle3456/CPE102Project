@@ -4,6 +4,8 @@ import ordered_list
 import actions
 import occ_grid
 import point
+import image_store
+import random
 
 BLOB_RATE_SCALE = 4
 BLOB_ANIMATION_RATE_SCALE = 50

@@ -93,7 +93,9 @@ def add_entity(world, properties, i_store, run):
    if new_entity:
       world.add_entity(new_entity)
       if run:
-         schedule_entity(world, new_entity, i_store)
+        if properties[PROPERTY_KEY] == MINER_KEY or properties[PROPERTY_KEY] == VEIN_KEY or properties[PROPERTY_KEY] == ORE_KEY:
+            new_entity.schedule_entity(world, i_store)
+      
 
 
 def create_from_properties(properties, i_store):
@@ -167,11 +169,3 @@ def create_obstacle(properties, i_store):
    else:
       return None
 
-
-def schedule_entity(world, entity, i_store):
-   if isinstance(entity, entities.MinerNotFull):
-      entity.schedule_miner(world, 0, i_store)
-   elif isinstance(entity, entities.Vein):
-      entity.schedule_vein(world, entity, 0, i_store)
-   elif isinstance(entity, entities.Ore):
-      entity.schedule_ore(world, entity, 0, i_store)

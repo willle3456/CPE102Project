@@ -32,13 +32,6 @@ def sign(x):
       return 0
 
 
-
-
-<<<<<<< HEAD
-
-
-
-=======
 def blob_next_position(world, entity_pt, dest_pt):
    horiz = sign(dest_pt.x - entity_pt.x)
    new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
@@ -55,6 +48,7 @@ def blob_next_position(world, entity_pt, dest_pt):
          new_pt = point.Point(entity_pt.x, entity_pt.y)
 
    return new_pt
+   
 def blob_to_vein(world, entity, vein):
    entity_pt = entity.get_position()
    if not vein:
@@ -69,7 +63,6 @@ def blob_to_vein(world, entity, vein):
       if isinstance(old_entity, entities.Ore):
          remove_entity(world, old_entity)
       return (world.move_entity(entity, new_pt), False)
->>>>>>> 3020def16a1217794377b53156484a662c92fb68
 
 
 def create_ore_blob_action(world, entity, i_store):
@@ -94,12 +87,8 @@ def create_ore_blob_action(world, entity, i_store):
    return action
 
 
-<<<<<<< HEAD
 
 
-
-
-=======
 def find_open_around(world, pt, distance):
    for dy in range(-distance, distance + 1):
       for dx in range(-distance, distance + 1):
@@ -172,7 +161,6 @@ def create_ore_transform_action(world, entity, i_store):
       return [blob.get_position()]
    return action
 
->>>>>>> 3020def16a1217794377b53156484a662c92fb68
 
 def remove_entity(world, entity):
    for action in entity.get_pending_actions():
@@ -187,9 +175,9 @@ def schedule_blob(world, blob, ticks, i_store):
    schedule_action(world, blob, create_ore_blob_action(world, blob, i_store),
       ticks + blob.get_rate())
    schedule_animation(world, blob)
+   
+   
 
-<<<<<<< HEAD
-=======
 def create_ore(world, name, pt, ticks, i_store):
    ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
       random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
@@ -209,7 +197,6 @@ def create_quake(world, pt, ticks, i_store):
       image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
    schedule_quake(world, quake, ticks)
    return quake
->>>>>>> 3020def16a1217794377b53156484a662c92fb68
 
 
 
