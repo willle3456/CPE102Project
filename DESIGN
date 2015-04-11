@@ -12,10 +12,14 @@ methods:
     miner_to_ore
     create_miner_not_full_action
     try_transform_miner_not_full
+    try_transform_miner
     create_miner_action
     create_animation_action
     remove_entity
     schedule_miner
+    schedule_animation
+    schedule_entity
+    schedule_action
     sign
     
     set_position
@@ -32,6 +36,7 @@ methods:
     remove_pending_action
     add_pending_action
     clear_pending_actions
+    
     next_image
 
 class: MinerFull
@@ -40,9 +45,12 @@ methods:
     miner_to_smith
     create_miner_full_action
     try_transform_miner_full
+    try_transform_miner
     create_miner_action
     create_animation_action
     remove_entity
+    schedule_action
+    schedule_animation
     schedule_miner
     sign
     
@@ -69,6 +77,7 @@ methods:
     remove_entity
     schedule_vein
     schedule_action
+    schedule_entity
     
     set_position
     get_position
@@ -89,6 +98,8 @@ methods:
     remove_entity
     create_ore
     schedule_ore
+    schedule_action
+    schedule_entity
     
     set_position
     get_position
@@ -119,10 +130,10 @@ methods:
     add_pending_action
     clear_pending_actions
     next_image
+    schedule_entity
 
 class: Obstacle
 methods:
-    remove_entity
     set_position
     get_position
     get_images
@@ -133,13 +144,14 @@ methods:
 class: OreBlob
 methods:
     blob_next_position
+    schedule_action
     blob_to_vein
     create_ore_blob_action
     create_animation_action
     remove_entity
     create_blob
     schedule_blob
-    sign
+    schedule_animation
     
     set_position
     get_position
@@ -156,6 +168,9 @@ methods:
     
 class: Quake
 methods:
+    schedule_quake
+    schedule_animation
+    schedule_action
     create_animation_action
     create_entity_death_action
     remove_entity
@@ -180,14 +195,20 @@ methods:
 
 class: WorldModel
 methods:
-    try_transform_miner #hesitant
+    try_transform_miner 
     create_quake #hesitant
-    schedule_quake#hesitant
-    create_vein #hesitant
+    schedule_quake
+    find_open_around
+    create_ore
+    create_blob
+    create_quake
+    blob_next_position
+    create_vein 
     schedule_vein#hesitant
     schedule_action#either here or in every entity
     schedule_animation# either here or in every entity
     clear_pending_actions# either here or in every entity
+    next_position
     
     add_entity
     within_bounds
@@ -236,6 +257,7 @@ viewport_to_world- Takes an attribute as 1st argument and doesn't belong in poin
 world_to_viewport- Takes an attribute as 1st argument and doesn't belong in point class.
 clamp- Only pertains to create_shifted_viewport, which doesn't fit into a class
 create_shifted_viewport- Only takes attributes as arguments
+sign - no object arguments
 
  
     
