@@ -230,10 +230,10 @@ methods:
     
 NO CLASS----------
     
-viewport_to_world
-world_to_viewport
-clamp
-create_shifted_viewport
+viewport_to_world- Takes an attribute as 1st argument and doesn't belong in point class.
+world_to_viewport- Takes an attribute as 1st argument and doesn't belong in point class.
+clamp- Only pertains to create_shifted_viewport, which doesn't fit into a class
+create_shifted_viewport- Only takes attributes as arguments
 
  
     
