@@ -205,7 +205,7 @@ class MinerNotFull:
     def remove_entity(self, world):
         for action in self.get_pending_actions():
             world.unschedule_action(action)
-        self.clear_pending_actions()
+        world.clear_pending_actions(self)
         world.remove_entity(self)
 
     def schedule_miner(self, world, ticks, i_store):
@@ -345,7 +345,7 @@ class MinerFull:
     def try_transform_miner(self, world, transform):
         new_entity = transform(world)
         if self != new_entity:
-            self.clear_pending_actions()
+            world.clear_pending_actions(self)
             world.remove_entity_at(self.get_position())
             world.add_entity(new_entity)
             new_entity.schedule_animation(world)
@@ -547,7 +547,7 @@ class Ore:
              self.get_rate() // BLOB_RATE_SCALE,
              current_ticks, i_store)
 
-          world.remove_entity(entity)
+          world.remove_entity(self)
           world.add_entity(blob)
 
           return [self.get_position()]
@@ -761,11 +761,11 @@ class OreBlob:
           old_entity = world.get_tile_occupant(new_pt)
           if isinstance(old_entity, Ore):
              world.remove_entity(old_entity)
-          return (world.move_entity(entity, new_pt), False)
+          return (world.move_entity(self, new_pt), False)
           
     def schedule_animation(self,world, repeat_count=0):
-       schedule_action(self, world,
-          create_animation_action(self, world, repeat_count),
+       self.schedule_action(world,
+          self.create_animation_action(world, repeat_count),
           self.get_animation_rate())
       
 
@@ -820,8 +820,8 @@ class Quake:
 
         
     def schedule_quake(self, world, ticks):
-        schedule_animation(world, quake, QUAKE_STEPS) 
-        schedule_action(world, quake, self.create_entity_death_action(world),
+        self.schedule_animation(world,QUAKE_STEPS) 
+        self.schedule_action(world,self.create_entity_death_action(world),
         ticks + QUAKE_DURATION)
         
     def schedule_animation(self, world, repeat_count=0):
