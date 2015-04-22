@@ -30,7 +30,21 @@ def sign(x):
    else:
       return 0
 
+class Entity(object):
+    def __init__(self):
+        pass
+        
+    def get_images(self):
+        return self.imgs
 
+    def get_image(self):
+        return self.imgs[self.current_img]
+
+    def get_name(self):
+        return self.name
+
+    def next_image(self):
+        self.current_img = (self.current_img + 1) % len(self.imgs)
 
 class Background:
     def __init__(self, name, imgs):
@@ -737,7 +751,7 @@ class OreBlob:
 
           next_time = current_ticks + self.get_rate()
           if found:
-             quake = create_quake(world, tiles[0], current_ticks, i_store)
+             quake = world.create_quake(tiles[0], current_ticks, i_store)
              world.add_entity(quake)
              next_time = current_ticks + self.get_rate() * 2
 
@@ -850,10 +864,11 @@ class Quake:
     def create_entity_death_action(self, world):
        def action(current_ticks):
           self.remove_pending_action(action)
-          pt = entity.get_position()
-          remove_entity(world, entity)
+          pt = self.get_position()
+          world.remove_entity(self)
           return [pt]
        return action
+       
       
 
 
