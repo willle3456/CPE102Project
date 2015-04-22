@@ -1,117 +1,265 @@
 class: Background
 methods:
-fields:
-	name
-	imgs
-	current_img
+    get_images
+    get_image
+    get_name
+    next_image
+
 
 class: MinerNotFull
 methods:
-fields:
-	name
-	position
-	rate
-	imgs
-	current_img
-	resource_limit
-	resource_count
-	resource_count
-	animation_rate
-	pending_action
-classs: MinerFull
+    next_position
+    miner_to_ore
+    create_miner_not_full_action
+    try_transform_miner_not_full
+    try_transform_miner
+    create_miner_action
+    create_animation_action
+    remove_entity
+    schedule_miner
+    schedule_animation
+    schedule_entity
+    schedule_action
+    sign
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    set_resource_count
+    get_resource_count
+    get_resource_limit
+    get_name
+    get_animation_rate
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    
+    next_image
+
+class: MinerFull
 methods:
-fields:
-	name
-	position
-	rate
-	imgs
-	current_img
-	resource_limit
-	resource_count
-	animation_rate
-	pending_actions
-classs: Vein
+    next_position
+    miner_to_smith
+    create_miner_full_action
+    try_transform_miner_full
+    try_transform_miner
+    create_miner_action
+    create_animation_action
+    remove_entity
+    schedule_action
+    schedule_animation
+    schedule_miner
+    sign
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    set_resource_count
+    get_resource_count
+    get_resource_limit
+    get_name
+    get_animation_rate
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
+    
+class: Vein
 methods:
-fields:
-	name
-	position
-	rate
-	imgs
-	current_img
-	resource_distance
-	pending_actions
-classs: Ore
+    find_open_around #hesitant
+    create_vein_action
+    remove_entity
+    schedule_vein
+    schedule_action
+    schedule_entity
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    get_resource_distance
+    get_name
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
+
+class: Ore
 methods:
-fields:
-	name
-	position
-	imgs
-	current_img
-	resource_limit
-	resource_count
-	rate
-	pending_actions
-classs: Blacksmith
+    create_ore_transform_action
+    remove_entity
+    create_ore
+    schedule_ore
+    schedule_action
+    schedule_entity
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    get_name
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
+
+class: Blacksmith
 methods:
-fields:
-	name
-	position
-	imgs
-	current_img
-	resource_limit
-	resource_count
-	rate
-	resource_distance
-	pending_actions
-classs: Obstacle
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    set_resource_count
+    get_resource_count
+    get_resource_limit
+    get_resource_distance
+    get_name
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
+    schedule_entity
+
+class: Obstacle
 methods:
-fields:
-	name
-	position
-	imgs
-	current_img
-classs: OreBlob
+    set_position
+    get_position
+    get_images
+    get_image
+    get_name
+    next_image
+
+class: OreBlob
 methods:
-fields:
-	name
-	position
-	rate
-	imgs
-	current_img
-	animation_rate
-	pending_action
-classs: Quake
+    blob_next_position
+    schedule_action
+    blob_to_vein
+    create_ore_blob_action
+    create_animation_action
+    remove_entity
+    create_blob
+    schedule_blob
+    schedule_animation
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_rate
+    get_name
+    get_animation_rate
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
+    
+class: Quake
 methods:
-fields:
-	name
-	position
-	imgs
-	current_img
-	animation_rate
-	pending_actions
-classs: Point
+    schedule_quake
+    schedule_animation
+    schedule_action
+    create_animation_action
+    create_entity_death_action
+    remove_entity
+    create_quake #hesitant
+    
+    set_position
+    get_position
+    get_images
+    get_image
+    get_name
+    get_animation_rate
+    get_pending_actions
+    remove_pending_action
+    add_pending_action
+    clear_pending_actions
+    next_image
+
+class: Point
 methods:
-fields:
-	x
-	y
-classs: WorldModel
+    distance_sq
+    adjacent
+
+class: WorldModel
 methods:
-fields:
-	background
-	num_rows
-	num_cols
-	occupancy
-	entities
-	action_queue
-classs: WorldView
+    try_transform_miner 
+    create_quake #hesitant
+    schedule_quake
+    find_open_around
+    create_ore
+    create_blob
+    create_quake
+    blob_next_position
+    create_vein 
+    schedule_vein#hesitant
+    schedule_action#either here or in every entity
+    schedule_animation# either here or in every entity
+    clear_pending_actions# either here or in every entity
+    next_position
+    
+    add_entity
+    within_bounds
+    is_occupied
+    find_nearest
+    move_entity
+    remove_entity
+    remove_entity_at
+    schedule_action
+    unschedule_action
+    update_on_time
+    get_background_image
+    get_background
+    set_background
+    get_tile_occupant
+    get_entities
+
+class: WorldView
 methods:
-fields:
-	viewport
-	screen
-	mouse_pt
-	world
-	tile_width
-	tile_height
-	num_rows
-	num_cols
-	mouse_img
+    draw_background
+    draw_entities
+    draw_viewport
+    update_tile
+    get_tile_image
+    create_mouse_surface
+    update_mouse_cursor
+    mouse_move
+    update_view
+    update_view_tiles
+
+class: OrderedList
+methods:
+    insert
+    remove
+    head
+    pop
+    
+class: Grid
+methods:
+    set_cell
+    get_cell
+    
+NO CLASS----------
+    
+viewport_to_world- Takes an attribute as 1st argument and doesn't belong in point class.
+world_to_viewport- Takes an attribute as 1st argument and doesn't belong in point class.
+clamp- Only pertains to create_shifted_viewport, which doesn't fit into a class
+create_shifted_viewport- Only takes attributes as arguments
+sign - no object arguments
+
+ 
+    
+
+

@@ -4,6 +4,24 @@ import ordered_list
 import actions
 import occ_grid
 import point
+import image_store
+import random
+
+BLOB_RATE_SCALE = 4
+BLOB_ANIMATION_RATE_SCALE = 50
+BLOB_ANIMATION_MIN = 1
+BLOB_ANIMATION_MAX = 3
+
+ORE_CORRUPT_MIN = 20000
+ORE_CORRUPT_MAX = 30000
+
+QUAKE_STEPS = 10
+QUAKE_DURATION = 1100
+QUAKE_ANIMATION_RATE = 100
+
+VEIN_SPAWN_DELAY = 500
+VEIN_RATE_MIN = 8000
+VEIN_RATE_MAX = 17000
 
 class WorldModel:
     def __init__(self, num_rows, num_cols, background):
@@ -29,7 +47,7 @@ class WorldModel:
           pt.y >= 0 and pt.y < self.num_rows)
 
 
-    def is_occupied(self, pt): # isinstance
+    def is_occupied(self, pt): 
        return (self.within_bounds(pt) and
           occ_grid.get_cell(self.occupancy, pt) != None)
           
@@ -110,12 +128,78 @@ class WorldModel:
 
         if horiz == 0 or self.is_occupied(new_pt):
             vert = sign(dest_pt.y - entity_pt.y)
+        horiz = entities.sign(dest_pt.x - entity_pt.x)
+        new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
+
+        if horiz == 0 or self.is_occupied(new_pt):
+            vert = entities.sign(dest_pt.y - entity_pt.y)
             new_pt = point.Point(entity_pt.x, entity_pt.y + vert)
 
         if vert == 0 or self.is_occupied(new_pt):
             new_pt = point.Point(entity_pt.x, entity_pt.y)
 
         return new_pt
+        
+    def create_vein(self, name, pt, ticks, i_store):
+        vein = entities.Vein("vein" + name,
+        random.randint(VEIN_RATE_MIN, VEIN_RATE_MAX),
+        pt, image_store.get_images(i_store, 'vein'))
+        return vein
+        
+    def clear_pending_actions(self, entity):
+       for action in entity.get_pending_actions():
+          self.unschedule_action(action)
+       entity.clear_pending_actions()  
+    
+    def find_open_around(self, pt, distance):
+       for dy in range(-distance, distance + 1):
+          for dx in range(-distance, distance + 1):
+             new_pt = point.Point(pt.x + dx, pt.y + dy)
+
+             if (self.within_bounds(new_pt) and
+                (not self.is_occupied(new_pt))):
+                return new_pt
+
+       return None
+       
+    def create_ore(self, name, pt, ticks, i_store):
+        ore = entities.Ore(name, pt, image_store.get_images(i_store, 'ore'),
+        random.randint(ORE_CORRUPT_MIN, ORE_CORRUPT_MAX))
+        ore.schedule_ore(self,ticks, i_store)
+
+        return ore
+    
+    def create_blob(self, name, pt, rate, ticks, i_store):
+       blob = entities.OreBlob(name, pt, rate,
+          image_store.get_images(i_store, 'blob'),
+          random.randint(BLOB_ANIMATION_MIN, BLOB_ANIMATION_MAX)
+          * BLOB_ANIMATION_RATE_SCALE)
+       blob.schedule_blob(self,ticks, i_store)
+       return blob
+       
+    def create_quake(self, pt, ticks, i_store):
+       quake = entities.Quake("quake", pt,
+          image_store.get_images(i_store, 'quake'), QUAKE_ANIMATION_RATE)
+       quake.schedule_quake(self, ticks)
+       return quake
+       
+       
+    def blob_next_position(self, entity_pt, dest_pt):
+       horiz = entities.sign(dest_pt.x - entity_pt.x)
+       new_pt = point.Point(entity_pt.x + horiz, entity_pt.y)
+
+       if horiz == 0 or (self.is_occupied(new_pt) and
+          not isinstance(self.get_tile_occupant(new_pt),
+          entities.Ore)):
+          vert = entities.sign(dest_pt.y - entity_pt.y)
+          new_pt = point.Point(entity_pt.x, entity_pt.y + vert)
+
+          if vert == 0 or (self.is_occupied(new_pt) and
+             not isinstance(self.get_tile_occupant(new_pt),
+             entities.Ore)):
+             new_pt = point.Point(entity_pt.x, entity_pt.y)
+
+       return new_pt
         
    
    
