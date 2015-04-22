@@ -169,11 +169,3 @@ def create_obstacle(properties, i_store):
    else:
       return None
 
-
-def schedule_entity(world, entity, i_store):
-   if isinstance(entity, entities.MinerNotFull):
-      entity.schedule_miner(world, 0, i_store)
-   elif isinstance(entity, entities.Vein):
-      entity.schedule_vein(world, entity, 0, i_store)
-   elif isinstance(entity, entities.Ore):
-      entity.schedule_ore(world, entity, 0, i_store)
