@@ -31,9 +31,13 @@ def sign(x):
       return 0
 
 class Entity(object):
-    def __init__(self):
-        pass
-        
+    def __init__(self, name, position, imgs):
+        self.name = name
+        self.position = position
+        self.imgs = imgs
+        self.current_img = 0
+
+   
     def get_images(self):
         return self.imgs
 
@@ -45,7 +49,7 @@ class Entity(object):
 
     def next_image(self):
         self.current_img = (self.current_img + 1) % len(self.imgs)
-
+    
 class Background:
     def __init__(self, name, imgs):
         self.name = name
@@ -574,9 +578,7 @@ class Ore:
 class Blacksmith:
     def __init__(self, name, position, imgs, resource_limit, rate,
                  resource_distance=1):
-        self.name = name
-        self.position = position
-        self.imgs = imgs
+        super(Blacksmith,self).__init__(name,position,imgs)
         self.current_img = 0
         self.resource_limit = resource_limit
         self.resource_count = 0
