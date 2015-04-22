@@ -77,7 +77,38 @@ class Actions(Entity):
     def clear_pending_actions(self):
         if hasattr(self, "pending_actions"):
             self.pending_actions = []
+            
+class Animation(Actions):
+    def __init__(self, name, position, imgs, animation_rate):
+        super(Animation,self).__init__(name,position,imgs)
+        self.animation_rate = animation_rate
+        
+    def get_animation_rate(self):
+        return self.animation_rate
     
+    def schedule_animation(self, world, repeat_count=0):
+        self.schedule_action(world,
+        self.create_animation_action(world, repeat_count),
+        self.get_animation_rate())
+        
+    def schedule_action(self, world, action, time):
+       self.add_pending_action(action)
+       world.schedule_action(action, time)
+       
+    def create_animation_action(self, world, repeat_count):
+       def action(current_ticks):
+          self.remove_pending_action(action)
+
+          self.next_image()
+
+          if repeat_count != 1:
+             self.schedule_action(world,
+                self.create_animation_action(world, max(repeat_count - 1, 0)),
+                current_ticks + self.get_animation_rate())
+
+          return [self.get_position()]
+       return action
+       
 class Background:
     def __init__(self, name, imgs):
         self.name = name
@@ -565,76 +596,16 @@ class Obstacle(Entity):
     pass
 
 
-class OreBlob:
+class OreBlob(Animation):
     def __init__(self, name, position, rate, imgs, animation_rate):
-        self.name = name
-        self.position = position
+        super(OreBlob,self).__init__(name,position,imgs,animation_rate)
         self.rate = rate
-        self.imgs = imgs
         self.current_img = 0
-        self.animation_rate = animation_rate
         self.pending_actions = []
 
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
 
     def get_rate(self):
         return self.rate
-
-    def get_name(self):
-        return self.name
-
-    def get_animation_rate(self):
-        return self.animation_rate
-
-    def get_pending_actions(self):
-        if hasattr(self, "pending_actions"):
-            return self.pending_actions
-        else:
-            return []
-
-    def remove_pending_action(self, action):
-        if hasattr(self, "pending_actions"):
-            self.pending_actions.remove(action)
-
-    def add_pending_action(self, action):
-        if hasattr(self, "pending_actions"):
-            self.pending_actions.append(action)
-
-    def clear_pending_actions(self):
-        if hasattr(self, "pending_actions"):
-            self.pending_actions = []
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
-
-        
-    def schedule_action(self, world, action, time):
-           self.add_pending_action(action)
-           world.schedule_action(action, time)
-           
-    def create_animation_action(self, world, repeat_count):
-       def action(current_ticks):
-          self.remove_pending_action(action)
-
-          self.next_image()
-
-          if repeat_count != 1:
-             self.schedule_action(world,
-                self.create_animation_action(world, max(repeat_count - 1, 0)),
-                current_ticks + self.get_animation_rate())
-
-          return [self.get_position()]
-       return action
        
     def schedule_blob(self, world, ticks, i_store):
        self.schedule_action(world, self.create_ore_blob_action(world, i_store),
@@ -676,61 +647,15 @@ class OreBlob:
           if isinstance(old_entity, Ore):
              world.remove_entity(old_entity)
           return (world.move_entity(self, new_pt), False)
-          
-    def schedule_animation(self,world, repeat_count=0):
-       self.schedule_action(world,
-          self.create_animation_action(world, repeat_count),
-          self.get_animation_rate())
       
 
 
-class Quake:
+class Quake(Animation):
     def __init__(self, name, position, imgs, animation_rate):
-        self.name = name
-        self.position = position
-        self.imgs = imgs
+        super(Quake,self).__init__(name,position,imgs,animation_rate)
         self.current_img = 0
-        self.animation_rate = animation_rate
         self.pending_actions = []
 
-    def set_position(self, point):
-        self.position = point
-
-    def get_position(self):
-        return self.position
-
-    def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]
-
-    def get_name(self):
-        return self.name
-
-    def get_animation_rate(self):
-        return self.animation_rate
-
-    def get_pending_actions(self):
-        if hasattr(self, "pending_actions"):
-            return self.pending_actions
-        else:
-            return []
-
-    def remove_pending_action(self, action):
-        if hasattr(self, "pending_actions"):
-            self.pending_actions.remove(action)
-
-    def add_pending_action(self, action):
-        if hasattr(self, "pending_actions"):
-            self.pending_actions.append(action)
-
-    def clear_pending_actions(self):
-        if hasattr(self, "pending_actions"):
-            self.pending_actions = []
-
-    def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)
 
         
     def schedule_quake(self, world, ticks):
@@ -738,28 +663,6 @@ class Quake:
         self.schedule_action(world,self.create_entity_death_action(world),
         ticks + QUAKE_DURATION)
         
-    def schedule_animation(self, world, repeat_count=0):
-        self.schedule_action(world,
-        self.create_animation_action(world, repeat_count),
-        self.get_animation_rate())
-        
-    def schedule_action(self, world, action, time):
-       self.add_pending_action(action)
-       world.schedule_action(action, time)
-       
-    def create_animation_action(self, world, repeat_count):
-       def action(current_ticks):
-          self.remove_pending_action(action)
-
-          self.next_image()
-
-          if repeat_count != 1:
-             self.schedule_action(world,
-                self.create_animation_action(world, max(repeat_count - 1, 0)),
-                current_ticks + self.get_animation_rate())
-
-          return [self.get_position()]
-       return action
        
     def create_entity_death_action(self, world):
        def action(current_ticks):
