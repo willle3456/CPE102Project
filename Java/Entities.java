@@ -23,7 +23,7 @@ public class Entities
 	 * @param x, an integer
 	 * @return -1 if x < 0, 0 is x = 0, otherwise 1
 	 */
-	public static int sign(int x)
+	public static int sign(double x)
 	{
 		if (x < 0)
 		{
