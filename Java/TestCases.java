@@ -105,12 +105,22 @@ public class TestCases
         assertEquals(1000, a.getAnimationRate(), DELTA);
     }
     //OreBlob-----------------------------------------------------------------------------------------------------
-    /*@Test
+    @Test
     public void testGetRateOreblob()
     {
         OreBlob o = new OreBlob("Olly", new Point(1.0, 2.0), 1000, 500);
         assertEquals(500, o.getRate());
-    }*/
+    }
+    @Test
+    public void testBlobToVein()
+    {
+        OreBlob blob = new OreBlob("molly", new Point(1.0,2.0), 1000, 5);
+        OCCGrid background = new OCCGrid(2,2, new Background("backy", new Point(0,0)));
+        OCCGrid occupancy = new OCCGrid(2,2, new Obstacle("ob", new Point(1.0,1.0)));
+        WorldModel world = new WorldModel(2, 2, background, occupancy);
+        Vein v = new Vein("vlad", new Point(2.0,2.0), 2, 5);
+        assertTrue(blob.blobToVein(world, v));
+    }
     //Miner-------------------------------------------------------------------------------------------------------
     @Test
     public void testgetRateMiner()
