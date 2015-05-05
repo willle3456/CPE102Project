@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorldModel {
 	public static final int BLOB_RATE_SCALE = 4;
@@ -17,6 +19,7 @@ public class WorldModel {
 	
 	private int num_rows, num_cols;
 	private OCCGrid background, occupancy;
+	private List<Entities> entity = new ArrayList<Entities>();
 	//private String background;
 	
 	public WorldModel(int num_rows, int num_cols, OCCGrid background, OCCGrid occupancy)
@@ -26,7 +29,11 @@ public class WorldModel {
 		this.background = background;
 		this.occupancy = occupancy;
 	}
-	
+	/***
+	 * determines which entity is at a point
+	 * @param pt, a point
+	 * @return the entity at pt, otherwise null
+	 */
 	public Entities getBackground(Point pt)
 	{
 		if(withinBounds(pt))
@@ -36,6 +43,12 @@ public class WorldModel {
 		
 		return null;
 	}
+	/***
+	 * puts an entity at a point
+	 * @param pt, a point
+	 * @param b, an entity
+	 * sets the cell (specified from pt) to a specific entity (b)
+	 */
 	
 	public void setBackgrounds(Point pt, Entities b)
 	{
@@ -44,6 +57,12 @@ public class WorldModel {
 			this.background.setCell(pt,b);
 		}
 	}
+	/***
+	 * determines which entity is currently at a point
+	 * @param pt, a point
+	 * @return if the point is on the screen, return the entity that is at that point
+	 * otherwise: null
+	 */
 	
 	public Entities getTileOccupant(Point pt)
 	{
@@ -53,6 +72,18 @@ public class WorldModel {
 		}
 		return null; 
 	}
+	
+	public List<Entities> getEntities()
+	{
+		return this.entity;
+	}
+	
+	/***
+	 * determines where an entity is going to move next 
+	 * @param ePt, point with an entity
+	 * @param destPt, point where the entity will go
+	 * @return the point where the entity will move next
+	 */
 	
 	public Point nextPosition(Point ePt, Point destPt)
 	{
@@ -72,7 +103,7 @@ public class WorldModel {
 		
 		return newPoint;
 	}
-	/**
+	/***
 	 * Checks to see if a point is in the world
 	 * @param: a point
 	 * @return: True if point is in the world; if otherwise, false
@@ -89,6 +120,57 @@ public class WorldModel {
 	{
 		return withinBounds(pt) && (this.occupancy.getCell(pt) != null);
 	}
+	/***
+	 * finds the entity of a certain type that is closest to a point in the world
+	 * @param indexes, list of indexes of entities of that certain type
+	 * @param pt, point you're comparing to
+	 * @return the entity closest to that point
+	 */
+	public Entities nearestEntity(ArrayList<Integer> indexes, Point pt)
+	{
+		if(indexes.size() > 0)
+		{
+			int near = indexes.get(0);
+			for( int i = 0; i < indexes.size(); i++)
+			{
+				double temp = this.entity.get(near).getPosition().distance(pt);
+				double temp2 = this.entity.get(i).getPosition().distance(pt);
+				
+				if(temp2 < temp)
+				{
+					near = i;
+				}
+						
+			}
+			return this.entity.get(near);
+		}
+		return null;
+	}
+	/***
+	 * returns index of the ones of the same type w/ nearest
+	 * @param pt, a point in the world
+	 * @param e, the type of entity you're checking
+	 * @return int array of the indexes of the checked Entity type
+	 */
+	public Entities findNearest(Point pt, Entities e)
+	{
+		ArrayList<Integer> same = new ArrayList<Integer>();
+		for(int i = 0; i < this.entity.size(); i++)
+		{
+			if( this.entity.get(i).getClass() == e.getClass())
+			{
+				same.add(i);
+			}
+		}
+		return nearestEntity(same, pt);
+	}
+	
+	/***
+	 * moves entity to a new point
+	 * @param e, an entity
+	 * @param pt, a point
+	 * @return the points where the entity was and will be
+	 */
 	
 	public Point[] moveEntity(Entities e, Point pt)
 	{
@@ -105,6 +187,29 @@ public class WorldModel {
 		
 		return tiles;
 	}
+	
+	public void removeEntityAt(Point pt)
+	{
+		if(isOccupied(pt))
+		{
+			Entities e = this.occupancy.getCell(pt);
+			e.setPosition(new Point(-1,-1));
+			this.entity.remove(this.entity.indexOf(e));
+			this.occupancy.setCell(pt, null);
+		}
+	}
+	
+	public void removeEntity(Entities e)
+	{
+		removeEntityAt(e.getPosition());
+	}
+	
+	/***
+	 * checks if the area around is point is open
+	 * @param pt, a point
+	 * @param distance, the distance around the point
+	 * @return an open point if it's on the screen & isn't occupied, otherwise, null
+	 */
 	
 	public Point findOpenAround(Point pt, double distance)
 	{

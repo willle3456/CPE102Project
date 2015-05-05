@@ -1,5 +1,9 @@
 
 public class OCCGrid {
+	/*public enum OccupancyValue 
+	{
+		EMPTY, GATHERER, GENERATOR, RESOURCE;
+	}*/
 	private int height, width;
 	private Entities[][] cells = new Entities[width][height];
 

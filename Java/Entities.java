@@ -1,9 +1,12 @@
 
+
+
 public class Entities 
 {
 	
 	private String name;
 	private Point position;
+	
 	//private String[] imgs;
 	private int current_img;
 	
@@ -15,8 +18,12 @@ public class Entities
 		//this.imgs = imgs;
 		
 	}
-	
-	public static int sign(double x)
+
+	/***
+	 * @param x, an integer
+	 * @return -1 if x < 0, 0 is x = 0, otherwise 1
+	 */
+	public static int sign(int x)
 	{
 		if (x < 0)
 		{
@@ -29,6 +36,35 @@ public class Entities
 		else
 		{
 			return 0;
+		}
+	}
+	
+	public static String entitySting(Entities e)
+	{
+		if(e instanceof MinerNotFull)
+		{
+			return "Miner " + e.getName() + " " + e.getPosition().getX() + " " + e.getPosition().getY();
+		}
+		
+		else if( e instanceof Vein)
+		{
+			return "Vein " + e.getName() + " " + e.getPosition().getX() + " " + e.getPosition().getY();
+		}
+		else if(e instanceof Ore)
+		{
+			return "Ore " + e.getName() + " " + e.getPosition().getX() + " " + e.getPosition().getY();
+		}
+		else if(e instanceof Blacksmith)
+		{
+			return "Blacksmith " + e.getName() + " " + e.getPosition().getX() + " " + e.getPosition().getY();
+		}
+		else if(e instanceof Obstacle)
+		{
+			return "Obstacle " + e.getName() + " " + e.getPosition().getX() + " " + e.getPosition().getY();
+		}
+		else
+		{
+			return "unknown";
 		}
 	}
 	

@@ -24,14 +24,22 @@ public class Point {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+	/***
+	 * finds the distance between two points
+	 * @param other, another point
+	 * @return the distance b/w the points
+	 */
 	public double distance(Point other)
 	{
 		double xSquare = Math.pow(this.x - other.x,2);
 		double ySquare = Math.pow(this.x - other.x,2);
 		return Math.sqrt(xSquare + ySquare);
 	}
-	
+	/***
+	 * checks to see if two points are next to each other
+	 * @param other, another point
+	 * @return true if two points are next to each other; otherwise false
+	 */
 	public boolean adjacent(Point other)
 	{
 		
