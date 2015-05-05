@@ -494,7 +494,7 @@ class Quake(Animation):
        def action(current_ticks):
           self.remove_pending_action(action)
           pt = self.get_position()
-          world.remove_entity(self)
+          WORld.remove_entity(self)
           return [pt]
        return action
 
