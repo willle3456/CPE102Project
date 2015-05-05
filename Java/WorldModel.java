@@ -28,6 +28,7 @@ public class WorldModel {
 		this.num_cols = num_cols;
 		this.background = background;
 		this.occupancy = occupancy;
+		entity.add(new Ore("bobetta", new Point(1,1),10));
 	}
 	/***
 	 * determines which entity is at a point
@@ -100,7 +101,6 @@ public class WorldModel {
 				newPoint = new Point(ePt.getX(), ePt.getY());
 			}
 		}
-		
 		return newPoint;
 	}
 	/***
@@ -184,7 +184,6 @@ public class WorldModel {
 			tiles[1] = pt;
 			e.setPosition(pt);
 		}
-		
 		return tiles;
 	}
 	
@@ -193,7 +192,7 @@ public class WorldModel {
 		if(isOccupied(pt))
 		{
 			Entities e = this.occupancy.getCell(pt);
-			e.setPosition(new Point(-1,-1));
+			//e.setPosition(new Point(-1,-1));
 			this.entity.remove(this.entity.indexOf(e));
 			this.occupancy.setCell(pt, null);
 		}
@@ -218,7 +217,6 @@ public class WorldModel {
 			for(int j = (int)(-distance); j < (int)(distance+1); j++)
 			{
 				Point newPoint = new Point((pt.getX() + i),(pt.getY()+ j));
-				
 				if(withinBounds(newPoint) && !isOccupied(newPoint))
 				{
 					return newPoint;
@@ -227,5 +225,30 @@ public class WorldModel {
 		}
 		return null;
 	}	
+	
+	public Point blobNextPosition(Point ePt, Point destPt)
+	{
+		int horz = Entities.sign(destPt.getX() - ePt.getX());
+		Point newPt = new Point(ePt.getX() + horz, ePt.getY());
+		if(horz == 0 || (isOccupied(newPt) && !(getTileOccupant(newPt) instanceof Ore)))
+		{
+			int vert = Entities.sign(destPt.getY() - ePt.getY());
+			newPt = new Point(ePt.getX(),ePt.getY()+ vert);
+			
+			if (vert == 0 || (isOccupied(newPt) && !(getTileOccupant(newPt) instanceof Ore)))
+			{
+				newPt = new Point(ePt.getX(), ePt.getY());
+			}
+		}
+		return newPt;
+	}
+	
+	public void addEntity(Entities e)
+	{
+		Point pt = e.getPosition();
+		this.occupancy.setCell(pt, e);
+		this.entity.add(e);
+		
+	}
 	
 }
