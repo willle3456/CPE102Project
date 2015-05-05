@@ -6,20 +6,28 @@ class MinerNotFull
         super(name,position,animation_rate,rate,resource_limit);
     }
     
-    def miner_to_ore(self, world, ore):
-        entity_pt = self.get_position()
-        if not ore:
-            return ([entity_pt], False)
-        ore_pt = ore.get_position()
-        if entity_pt.adjacent(ore_pt):
-            self.set_resource_count(1 + self.get_resource_count())
-            world.remove_entity(ore)
-            return ([ore_pt], True)
-        else:
-            new_pt = self.next_position(world, ore_pt)
-            return (world.move_entity(self, new_pt), False)
+    public boolean minerToOre(WorldModel world, Ore ore)
+    {
+        Point entity_pt = this.getPosition();
+        if(!(ore instanceof Ore))
+        {
+            return (false);
+        }
+        Point ore_pt = ore.getPosition();
+        if( entity_pt.adjacent(ore_pt))
+        {
+            this.setResourceCount(1 + this.getResourceCount());
+            world.removeEntity(ore);
+            return (true);
+        }
+        else
+        {
+            Point new_pt = this.nextPosition(world, ore_pt);
+            return (false);
+        }
+    }
             
-    public Miner tryTransformMinerNotFull(WorldModel world) //getImages ****************************
+    /*public Miner tryTransformMinerNotFull(WorldModel world) 
     {
         if(this.getResourceCount < this.getResourceLimit)
         {
@@ -35,7 +43,7 @@ class MinerNotFull
         return new_entity;
     }
 
-    /*def create_miner_not_full_action(self, world, i_store):
+    def create_miner_not_full_action(self, world, i_store):
         def action(current_ticks):
             self.remove_pending_action(action)
 

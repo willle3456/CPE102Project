@@ -8,20 +8,22 @@ public class Entities
 	private Point position;
 	
 	//private String[] imgs;
-	//private int current_img = 0;
+	private int current_img;
 	
 	public Entities(String name, Point position)
 	{
 		this.name = name;
 		this.position = position;
+        this.current_img = 0;
 		//this.imgs = imgs;
-		//this.current_img = 0;
+		
 	}
+
 	/***
 	 * @param x, an integer
 	 * @return -1 if x < 0, 0 is x = 0, otherwise 1
 	 */
-	public static int sign(int x)
+	public static int sign(double x)
 	{
 		if (x < 0)
 		{
