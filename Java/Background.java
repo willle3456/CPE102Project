@@ -1,11 +1,11 @@
 public class Background
+    extends Entities
 {
-    private String name;
     //private imgs
     
-    public Background(String name)
+    public Background(String name, Point position)
     {
-        this.name = name;
+        super(name, position);
     }
     
     /*def get_images(self):
@@ -14,10 +14,6 @@ public class Background
     def get_image(self):
         return self.imgs[self.current_img]*/
 
-    public String getName()
-    {
-        return this.name;
-    }
     
     /*def next_image(self):
         self.current_img = (self.current_img + 1) % len(self.imgs)*/
