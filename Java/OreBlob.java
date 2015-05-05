@@ -40,28 +40,30 @@ public class OreBlob
           return tiles
        return action*/
        
-   /* public [] blobToVein(WorldModel world, Vein vein):
-       Point entity_pt = this.getPosition();
-       if(! vein)
-       {
-          return ([entity_pt], False); //???????????
-       }
-       Point vein_pt = vein.getPosition();
-       if (entity_pt.adjacent(vein_pt)
-       {
-          world.removeEntity(vein);
-          return ([vein_pt], True); //????????????????
-       }
-       else
-       {
-          Point new_pt = world.blobNextPosition(entity_pt, vein_pt);
-          Entities old_entity = world.getTileOccupant(new_pt)
-          if(old_entity isinstanceof Ore)
-          {
-             world.removeEntity(old_entity);
-          }
-          return (world.moveEntity(this, new_pt), False);
-       }*/
+    public boolean blobToVein(WorldModel world, Vein vein)
+    {
+           Point entity_pt = this.getPosition();
+           if(!(vein instanceof Vein))
+           {
+              return (false); 
+           }
+           Point vein_pt = vein.getPosition();
+           if (entity_pt.adjacent(vein_pt))
+           {
+              world.removeEntity(vein);
+              return (true); 
+           }
+           else
+           {
+              Point new_pt = world.blobNextPosition(entity_pt, vein_pt);
+              Entities old_entity = world.getTileOccupant(new_pt);
+              if(old_entity instanceof Ore)
+              {
+                 world.removeEntity(old_entity);
+              }
+              return (false);
+           }
+    }
 }
           
           

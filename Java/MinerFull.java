@@ -5,21 +5,30 @@ public class MinerFull
     {
         super(name,position,animation_rate,rate,resource_limit);
     }
+   
     
-    def miner_to_smith(self, world, smith):
-        entity_pt = self.get_position()
-        if not smith:
-            return ([entity_pt], False)
-        smith_pt = smith.get_position()
-        if entity_pt.adjacent(smith_pt):
-            smith.set_resource_count(
-                smith.get_resource_count() +
-                self.get_resource_count())
-            self.set_resource_count(0)
-            return ([], True)
-        else:
-            new_pt = self.next_position(world, smith_pt)
-            return (world.move_entity(self, new_pt), False)
+    public boolean minerToSmith(WorldModel world, Blacksmith smith)
+    {
+        Point entity_pt = this.getPosition();
+        if(!(smith instanceof Blacksmith))
+        {
+            return (false);
+        }
+        Point smith_pt = smith.getPosition();
+        if( entity_pt.adjacent(smith_pt))
+        {
+            smith.setResourceCount(
+                smith.getResourceCount() +
+                this.getResourceCount());
+            this.setResourceCount(0);
+            return (true);
+        }
+        else
+        {
+            Point new_pt = this.nextPosition(world, smith_pt);
+            return (false);
+        }
+    }
             
     /*public MinerNotFull tryTransformMinerFull(WorldModel world) 
     {    

@@ -5,17 +5,18 @@ public class Entities
 	private String name;
 	private Point position;
 	//private String[] imgs;
-	//private int current_img = 0;
+	private int current_img;
 	
 	public Entities(String name, Point position)
 	{
 		this.name = name;
 		this.position = position;
+        this.current_img = 0;
 		//this.imgs = imgs;
-		//this.current_img = 0;
+		
 	}
 	
-	public static int sign(int x)
+	public static int sign(double x)
 	{
 		if (x < 0)
 		{
