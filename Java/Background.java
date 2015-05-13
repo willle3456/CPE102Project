@@ -1,20 +1,29 @@
 public class Background
     extends Entities
 {
-    //private imgs
+    private String[] imgs;
+    private int current_img;
     
-    public Background(String name, Point position)
+    public Background(String name, Point position, String[] imgs)
     {
         super(name, position);
+        this.imgs = imgs;
+        this.current_img = 0;
     }
     
-    /*def get_images(self):
-        return self.imgs
-
-    def get_image(self):
-        return self.imgs[self.current_img]*/
+    public String[] getImages()
+    {
+        return this.imgs;
+    }
+    
+    public String getImage()
+    {
+        return this.imgs[this.current_img];
+    }
 
     
-    /*def next_image(self):
-        self.current_img = (self.current_img + 1) % len(self.imgs)*/
+    public void nextImage()
+    {
+        this.current_img = (this.current_img + 1) % self.imgs.size();
+    }
 }

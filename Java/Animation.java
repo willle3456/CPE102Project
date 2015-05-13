@@ -15,26 +15,36 @@ public class Animation
         return this.animation_rate;
     }
     
-    /*def schedule_animation(self, world, repeat_count=0):
-        self.schedule_action(world,
-        self.create_animation_action(world, repeat_count),
-        self.get_animation_rate())
+    public void scheduleAnimation(Worldmodel world, int repeat_count=0)
+    {
+        this.schedule_action(world,
+        this.createAnimationAction(world, repeat_count),
+        this.getAnimationRate());
+    }
         
-    def schedule_action(self, world, action, time):
-       self.add_pending_action(action)
-       world.schedule_action(action, time)
+    public void scheduleAction(Worldmodel world, action, int time)
+    {
+       this.addPendingAction(action);
+       world.scheduleAction(action, time);
+    }
        
-    def create_animation_action(self, world, repeat_count):
-       def action(current_ticks):
-          self.remove_pending_action(action)
+    public ? createAnimationAction(Worldmodel world, int repeat_count)
+    {
+       public List<Integer> action(int current_ticks)
+       {
+          this.removePendingAction(action);
 
-          self.next_image()
+          this.nextImage();
 
-          if repeat_count != 1:
-             self.schedule_action(world,
-                self.create_animation_action(world, max(repeat_count - 1, 0)),
-                current_ticks + self.get_animation_rate())
+          if (repeat_count != 1)
+          {
+             this.scheduleAction(world,
+                this.createAnimationAction(world, Math.max(repeat_count - 1, 0)),
+                current_ticks + this.getAnimationRate());
+          }
 
-          return [self.get_position()]
-       return action*/
+          return [this.getPosition()]
+       }
+       return action
+    }
 }

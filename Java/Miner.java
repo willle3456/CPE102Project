@@ -54,23 +54,33 @@ public class Miner
         return new_pt;
     }
 
-    /*def try_transform_miner(self, world, transform):
-        new_entity = transform(world)
-        if self != new_entity:
-            world.clear_pending_actions(self)
-            world.remove_entity_at(self.get_position())
-            world.add_entity(new_entity)
-            new_entity.schedule_animation(world)
+    public Entity tryTransformMiner(Worldmodel world, transform)
+    {
+        Entity new_entity = transform(world);
+        if (this != new_entity)
+        {
+            world.clearPendingActions(this);
+            world.removeEntityAt(this.getPosition());
+            world.addEntity(new_entity);
+            new_entity.scheduleAnimation(world);
+        }
 
-        return new_entity
+        return new_entity;
+    }
 
-    def remove_entity(self, world):
-        for action in self.get_pending_actions():
-            world.unschedule_action(action)
-        world.clear_pending_actions(self)
-        world.remove_entity(self)
+    public void removeEntity(Worldmodel world)
+    {
+        for(action : this.getPendingActions())
+        {
+            world.unscheduleAction(action);
+        }
+        world.clearPendingActions(this);
+        world.removeEntity(this);
+    }
 
-    def schedule_miner(self, world, ticks, i_store):
-        self.schedule_action(world, self.create_miner_action(world, i_store), ticks + self.get_rate())
-        self.schedule_animation(world)*/
+    public void scheduleMiner(Worldmodel world, int ticks, List<String> i_store)
+    {
+        this.scheduleAction(world, this.createMinerAction(world, i_store), ticks + this.getRate());
+        this.scheduleAnimation(world);
+    }
 }

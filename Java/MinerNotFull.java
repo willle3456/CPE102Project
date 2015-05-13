@@ -27,7 +27,7 @@ class MinerNotFull
         }
     }
             
-    /*public Miner tryTransformMinerNotFull(WorldModel world) 
+    public Miner tryTransformMinerNotFull(WorldModel world) 
     {
         if(this.getResourceCount < this.getResourceLimit)
         {
@@ -43,29 +43,38 @@ class MinerNotFull
         return new_entity;
     }
 
-    def create_miner_not_full_action(self, world, i_store):
-        def action(current_ticks):
-            self.remove_pending_action(action)
+    public ? createMiner_not_full_action(WorldModel world, i_store)
+    {
+        public List<Point> action(int current_ticks)
+        {
+            this.removePendingAction(action);
 
-            entity_pt = self.get_position()
-            ore = world.find_nearest(entity_pt, Ore)
-            (tiles, found) = self.miner_to_ore(world, ore)
+            Point entity_pt = this.getPosition();
+            Ore ore = world.findNearest(entity_pt, Ore);
+            (List<Point> tiles, boolean found) = this.minerToOre(world, ore);
 
-            new_entity = self
-            if found:
-                new_entity = self.try_transform_miner(world,
-                                                      self.try_transform_miner_not_full)
+            Miner new_entity = this;
+            if found
+            {
+                new_entity = this.tryTransformMiner(world, this.tryTransformMinerNotFull);
+            }
 
-            new_entity.schedule_action(world,
-                            new_entity.create_miner_action(world, i_store),
-                            current_ticks + new_entity.get_rate())
-            return tiles
+            new_entity.scheduleAction(world,
+                            new_entity.createMinerAction(world, i_store),
+                            current_ticks + new_entity.getRate());
+            return tiles;
+        }
 
-        return action
+        return action;
+    }
 
-    def create_miner_action(self, world, image_store):
-        return self.create_miner_not_full_action(world, image_store)
+    public ? createMinerAction(WorldModel world, List<String> image_store)
+    {
+        return this.createMinerNotFullAction(world, image_store);
+    }
 
-    def schedule_entity(self, world, i_store):
-        self.schedule_miner(world, 0, i_store)*/
+    public void scheduleEntity(WorldModel world, List<String> i_store)
+    {
+        this.scheduleMiner(world, 0, i_store)
+    }
 }

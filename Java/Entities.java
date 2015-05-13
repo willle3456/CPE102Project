@@ -7,7 +7,7 @@ public class Entities
 	private String name;
 	private Point position;
 	
-	//private String[] imgs;
+	private String[] imgs;
 	private int current_img;
 	
 	public Entities(String name, Point position)
@@ -15,7 +15,7 @@ public class Entities
 		this.name = name;
 		this.position = position;
         this.current_img = 0;
-		//this.imgs = imgs;
+		this.imgs = imgs;
 		
 	}
 
@@ -78,20 +78,25 @@ public class Entities
 		this.position = position;
 	}
 	
-	/*public String getImages()
+    public String getImages()
 	{
 		return this.imgs;
-	}*/
+	}
 	
 	public String getName()
 	{
 		return this.name;
 	}
 	
-	/*public void nextImage()
+	public void nextImage()
 	{
 		this.current_img = (this.current_img + 1) % imgs.length;
-	}*/
+	}
+    
+    public Integer getCurrentImage()
+    {
+        return this.current_img;
+    }
 	
 
 }
