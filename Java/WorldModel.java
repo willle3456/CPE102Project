@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import processing.core.*;
 
 public class WorldModel {
 	public static final int BLOB_RATE_SCALE = 4;
@@ -21,7 +22,13 @@ public class WorldModel {
 	private OCCGrid background, occupancy;
 	private List<Entities> entity = new ArrayList<Entities>();
 	//private String background;
-	
+	public WorldModel(int num_rows, int num_cols)
+	{
+		this.num_cols = num_cols;
+		this.num_rows = num_rows;
+		this.background = new OCCGrid(100,100, null);
+		this.occupancy = new OCCGrid(100,100, null);
+	}
 	public WorldModel(int num_rows, int num_cols, OCCGrid background, OCCGrid occupancy)
 	{
 		this.num_rows = num_rows;
@@ -29,6 +36,18 @@ public class WorldModel {
 		this.background = background;
 		this.occupancy = occupancy;
 		entity.add(new Ore("bobetta", new Point(1,1),10));
+	}
+	public int getNum_rows() {
+		return num_rows;
+	}
+	public void setNum_rows(int num_rows) {
+		this.num_rows = num_rows;
+	}
+	public int getNum_cols() {
+		return num_cols;
+	}
+	public void setNum_cols(int num_cols) {
+		this.num_cols = num_cols;
 	}
 	/***
 	 * determines which entity is at a point
@@ -249,6 +268,15 @@ public class WorldModel {
 		this.occupancy.setCell(pt, e);
 		this.entity.add(e);
 		
+	}
+	
+	public PImage getBackgroundImage(Point pt)
+	{
+		if(withinBounds(pt))
+		{
+			return this.background.getCell(pt).getImage();
+		}
+		return null; 
 	}
 	
 }
