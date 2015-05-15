@@ -42,7 +42,8 @@ public class Blacksmith
         return this.resource_distance;
     }
     
-    /*def schedule_entity(self, world, i_store):
-        self.schedule_(world, 0, i_store) */
-        
+    public void scheduleEntity(Worldmodel world, List<String> i_store)
+    {
+        this.schedule_(world, 0, i_store);
+    }   
 }

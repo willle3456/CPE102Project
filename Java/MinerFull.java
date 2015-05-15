@@ -30,38 +30,45 @@ public class MinerFull
         }
     }
             
-    /*public MinerNotFull tryTransformMinerFull(WorldModel world) 
+    public MinerNotFull tryTransformMinerFull(WorldModel world) 
     {    
-        new_entity = new MinerNotFull(
+        MinerNotFull new_entity = new MinerNotFull(
             this.getName(), this.getPosition(),
                 this.getAnimationRate(), this.getRate(),
                 this.getImages(), this.getResourceLimit());
 
-        return new_entity
+        return new_entity;
     }
 
-    def create_miner_full_action(self, world, i_store):
-        def action(current_ticks):
-            self.remove_pending_action(action)
+    public ? createMinerFullAction(WorldModel world, List<String> i_store)
+    {
+        public List<Point> action(int current_ticks)
+        {
+            this.removePendingAction(action);
 
-            entity_pt = self.get_position()
-            smith = world.find_nearest(entity_pt, Blacksmith)
-            (tiles, found) = self.miner_to_smith(world,  smith)
+            Point entity_pt = this.getPosition();
+            Blacksmith smith = world.findNearest(entity_pt, Blacksmith)
+            (List<Point> tiles, boolean found) = this.minerToSmith(world,  smith)
 
-            new_entity = self
-            if found:
-                new_entity = self.try_transform_miner(world, 
-                                                      self.try_transform_miner_full)
+            MinerFull new_entity = this
+            if(found)
+            {
+                new_entity = this.tryTransformMiner(world, 
+                                                      this.tryTransformMinerFull);
 
-            new_entity.schedule_action(world, 
-                            new_entity.create_miner_action(world,  i_store),
-                            current_ticks + new_entity.get_rate())
-            return tiles
+            new_entity.scheduleAction(world, 
+                            new_entity.createMinerAction(world,  i_store),
+                            current_ticks + new_entity.getRate());
+            }
+            return tiles;
+        }
 
-        return action
+        return action;
 
 
 
-    def create_miner_action(self, world, image_store):
-        return self.create_miner_full_action(world, image_store)*/
+    public ? createMinerAction(WorldModel world, List<String> image_store)
+    {
+        return this.createMinerFullAction(world, image_store);
+    }
 }

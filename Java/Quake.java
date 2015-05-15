@@ -6,17 +6,22 @@ public class Quake
         super(name, position, animation_rate);
     }
     
-    /*def schedule_quake(self, world, ticks):
-        self.schedule_animation(world,QUAKE_STEPS) 
-        self.schedule_action(world,self.create_entity_death_action(world),
-        ticks + QUAKE_DURATION)
-        
+    public void scheduleQake(Worldmodel world, int ticks)
+    {
+        this.scheduleAnimation(world, QUAKE_STEPS);
+        this.scheduleAction(world, this.createEntityDeathAction(world),
+        ticks + QUAKE_DURATION);
+    }   
        
-    def create_entity_death_action(self, world):
-       def action(current_ticks):
-          self.remove_pending_action(action)
-          pt = self.get_position()
-          world.remove_entity(self)
-          return [pt]
-       return action*/
+    public ? createEntityDeathAction(Worldmodel world)
+    {
+       public List<Point> action(int current_ticks)
+       {
+          this.removePendingAction(action);
+          Point pt = this.getPosition();
+          world.removeEntity(this);
+          return List<Point>(pt);
+       }
+       return action;
+    }
 }

@@ -14,31 +14,38 @@ public class OreBlob
         return this.rate;
     }
        
-    /*def schedule_blob(self, world, ticks, i_store):
-       self.schedule_action(world, self.create_ore_blob_action(world, i_store),
-          ticks + self.get_rate())
-       self.schedule_animation(world)
+    public void scheduleBlob(Worldmodel world, int ticks,List<String> i_store)
+    {
+       this.scheduleAction(world, this.createOreBlobAction(world, i_store),
+          ticks + this.getRate());
+       this.scheduleAnimation(world);
+    }
        
-    def create_ore_blob_action(self, world, i_store):
-       def action(current_ticks):
-          self.remove_pending_action(action)
+    public ? createOreBlobAction(Worldmodel world, List<String> i_store)
+    {
+       public List<String> action(int current_ticks)
+       {
+          this.removePendingAction(action);
 
-          entity_pt = self.get_position()
-          vein = world.find_nearest(entity_pt, Vein)
-          (tiles, found) = self.blob_to_vein(world,  vein)
+          Point entity_pt = this.getPosition();
+          Vein vein = world.findNearest(entity_pt, Vein);
+          (tiles, found) = this.blobToVein(world,  vein);
 
-          next_time = current_ticks + self.get_rate()
-          if found:
-             quake = world.create_quake(tiles[0], current_ticks, i_store)
-             world.add_entity(quake)
-             next_time = current_ticks + self.get_rate() * 2
+          ing next_time = current_ticks + this.getRate();
+          if(found)
+          {
+            Quake quake = world.createQuake(tiles[0], current_ticks, i_store);
+             world.addEntity(quake);
+             int next_time = current_ticks + this.getRate() * 2;
+          }
+          this.scheduleAction(world, 
+             this.createOreBlobAction(world, i_store),
+             next_time);
 
-          self.schedule_action(world, 
-             self.create_ore_blob_action(world, i_store),
-             next_time)
-
-          return tiles
-       return action*/
+          return tiles;
+       }
+       return action;
+    }
        
     public boolean blobToVein(WorldModel world, Vein vein)
     {
