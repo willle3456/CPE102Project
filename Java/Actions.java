@@ -1,12 +1,15 @@
+import java.util.List;
+import java.util.Function;
+
 public class Actions
     extends Entities
 {
-    public Actions(String name, Point position /* imgs */ )
+    public Actions(String name, Point position, List<String> imgs)
     {
-        super(name, position /* imgs */);
+        super(name, position, imgs);
     }
     
-    public List<Entities> GetPendingActions()
+    public List<Object> GetPendingActions()
     {
         if hasattr("pending_actions")
         {
@@ -14,11 +17,11 @@ public class Actions
         }
         else
         {
-            return <>;
+            return new List<Object>();
         }
     }
 
-    public void removePendingAction(action)
+    public void removePendingAction(Object action)
     {
         if hasattr("pending_actions")
         {
@@ -26,7 +29,7 @@ public class Actions
         }
     }
 
-    public void addPendingAction(action)
+    public void addPendingAction(Object action)
     {
         if hasattr("pending_actions")
         {
@@ -38,7 +41,7 @@ public class Actions
     {
         if hasattr(self, "pending_actions")
         {
-            this.pending_actions = <>;
+            this.pending_actions = new List<Object>();
         }
     }
 }

@@ -1,14 +1,19 @@
+import java.util.List;
+import java.util.Function;
+
 public class Vein
     extends Actions
 {
     private int rate;
     private int resource_distance = 1;
+    private List<String> pending_actions;
     
-    public Vein(String name, Point position, int rate, int resource_distance)
+    public Vein(String name, Point position, List<String> imgs, int rate, int resource_distance)
     {
-        super(name,position);
+        super(name,position,imgs);
         this.rate = rate;
         this.resource_distance = resource_distance;
+        this.pending_actions = new List<String>();
     }
     
     public int getRate()
@@ -21,10 +26,10 @@ public class Vein
         return this.resource_distance;
     }
        
-    public void scheduleAction(Worldmodel world, action, int time)
+    public void scheduleAction(Worldmodel world, Object action, int time)
     {
         this.addPendingAction(action);
-        world.scheduleAction(action, int time);
+        world.scheduleAction(action, time);
     }
         
     public void scheduleVein(Worldmodel world, int ticks, List<String> i_store)
@@ -33,11 +38,12 @@ public class Vein
         ticks + this.getRate());
     }
 
-    public ? createVeinAction(Worldmodel world, List<String> i_store)
+    public Object createVeinAction(Worldmodel world, List<String> i_store)
     {
-       public List<String> action(int current_ticks)
+       Function<Integer, List<Point>> action = (int current_ticks) ->
+       //public List<String> action(int current_ticks)
        {
-          this.removePendingAction(action);
+          this.removePendingAction(Object);
 
           Point open_pt = world.findOpenAround(this.getPosition(),
              this.getResourceDistance());
@@ -58,13 +64,13 @@ public class Vein
              current_ticks + this.getRate());
           return tiles;
           
-       }
+       };
        return action;
     }
 
     public void removeEntity(Worldmodel world)
     {
-       for action in self.get_pending_actions()
+       for(Object action : this.getPendingActions())
        {
           world.unscheduleAction(action);
        }

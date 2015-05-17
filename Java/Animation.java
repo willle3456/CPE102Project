@@ -1,12 +1,16 @@
+import java.util.List;
+import java.util.Function;
+
+
 public class Animation
     extends Actions
 {
     
     private int animation_rate;
     
-    public Animation(String name, Point position, int animation_rate)
+    public Animation(String name, Point position, List<String> imgs, int animation_rate)
     {
-        super(name,position);
+        super(name,position, imgs);
         this.animation_rate = animation_rate;
     }
     
@@ -15,24 +19,26 @@ public class Animation
         return this.animation_rate;
     }
     
-    public void scheduleAnimation(Worldmodel world, int repeat_count=0)
+    public void scheduleAnimation(Worldmodel world, int repeat_count)
     {
+        repeat_count = 0;
         this.schedule_action(world,
         this.createAnimationAction(world, repeat_count),
         this.getAnimationRate());
     }
         
-    public void scheduleAction(Worldmodel world, action, int time)
+    public void scheduleAction(Worldmodel world, Object action, int time)
     {
        this.addPendingAction(action);
        world.scheduleAction(action, time);
     }
        
-    public ? createAnimationAction(Worldmodel world, int repeat_count)
+    public Object createAnimationAction(Worldmodel world, int repeat_count)
     {
-       public List<Integer> action(int current_ticks)
+       Function<Integer, List<Point>> action = (int current_ticks) ->
+       //public List<Point> action(int current_ticks)
        {
-          this.removePendingAction(action);
+          this.removePendingAction(Object);
 
           this.nextImage();
 
@@ -43,8 +49,8 @@ public class Animation
                 current_ticks + this.getAnimationRate());
           }
 
-          return [this.getPosition()]
-       }
-       return action
+          return List<Point>(this.getPosition());
+       };
+       return action;
     }
 }

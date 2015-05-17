@@ -1,5 +1,5 @@
-
-
+import java.util.List;
+import java.util.Function;
 
 public class Entities 
 {
@@ -7,10 +7,10 @@ public class Entities
 	private String name;
 	private Point position;
 	
-	private String[] imgs;
+	private List<String> imgs;
 	private int current_img;
 	
-	public Entities(String name, Point position)
+	public Entities(String name, Point position, List<String> imgs)
 	{
 		this.name = name;
 		this.position = position;
@@ -78,7 +78,7 @@ public class Entities
 		this.position = position;
 	}
 	
-    public String getImages()
+    public List<String> getImages()
 	{
 		return this.imgs;
 	}

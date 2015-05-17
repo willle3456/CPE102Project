@@ -1,12 +1,17 @@
+import java.util.List;
+import java.util.Function;
+
 public class Ore
     extends Actions
 {
     private int rate = 5000;
+    private List<String> pending_actions;
     
-    public Ore(String name, Point position, int rate)
+    public Ore(String name, Point position, List<String> imgs, int rate)
     {
-        super(name, position);
+        super(name, position, imgs);
         this.rate = rate;
+        this.pending_actions = new List<String>();
     }
     
     public int getRate()
@@ -15,7 +20,7 @@ public class Ore
     }
 
         
-    public void scheduleAction(Worldmodel world, action, int time)
+    public void scheduleAction(Worldmodel world, Object action, int time)
     {
        this.addPendingAction(action);
        world.scheduleAction(action, time);
@@ -29,21 +34,22 @@ public class Ore
           ticks + this.getRate());
     }
           
-    public ? createOreTransformAction(Worldmodel world, List<String> i_store)
+    public Object createOreTransformAction(Worldmodel world, List<String> i_store)
     {
-       public List<Point> action(int current_ticks)
+       Function<Integer, List<Point>> action = (int current_ticks) ->
+       //public List<Point> action(int current_ticks)
        {
-          this.removePendingAction(action);
+          this.removePendingAction(Object);
           Oreblob blob = world.createBlob(this.getName() + " -- blob",
              this.getPosition(),
-             this.getRate() // BLOB_RATE_SCALE,
+             this.getRate(), // BLOB_RATE_SCALE
              current_ticks, i_store);
 
           world.removeEntity(this);
           world.addEntity(blob);
 
           return new List<Point>(this.getPosition());
-       }
+       };
        return action;
     }
        

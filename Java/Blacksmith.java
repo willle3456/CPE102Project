@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.Function;
+
 public class Blacksmith
     extends Entities
 {
@@ -6,15 +9,17 @@ public class Blacksmith
     private int resource_distance;
     private int resource_count;
     private int current_img;
+    private List<String> pending_actions;
 
-    public Blacksmith(String name, Point position, int resource_limit, int rate, int resource_distance)
+    public Blacksmith(String name, Point position, List<String> imgs, int resource_limit, int rate, int resource_distance)
     {
-        super(name, position);
+        super(name, position,imgs);
         this.resource_limit = resource_limit;
         this.rate = rate;
         this.resource_distance = resource_distance;
         this.resource_count= 0;
         this.current_img = 0;
+        this.pending_actions = new List<String>();
     }
     
     public int getRate()

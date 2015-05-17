@@ -1,13 +1,14 @@
+import java.util.List;
+import java.util.Function;
+
 public class Background
     extends Entities
 {
-    private String[] imgs;
     private int current_img;
     
-    public Background(String name, Point position, String[] imgs)
+    public Background(String name, Point position, List<String> imgs)
     {
-        super(name, position);
-        this.imgs = imgs;
+        super(name, position, imgs);
         this.current_img = 0;
     }
     

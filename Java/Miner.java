@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.Function;
+
 public class Miner
     extends Animation
 {
@@ -5,14 +8,16 @@ public class Miner
     private int resource_limit;
     private int current_img;
     private int resource_count;
+    private List<String> pending_actions;
     
-    public Miner(String name, Point position, int animation_rate, int rate, int resource_limit)
+    public Miner(String name, Point position, List<String> imgs, int animation_rate, int rate, int resource_limit)
     {
-        super(name,position,animation_rate);
+        super(name,position, imgs, animation_rate);
         this.rate = rate;
         this.resource_limit = resource_limit;
         this.current_img = 0;
         this.resource_count = 0;
+        this.pending_actions = new List<String>();
     }
     
     public int getRate()
@@ -54,7 +59,7 @@ public class Miner
         return new_pt;
     }
 
-    public Entity tryTransformMiner(Worldmodel world, transform)
+    public Entity tryTransformMiner(Worldmodel world, Object transform)
     {
         Entity new_entity = transform(world);
         if (this != new_entity)
@@ -70,7 +75,7 @@ public class Miner
 
     public void removeEntity(Worldmodel world)
     {
-        for(action : this.getPendingActions())
+        for(Object action : this.getPendingActions())
         {
             world.unscheduleAction(action);
         }
