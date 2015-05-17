@@ -1,6 +1,6 @@
 import java.util.List;
-import java.util.Function;
-
+import java.util.function.*;
+import java.util.LinkedList;
 public class Entities 
 {
 	
@@ -90,7 +90,7 @@ public class Entities
 	
 	public void nextImage()
 	{
-		this.current_img = (this.current_img + 1) % imgs.length;
+		this.current_img = (this.current_img + 1) % imgs.size();
 	}
     
     public Integer getCurrentImage()

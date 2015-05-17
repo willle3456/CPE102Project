@@ -1,6 +1,6 @@
 import java.util.List;
-import java.util.Function;
-
+import java.util.function.*;
+import java.util.LinkedList;
 class MinerNotFull
     extends Miner
 {
@@ -14,44 +14,45 @@ class MinerNotFull
         Point entity_pt = this.getPosition();
         if(!(ore instanceof Ore))
         {
-            return TilesBool(new List<Point>(entity_pt), false);
+            return TilesBool(new LinkedList<Point>(entity_pt), false);
         }
         Point ore_pt = ore.getPosition();
         if( entity_pt.adjacent(ore_pt))
         {
             this.setResourceCount(1 + this.getResourceCount());
             world.removeEntity(ore);
-            return TilesBool(new List<Point>(ore_pt),true);
+            return TilesBool(new LinkedList<Point>(ore_pt),true);
         }
         else
         {
             Point new_pt = this.nextPosition(world, ore_pt);
-            return TilesBool(new List<Point>(world.moveEntity(new_pt)),false);
+            return TilesBool(new LinkedList<Point>(world.moveEntity(this, new_pt)),false);
         }
     }
             
     public Miner tryTransformMinerNotFull(WorldModel world) 
     {
-        if(this.getResourceCount < this.getResourceLimit)
+        if(this.getResourceCount() < this.getResourceLimit())
         {
             return this;
         }
         else
         {
-            new_entity = new MinerFull(
-                this.getName(), this.getPosition(),
+            MinerFull new_entity = new MinerFull(
+                this.getName(), this.getPosition(),this.getImages(),
                 this.getAnimationRate(), this.getRate(),
-                this.getImages(), this.getResourceLimit());
+                 this.getResourceLimit());
+        
+            return new_entity;
         }
-        return new_entity;
     }
 
     public Object createMinerNotFullAction(WorldModel world, List<String> i_store)
     {
-        Function<Integer, List<Point>> action = (int current_ticks) ->
+        Function<int, List<Point>> action = (int current_ticks) ->
         //public List<Point> action(int current_ticks)
         {
-            this.removePendingAction(Object);
+            this.removePendingAction(Object );
 
             Point entity_pt = this.getPosition();
             Ore ore = world.findNearest(entity_pt, Ore);
@@ -60,7 +61,7 @@ class MinerNotFull
             Miner new_entity = this;
             if(tiles_found.getBool())
             {
-                new_entity = this.tryTransformMiner(world, this.tryTransformMinerNotFull);
+                new_entity = this.tryTransformMiner(world, this::tryTransformMinerNotFull);
             }
 
             new_entity.scheduleAction(world,

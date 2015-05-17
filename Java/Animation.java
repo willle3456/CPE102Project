@@ -1,6 +1,6 @@
 import java.util.List;
-import java.util.Function;
-
+import java.util.function.*;
+import java.util.LinkedList;
 
 public class Animation
     extends Actions
@@ -19,21 +19,20 @@ public class Animation
         return this.animation_rate;
     }
     
-    public void scheduleAnimation(Worldmodel world, int repeat_count)
+    public void scheduleAnimation(WorldModel world, int repeat_count)
     {
-        repeat_count = 0;
         this.schedule_action(world,
         this.createAnimationAction(world, repeat_count),
         this.getAnimationRate());
     }
         
-    public void scheduleAction(Worldmodel world, Object action, int time)
+    public void scheduleAction(WorldModel world, Object action, int time)
     {
        this.addPendingAction(action);
        world.scheduleAction(action, time);
     }
        
-    public Object createAnimationAction(Worldmodel world, int repeat_count)
+    public Object createAnimationAction(WorldModel world, int repeat_count)
     {
        Function<Integer, List<Point>> action = (int current_ticks) ->
        //public List<Point> action(int current_ticks)

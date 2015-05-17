@@ -1,29 +1,29 @@
 import java.util.List;
-import java.util.Function;
-
+import java.util.function.*;
+import java.util.LinkedList;
 
 
 public class Quake
     extends Animation
 {
-    private List<String> pending_actions;
+    private List<Object> pending_actions;
     
     public Quake(String name, Point position, List<String> imgs, int animation_rate)
     {
         super(name, position, imgs, animation_rate);
-        this.pending_actions = new List<String>();
+        this.pending_actions = new LinkedList<Object>();
     }
     
-    public void scheduleQake(Worldmodel world, int ticks)
+    public void scheduleQake(WorldModel world, int ticks)
     {
         this.scheduleAnimation(world, QUAKE_STEPS);
         this.scheduleAction(world, this.createEntityDeathAction(world),
         ticks + QUAKE_DURATION);
     }
        
-    public Object createEntityDeathAction(Worldmodel world)
+    public Object createEntityDeathAction(WorldModel world)
     {
-       Function<Integer, List<Point>> action = (int current_ticks) ->
+       Function<Integer, List<Point>> action = (current_ticks) ->
        {
           this.removePendingAction(action);
           Point pt = this.getPosition();

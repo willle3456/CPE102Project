@@ -1,7 +1,6 @@
 import java.util.List;
 import java.util.LinkedList;
-import java.util.Function;
-
+import java.util.function.*;
 public class MinerFull
     extends Miner
 {
@@ -14,9 +13,12 @@ public class MinerFull
     public TilesBool minerToSmith(WorldModel world, Blacksmith smith)
     {
         Point entity_pt = this.getPosition();
+        LinkedList<Point> tiles = new LinkedList<Point>();
+        
         if(!(smith instanceof Blacksmith))
         {
-            return new TilesBool(new List<Point>(entity_pt), false);
+            tiles.add(entity_pt);
+            return new TilesBool(tiles, false);
         }
         Point smith_pt = smith.getPosition();
         if( entity_pt.adjacent(smith_pt))
@@ -25,12 +27,14 @@ public class MinerFull
                 smith.getResourceCount() +
                 this.getResourceCount());
             this.setResourceCount(0);
-            return new TilesBool(new List<Point>(smith_pt),true);
+            tiles.clear();
+            return new TilesBool(tiles,true);
         }
         else
         {
             Point new_pt = this.nextPosition(world, smith_pt);
-            return new TilesBool(new LinkedList<Point>(world.moveEntity(new_pt)),false);
+            tiles.add(world.moveEntity(this, new_pt))
+            return new TilesBool(tiles ,false);
         }
     }
             
@@ -46,20 +50,20 @@ public class MinerFull
 
     public Object createMinerFullAction(WorldModel world, List<String> i_store)
     {
-        Function<Integer, List<Point>> action = (int current_ticks) ->
+        Function<Integer, List<Point>> action = (current_ticks) ->
         //public List<Point> action(int current_ticks)
         {
-            this.removePendingAction(Object);
+            this.removePendingAction(action);
 
             Point entity_pt = this.getPosition();
             Blacksmith smith = world.findNearest(entity_pt, Blacksmith);
             TilesBool tiles_found = this.minerToSmith(world, smith);
 
-            MinerFull new_entity = this;
+            Miner new_entity = this;
             if(tiles_found.getBool())
             {
                 new_entity = this.tryTransformMiner(world, 
-                                                      this.tryTransformMinerFull);
+                                                      this::tryTransformMinerFull);
 
             new_entity.scheduleAction(world, 
                             new_entity.createMinerAction(world,  i_store),

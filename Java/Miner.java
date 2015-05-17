@@ -1,14 +1,17 @@
 import java.util.List;
-import java.util.Function;
+import java.util.function.*;
+import java.util.LinkedList;
 
-public class Miner
+public abstract class Miner
     extends Animation
 {
     private int rate;
     private int resource_limit;
     private int current_img;
     private int resource_count;
-    private List<String> pending_actions;
+    private List<Object> pending_actions;
+    
+    abstract Object createMinerAction(WorldModel world, List<String> image_store);
     
     public Miner(String name, Point position, List<String> imgs, int animation_rate, int rate, int resource_limit)
     {
@@ -17,7 +20,7 @@ public class Miner
         this.resource_limit = resource_limit;
         this.current_img = 0;
         this.resource_count = 0;
-        this.pending_actions = new List<String>();
+        this.pending_actions = new LinkedList<Object>();
     }
     
     public int getRate()
@@ -59,21 +62,21 @@ public class Miner
         return new_pt;
     }
 
-    public Entity tryTransformMiner(Worldmodel world, Object transform)
+    public Miner tryTransformMiner(WorldModel world, Function<WorldModel, Miner> transform)
     {
-        Entity new_entity = transform(world);
+        Entities new_entity = transform.apply(world);
         if (this != new_entity)
         {
             world.clearPendingActions(this);
             world.removeEntityAt(this.getPosition());
             world.addEntity(new_entity);
-            new_entity.scheduleAnimation(world);
+            new_entity.scheduleAnimation(world,0);
         }
 
         return new_entity;
     }
 
-    public void removeEntity(Worldmodel world)
+    public void removeEntity(WorldModel world)
     {
         for(Object action : this.getPendingActions())
         {
@@ -83,9 +86,9 @@ public class Miner
         world.removeEntity(this);
     }
 
-    public void scheduleMiner(Worldmodel world, int ticks, List<String> i_store)
+    public void scheduleMiner(WorldModel world, int ticks, List<String> i_store)
     {
         this.scheduleAction(world, this.createMinerAction(world, i_store), ticks + this.getRate());
-        this.scheduleAnimation(world);
+        this.scheduleAnimation(world,0);
     }
 }

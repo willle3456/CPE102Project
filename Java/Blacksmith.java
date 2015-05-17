@@ -1,6 +1,6 @@
 import java.util.List;
-import java.util.Function;
-
+import java.util.function.*;
+import java.util.LinkedList;
 public class Blacksmith
     extends Entities
 {
@@ -9,7 +9,7 @@ public class Blacksmith
     private int resource_distance;
     private int resource_count;
     private int current_img;
-    private List<String> pending_actions;
+    private List<Object> pending_actions;
 
     public Blacksmith(String name, Point position, List<String> imgs, int resource_limit, int rate, int resource_distance)
     {
@@ -19,7 +19,7 @@ public class Blacksmith
         this.resource_distance = resource_distance;
         this.resource_count= 0;
         this.current_img = 0;
-        this.pending_actions = new List<String>();
+        this.pending_actions = new LinkedList<Object>();
     }
     
     public int getRate()
@@ -47,8 +47,8 @@ public class Blacksmith
         return this.resource_distance;
     }
     
-    public void scheduleEntity(Worldmodel world, List<String> i_store)
+    /*public void scheduleEntity(WorldModel world, List<String> i_store)
     {
         this.schedule_(world, 0, i_store);
-    }   
+    }   */
 }

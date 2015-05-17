@@ -1,19 +1,19 @@
 import java.util.List;
-import java.util.Function;
-
+import java.util.function.*;
+import java.util.LinkedList;
 public class Vein
     extends Actions
 {
     private int rate;
     private int resource_distance = 1;
-    private List<String> pending_actions;
+    private List<Object> pending_actions;
     
     public Vein(String name, Point position, List<String> imgs, int rate, int resource_distance)
     {
         super(name,position,imgs);
         this.rate = rate;
         this.resource_distance = resource_distance;
-        this.pending_actions = new List<String>();
+        this.pending_actions = new LinkedList<Object>();
     }
     
     public int getRate()
@@ -26,38 +26,39 @@ public class Vein
         return this.resource_distance;
     }
        
-    public void scheduleAction(Worldmodel world, Object action, int time)
+    public void scheduleAction(WorldModel world, Object action, int time)
     {
         this.addPendingAction(action);
         world.scheduleAction(action, time);
     }
         
-    public void scheduleVein(Worldmodel world, int ticks, List<String> i_store)
+    public void scheduleVein(WorldModel world, int ticks, List<String> i_store)
     {
         this.scheduleAction(world, this.createVeinAction(world,i_store),
         ticks + this.getRate());
     }
 
-    public Object createVeinAction(Worldmodel world, List<String> i_store)
+    public Object createVeinAction(WorldModel world, List<String> i_store)
     {
-       Function<Integer, List<Point>> action = (int current_ticks) ->
+       Function<Integer, List<Point>> action = (current_ticks) ->
        //public List<String> action(int current_ticks)
        {
-          this.removePendingAction(Object);
-
+          this.removePendingAction(action);
+          List<Point> tiles = new LinkedList<Point>();
+          
           Point open_pt = world.findOpenAround(this.getPosition(),
              this.getResourceDistance());
-          if(open_pt)
+          if(open_pt != null)
           {
             Ore ore = world.createOre(
-                "ore - " + this.getName() + " - " + str(current_ticks),
+                "ore - " + this.getName() + " - " + current_ticks.toString(),
                 open_pt, current_ticks, i_store);
              world.addEntity(ore);
-             List<Point> tiles = new List<Point>(open_pt);
+             tiles.add(open_pt);
           }
           else
           {
-             List<Point> tiles = new List<Point>();
+             tiles = new LinkedList<Point>();
           }
           this.scheduleAction(world,
              this.createVeinAction(world, i_store),
@@ -68,7 +69,7 @@ public class Vein
        return action;
     }
 
-    public void removeEntity(Worldmodel world)
+    public void removeEntity(WorldModel world)
     {
        for(Object action : this.getPendingActions())
        {
@@ -78,7 +79,7 @@ public class Vein
        world.removeEntity(this);
     }
        
-    public void scheduleEntity(Worldmodel world, List<String> i_store)
+    public void scheduleEntity(WorldModel world, List<String> i_store)
     {
         this.scheduleVein(world, 0, i_store);
     }

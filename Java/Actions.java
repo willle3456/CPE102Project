@@ -1,29 +1,34 @@
 import java.util.List;
-import java.util.Function;
+import java.util.function.*;
+import java.util.LinkedList;
 
 public class Actions
     extends Entities
 {
+    
+    private List<Object> pending_actions;
+    
     public Actions(String name, Point position, List<String> imgs)
     {
         super(name, position, imgs);
+        this.pending_actions = new LinkedList<Object>();
     }
     
-    public List<Object> GetPendingActions()
+    public List<Object> getPendingActions()
     {
-        if hasattr("pending_actions")
+        if(this instanceof Actions)
         {
             return this.pending_actions;
         }
         else
         {
-            return new List<Object>();
+            return new LinkedList<Object>();
         }
     }
 
     public void removePendingAction(Object action)
     {
-        if hasattr("pending_actions")
+        if(this instanceof Actions)
         {
             this.pending_actions.remove(action);
         }
@@ -31,7 +36,7 @@ public class Actions
 
     public void addPendingAction(Object action)
     {
-        if hasattr("pending_actions")
+        if(this instanceof Actions)
         {
             this.pending_actions.add(action);
         }
@@ -39,9 +44,9 @@ public class Actions
 
     public void clearPendingActions()
     {
-        if hasattr(self, "pending_actions")
+        if(this instanceof Actions)
         {
-            this.pending_actions = new List<Object>();
+            this.pending_actions = new LinkedList<Object>();
         }
     }
 }

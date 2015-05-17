@@ -1,17 +1,17 @@
 import java.util.List;
-import java.util.Function;
-
+import java.util.function.*;
+import java.util.LinkedList;
 public class OreBlob
     extends Animation
 {
     private int rate;
-    private List<String> pending_actions;
+    private List<Object> pending_actions;
     
     public OreBlob(String name, Point position, List<String> imgs, int animation_rate, int rate)
     {
         super(name,position,imgs,animation_rate);
         this.rate = rate;
-        this.pending_actions = new List<String>();
+        this.pending_actions = new LinkedList<Object>();
     }
     
     public int getRate()
@@ -19,16 +19,16 @@ public class OreBlob
         return this.rate;
     }
        
-    public void scheduleBlob(Worldmodel world, int ticks,List<String> i_store)
+    public void scheduleBlob(WorldModel world, int ticks,List<String> i_store)
     {
        this.scheduleAction(world, this.createOreBlobAction(world, i_store),
           ticks + this.getRate());
-       this.scheduleAnimation(world);
+       this.scheduleAnimation(world,0);
     }
        
-    public Object createOreBlobAction(Worldmodel world, List<String> i_store)
+    public Object createOreBlobAction(WorldModel world, List<String> i_store)
     {
-       Function<Integer, List<Point>> action = (int current_ticks) ->
+       Function<Integer, List<Point>> action = (current_ticks) ->
        //public List<String> action(int current_ticks)
        {
           this.removePendingAction(action);
@@ -74,7 +74,7 @@ public class OreBlob
               {
                  world.removeEntity(old_entity);
               }
-              return TilesBool(world.moveEntity(new_pt), false);
+              return TilesBool(world.moveEntity(this, new_pt), false);
            }
     }
 }
