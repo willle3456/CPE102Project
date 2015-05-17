@@ -36,11 +36,12 @@ public class Ore
           
     public Object createOreTransformAction(WorldModel world, List<String> i_store)
     {
-       Function<Integer, List<Point>> action = (current_ticks) ->
-       //public List<Point> action(int current_ticks)
+       LongConsumer[] action = { null };
+        action[0] = (long current_ticks) -> 
        {
-          this.removePendingAction(action);
-          Oreblob blob = world.createBlob(this.getName() + " -- blob",
+          this.removePendingAction(action[0]);
+          
+          OreBlob blob = world.createBlob(this.getName() + " -- blob",
              this.getPosition(),
              this.getRate(), // BLOB_RATE_SCALE
              current_ticks, i_store);
@@ -49,7 +50,6 @@ public class Ore
           world.addEntity(blob);
           
           List<Point> v = new LinkedList<Point>();
-          return v.add(this.getPosition());
        };
        return action;
     }

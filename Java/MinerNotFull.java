@@ -4,7 +4,7 @@ import java.util.LinkedList;
 class MinerNotFull
     extends Miner
 {
-    public MinerNotFull(String name, Point position, List<String> imgs, int animation_rate, int rate, int resource_limit)
+    public MinerNotFull(String name, Point position, List<String> imgs, int animation_rate, long rate, int resource_limit)
     {
         super(name,position,imgs,animation_rate,rate,resource_limit);
     }
@@ -49,10 +49,10 @@ class MinerNotFull
 
     public Object createMinerNotFullAction(WorldModel world, List<String> i_store)
     {
-        Function<int, List<Point>> action = (int current_ticks) ->
-        //public List<Point> action(int current_ticks)
-        {
-            this.removePendingAction(Object );
+        LongConsumer[] action = { null };
+        action[0] = (long current_ticks) -> 
+       {
+          this.removePendingAction(action[0]);
 
             Point entity_pt = this.getPosition();
             Ore ore = world.findNearest(entity_pt, Ore);
@@ -67,7 +67,6 @@ class MinerNotFull
             new_entity.scheduleAction(world,
                             new_entity.createMinerAction(world, i_store),
                             current_ticks + new_entity.getRate());
-            return tiles_found.getTiles();
         };
 
         return action;

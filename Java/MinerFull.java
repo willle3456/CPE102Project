@@ -33,7 +33,7 @@ public class MinerFull
         else
         {
             Point new_pt = this.nextPosition(world, smith_pt);
-            tiles.add(world.moveEntity(this, new_pt))
+            tiles.add(world.moveEntity(this, new_pt));
             return new TilesBool(tiles ,false);
         }
     }
@@ -50,10 +50,10 @@ public class MinerFull
 
     public Object createMinerFullAction(WorldModel world, List<String> i_store)
     {
-        Function<Integer, List<Point>> action = (current_ticks) ->
-        //public List<Point> action(int current_ticks)
-        {
-            this.removePendingAction(action);
+        LongConsumer[] action = { null };
+        action[0] = (long current_ticks) -> 
+       {
+          this.removePendingAction(action[0]);
 
             Point entity_pt = this.getPosition();
             Blacksmith smith = world.findNearest(entity_pt, Blacksmith);
@@ -69,7 +69,6 @@ public class MinerFull
                             new_entity.createMinerAction(world,  i_store),
                             current_ticks + new_entity.getRate());
             }
-            return tiles_found.getTiles();
         };
 
         return action;

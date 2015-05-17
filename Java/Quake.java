@@ -3,10 +3,14 @@ import java.util.function.*;
 import java.util.LinkedList;
 
 
+
 public class Quake
     extends Animation
 {
     private List<Object> pending_actions;
+    private final int QUAKE_STEPS = 10;
+    private final int QUAKE_DURATION = 1100;
+    private final int QUAKE_ANIMATION_RATE = 100;
     
     public Quake(String name, Point position, List<String> imgs, int animation_rate)
     {
@@ -14,7 +18,7 @@ public class Quake
         this.pending_actions = new LinkedList<Object>();
     }
     
-    public void scheduleQake(WorldModel world, int ticks)
+    public void scheduleQuake(WorldModel world, int ticks)
     {
         this.scheduleAnimation(world, QUAKE_STEPS);
         this.scheduleAction(world, this.createEntityDeathAction(world),
@@ -23,12 +27,12 @@ public class Quake
        
     public Object createEntityDeathAction(WorldModel world)
     {
-       Function<Integer, List<Point>> action = (current_ticks) ->
+       LongConsumer[] action = { null };
+        action[0] = (long current_ticks) -> 
        {
-          this.removePendingAction(action);
+          this.removePendingAction(action[0]);
           Point pt = this.getPosition();
           world.removeEntity(this);
-          return new List<Point>(pt);
        };
        return action;
     }

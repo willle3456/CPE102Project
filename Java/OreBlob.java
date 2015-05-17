@@ -28,43 +28,46 @@ public class OreBlob
        
     public Object createOreBlobAction(WorldModel world, List<String> i_store)
     {
-       Function<Integer, List<Point>> action = (current_ticks) ->
-       //public List<String> action(int current_ticks)
+       LongConsumer[] action = { null };
+        action[0] = (long current_ticks) -> 
        {
-          this.removePendingAction(action);
+          this.removePendingAction(action[0]);
 
           Point entity_pt = this.getPosition();
           Vein vein = world.findNearest(entity_pt, Vein);
           TilesBool tiles_found = this.blobToVein(world,  vein);
 
-           next_time = current_ticks + this.getRate();
-          if(found)
+           long next_time = current_ticks + this.getRate();
+          if(tiles_found.getBool())
           {
-            Quake quake = world.createQuake(tiles[0], current_ticks, i_store);
+            Quake quake = world.createQuake(tiles_found.getTiles().get(0), current_ticks, i_store);
              world.addEntity(quake);
-             int next_time = current_ticks + this.getRate() * 2;
+             next_time = current_ticks + this.getRate() * 2;
           }
           this.scheduleAction(world, 
              this.createOreBlobAction(world, i_store),
              next_time);
 
-          return tiles;
         };
        return action;
     }
        
-    public boolean blobToVein(WorldModel world, Vein vein)
+    public TilesBool blobToVein(WorldModel world, Vein vein)
     {
            Point entity_pt = this.getPosition();
+           List<Point> tiles = new LinkedList<Point>();
+           
            if(!(vein instanceof Vein))
            {
-              return TilesBool(new List<Point>(entity_pt), false); 
+              tiles.add(entity_pt);
+              return new TilesBool(tiles, false); 
            }
            Point vein_pt = vein.getPosition();
            if (entity_pt.adjacent(vein_pt))
            {
               world.removeEntity(vein);
-              return TilesBool(new List<Point>(vein_pt), true); 
+              tiles.add(vein_pt);
+              return new TilesBool(tiles, true); 
            }
            else
            {
@@ -74,7 +77,8 @@ public class OreBlob
               {
                  world.removeEntity(old_entity);
               }
-              return TilesBool(world.moveEntity(this, new_pt), false);
+              tiles.add(new_pt);
+              return new TilesBool(tiles, false);
            }
     }
 }

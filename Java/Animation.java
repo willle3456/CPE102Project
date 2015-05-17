@@ -21,23 +21,23 @@ public class Animation
     
     public void scheduleAnimation(WorldModel world, int repeat_count)
     {
-        this.schedule_action(world,
+        this.scheduleAction(world,
         this.createAnimationAction(world, repeat_count),
         this.getAnimationRate());
     }
         
-    public void scheduleAction(WorldModel world, Object action, int time)
+    public void scheduleAction(WorldModel world, Object action, long time)
     {
        this.addPendingAction(action);
        world.scheduleAction(action, time);
     }
        
-    public Object createAnimationAction(WorldModel world, int repeat_count)
+    public LongConsumer createAnimationAction(WorldModel world, int repeat_count)
     {
-       Function<Integer, List<Point>> action = (int current_ticks) ->
-       //public List<Point> action(int current_ticks)
+       LongConsumer[] action = { null };
+        action[0] = (long current_ticks) -> 
        {
-          this.removePendingAction(Object);
+          this.removePendingAction(action[0]);
 
           this.nextImage();
 
@@ -47,8 +47,6 @@ public class Animation
                 this.createAnimationAction(world, Math.max(repeat_count - 1, 0)),
                 current_ticks + this.getAnimationRate());
           }
-
-          return List<Point>(this.getPosition());
        };
        return action;
     }

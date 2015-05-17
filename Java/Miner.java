@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public abstract class Miner
     extends Animation
 {
-    private int rate;
+    private long rate;
     private int resource_limit;
     private int current_img;
     private int resource_count;
@@ -13,7 +13,7 @@ public abstract class Miner
     
     abstract Object createMinerAction(WorldModel world, List<String> image_store);
     
-    public Miner(String name, Point position, List<String> imgs, int animation_rate, int rate, int resource_limit)
+    public Miner(String name, Point position, List<String> imgs, int animation_rate, long rate, int resource_limit)
     {
         super(name,position, imgs, animation_rate);
         this.rate = rate;
@@ -23,7 +23,7 @@ public abstract class Miner
         this.pending_actions = new LinkedList<Object>();
     }
     
-    public int getRate()
+    public long getRate()
     {
         return this.rate;
     }
@@ -64,7 +64,7 @@ public abstract class Miner
 
     public Miner tryTransformMiner(WorldModel world, Function<WorldModel, Miner> transform)
     {
-        Entities new_entity = transform.apply(world);
+        Miner new_entity = transform.apply(world);
         if (this != new_entity)
         {
             world.clearPendingActions(this);

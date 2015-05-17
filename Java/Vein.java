@@ -40,10 +40,10 @@ public class Vein
 
     public Object createVeinAction(WorldModel world, List<String> i_store)
     {
-       Function<Integer, List<Point>> action = (current_ticks) ->
-       //public List<String> action(int current_ticks)
+       LongConsumer[] action = { null };
+        action[0] = (long current_ticks) -> 
        {
-          this.removePendingAction(action);
+          this.removePendingAction(action[0]);
           List<Point> tiles = new LinkedList<Point>();
           
           Point open_pt = world.findOpenAround(this.getPosition(),
@@ -63,7 +63,6 @@ public class Vein
           this.scheduleAction(world,
              this.createVeinAction(world, i_store),
              current_ticks + this.getRate());
-          return tiles;
           
        };
        return action;
