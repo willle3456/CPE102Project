@@ -4,17 +4,17 @@ import java.util.LinkedList;
 public class OreBlob
     extends Animation
 {
-    private int rate;
+    private long rate;
     private List<Object> pending_actions;
     
-    public OreBlob(String name, Point position, List<String> imgs, int animation_rate, int rate)
+    public OreBlob(String name, Point position, List<PImage> imgs, int animation_rate, long rate)
     {
         super(name,position,imgs,animation_rate);
         this.rate = rate;
         this.pending_actions = new LinkedList<Object>();
     }
     
-    public int getRate()
+    public long getRate()
     {
         return this.rate;
     }

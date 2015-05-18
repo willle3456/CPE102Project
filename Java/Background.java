@@ -6,7 +6,7 @@ public class Background
 {
     private int current_img;
     
-    public Background(String name, Point position, List<String> imgs)
+    public Background(String name, Point position, List<PImage> imgs)
     {
         super(name, position, imgs);
         this.current_img = 0;

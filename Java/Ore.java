@@ -4,17 +4,17 @@ import java.util.LinkedList;
 public class Ore
     extends Actions
 {
-    private int rate = 5000;
+    private long rate = 5000;
     private List<Object> pending_actions;
     
-    public Ore(String name, Point position, List<String> imgs, int rate)
+    public Ore(String name, Point position, List<PImage> imgs, long rate)
     {
         super(name, position, imgs);
         this.rate = rate;
         this.pending_actions = new LinkedList<Object>();
     }
     
-    public int getRate()
+    public long getRate()
     {
         return this.rate;
     }

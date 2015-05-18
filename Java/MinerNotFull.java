@@ -4,7 +4,7 @@ import java.util.LinkedList;
 class MinerNotFull
     extends Miner
 {
-    public MinerNotFull(String name, Point position, List<String> imgs, int animation_rate, long rate, int resource_limit)
+    public MinerNotFull(String name, Point position, List<PImage> imgs, int animation_rate, long rate, int resource_limit)
     {
         super(name,position,imgs,animation_rate,rate,resource_limit);
     }

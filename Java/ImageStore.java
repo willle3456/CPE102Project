@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,9 +20,9 @@ public class ImageStore
 		return surf;
 	}
 	
-	public Dictionary<String,String> loadImages(String fileName, int tileWidth, int tileHeight, PApplet p) throws FileNotFoundException
+	public HashMap<String,String> loadImages(String fileName, int tileWidth, int tileHeight, PApplet p) throws FileNotFoundException
 	{
-		Dictionary images = new Hashtable<String,String>();
+		HashMap images = new HashMap<String,String>();
 		
 		try(Scanner s = new Scanner(new File(fileName)))
 		{
@@ -39,7 +38,7 @@ public class ImageStore
 		
 		return images;
 	}
-	public void processImageLine(Dictionary <String,String> images, String line, PApplet p)
+	public void processImageLine(HashMap <String,String> images, String line, PApplet p)
 	{
 		String[] attrs = line.split(" ");
 		if(attrs.length >= 2)
@@ -67,7 +66,7 @@ public class ImageStore
 		}
 		
 	}
-	public String getImagesInternal(Hashtable<String,String> images, String key)
+	public String getImagesInternal(HashMap<String,String> images, String key)
 	{
 		if(images.containsKey(key))
 		{
@@ -75,7 +74,7 @@ public class ImageStore
 		}
 		return null; 
 	}
-	public static String getImages(Hashtable<String,String> images, String key)
+	public static String getImages(HashMap<String,String> images, String key)
 	{
 		if(images.containsKey(key))
 		{

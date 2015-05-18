@@ -1,7 +1,7 @@
 
 import java.io.FileReader;
 import java.io.FileNotFoundException;
-import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,7 +56,7 @@ public class SaveLoad
 	public static final int VEIN_RATE = 4;
 	public static final int VEIN_REACH = 5;
 	
-	public Miner createMiner(String[] props, Dictionary<String,String> iStore)
+	public Miner createMiner(String[] props, HashMap<String,String> iStore)
 	{
 		if(props.length == MINER_NUM_PROPERTIES)
 		{
@@ -69,7 +69,7 @@ public class SaveLoad
 		return null;
 	}
 			
-	public Vein createVein(String[] props, Dictionary<String,String> iStore)
+	public Vein createVein(String[] props, HashMap<String,String> iStore)
 	{
 		if(props.length == VEIN_NUM_PROPERTIES)
 		{
@@ -81,7 +81,7 @@ public class SaveLoad
 		return null;
 	}
 	
-	public Ore createOre(String[] props, Dictionary<String,String> iStore)
+	public Ore createOre(String[] props, HashMap<String,String> iStore)
 	{
 		if(props.length == ORE_NUM_PROPERTIES)
 		{
@@ -93,7 +93,7 @@ public class SaveLoad
 		return null;
 	}
 	
-	public Blacksmith createBlacksmith(String[] props, Dictionary<String,String> iStore)
+	public Blacksmith createBlacksmith(String[] props, HashMap<String,String> iStore)
 	{
 		if(props.length == SMITH_NUM_PROPERTIES)
 		{
@@ -108,7 +108,7 @@ public class SaveLoad
 		return null;
 	}
 	
-	public Obstacle createObstacle(String[] props, Dictionary<String,String> iStore)
+	public Obstacle createObstacle(String[] props, HashMap<String,String> iStore)
 	{
 		if(props.length == OBSTACLE_NUM_PROPERTIES)
 		{
@@ -120,7 +120,7 @@ public class SaveLoad
 		return null;
 	}
 	
-	public Entities createFromProperties(String[] props, Dictionary<String,String> iStore)
+	public Actions createFromProperties(String[] props, HashMap<String,String> iStore)
 	{
 		String key = props[PROPERTY_KEY];
 		
@@ -150,19 +150,19 @@ public class SaveLoad
 		return null;
 	}
 	
-	public void addBackground(WorldModel world, String[] props, Dictionary<String,String> iStore)
+	public void addBackground(WorldModel world, String[] props, HashMap<String,String> iStore)
 	{
 		if(props.length >= BGND_NUM_PROPERTIES)
 		{
 			Point pt = new Point(Integer.parseInt(props[BGND_COL]), Integer.parseInt(props[BGND_ROW]));
 			String name = props[BGND_NAME];
-			setBackground(pt,Backgound(name, getImages(iStore,name)));
+			world.setBackground(pt,Backgound(name, ImageStore.getImages(iStore,name)));
 		}
 	}
 	
-	public void addEntity(WorldModel world, String[] props, Dictionary<String,String> iStore, boolean run)
+	public void addEntity(WorldModel world, String[] props, HashMap<String,String> iStore, boolean run)
 	{
-		Entities e = createFromProperties(props, iStore);
+		Actions e = createFromProperties(props, iStore);
 		if (e != null)
 		{
 			world.addEntity(e);
@@ -176,7 +176,7 @@ public class SaveLoad
 		}
 		
 	}
-	public void loadWorld(WorldModel world, Dictionary<String,String> images, FileReader f)
+	public void loadWorld(WorldModel world, HashMap<String,String> images, FileReader f)
 	{
 		try
 		{

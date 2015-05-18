@@ -4,11 +4,11 @@ import java.util.LinkedList;
 public class Vein
     extends Actions
 {
-    private int rate;
+    private long rate;
     private int resource_distance = 1;
     private List<Object> pending_actions;
     
-    public Vein(String name, Point position, List<String> imgs, int rate, int resource_distance)
+    public Vein(String name, Point position, List<PImage> imgs, long rate, int resource_distance)
     {
         super(name,position,imgs);
         this.rate = rate;
@@ -16,7 +16,7 @@ public class Vein
         this.pending_actions = new LinkedList<Object>();
     }
     
-    public int getRate()
+    public long getRate()
     {
         return this.rate;
     }

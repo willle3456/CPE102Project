@@ -2,16 +2,16 @@ import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
 public class Blacksmith
-    extends Entities
+    extends Actions
 {
     private int resource_limit;
-    private int rate;
+    private long rate;
     private int resource_distance;
     private int resource_count;
     private int current_img;
     private List<Object> pending_actions;
 
-    public Blacksmith(String name, Point position, List<String> imgs, int resource_limit, int rate, int resource_distance)
+    public Blacksmith(String name, Point position, List<PImage> imgs, int resource_limit, long rate, int resource_distance)
     {
         super(name, position,imgs);
         this.resource_limit = resource_limit;
@@ -22,7 +22,7 @@ public class Blacksmith
         this.pending_actions = new LinkedList<Object>();
     }
     
-    public int getRate()
+    public long getRate()
     {
         return this.rate;
     }

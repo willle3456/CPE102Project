@@ -12,7 +12,7 @@ public class Quake
     private final int QUAKE_DURATION = 1100;
     private final int QUAKE_ANIMATION_RATE = 100;
     
-    public Quake(String name, Point position, List<String> imgs, int animation_rate)
+    public Quake(String name, Point position, List<PImage> imgs, int animation_rate)
     {
         super(name, position, imgs, animation_rate);
         this.pending_actions = new LinkedList<Object>();

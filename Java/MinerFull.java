@@ -4,7 +4,7 @@ import java.util.function.*;
 public class MinerFull
     extends Miner
 {
-    public MinerFull(String name, Point position, List<String> imgs, int animation_rate, int rate, int resource_limit)
+    public MinerFull(String name, Point position, List<PImage> imgs, int animation_rate, int rate, int resource_limit)
     {
         super(name,position,imgs,animation_rate,rate,resource_limit);
     }

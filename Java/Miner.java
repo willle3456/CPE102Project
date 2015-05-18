@@ -11,9 +11,9 @@ public abstract class Miner
     private int resource_count;
     private List<Object> pending_actions;
     
-    abstract Object createMinerAction(WorldModel world, List<String> image_store);
+    abstract Object createMinerAction(WorldModel world, List<PImage> image_store);
     
-    public Miner(String name, Point position, List<String> imgs, int animation_rate, long rate, int resource_limit)
+    public Miner(String name, Point position, List<PImage> imgs, int animation_rate, long rate, int resource_limit)
     {
         super(name,position, imgs, animation_rate);
         this.rate = rate;

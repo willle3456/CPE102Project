@@ -131,7 +131,7 @@ public class WorldModel {
 		}
 	}
 	
-	public void scheduleAction(Object action, int time)
+	public void scheduleAction(Object action, long time)
 	{
 		this.actionQueue.insert(action, time);
 	}
@@ -181,7 +181,7 @@ public class WorldModel {
 		return null;
 	}
 	
-	public void setBackgrounds(Point pt, Entities b)
+	public void setBackground(Point pt, Entities b)
 	{
 		/***
 		 * puts an entity at a point
@@ -300,7 +300,7 @@ public class WorldModel {
 		return blob;
 	}
 	
-	public Quake createQuake(Point pt, int ticks, Hashmap<String, String> iStore)
+	public Quake createQuake(Point pt, long ticks, Hashmap<String, String> iStore)
 	{
 		Quake quake = new Quake("quake", pt, ImageStore.getImages(iStore, "quake"), QUAKE_ANIMATION_RATE);
 		quake.scheduleQuake(ticks);

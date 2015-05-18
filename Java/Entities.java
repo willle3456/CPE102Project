@@ -1,16 +1,17 @@
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
+
 public class Entities 
 {
 	
 	private String name;
 	private Point position;
 	
-	private List<String> imgs;
+	private List<PImage> imgs;
 	private int current_img;
 	
-	public Entities(String name, Point position, List<String> imgs)
+	public Entities(String name, Point position, List<PImage> imgs)
 	{
 		this.name = name;
 		this.position = position;
@@ -78,7 +79,7 @@ public class Entities
 		this.position = position;
 	}
 	
-    public List<String> getImages()
+    public List<PImage> getImages()
 	{
 		return this.imgs;
 	}
@@ -97,6 +98,13 @@ public class Entities
     {
         return this.current_img;
     }
-	
-
+    
+    public void scheduleEntity(WorldModel world, List<String> i_store)
+    {
+    }
+    
+    public PImage getImage()
+    {
+        return this.imgs(this.current_img);
+    }
 }

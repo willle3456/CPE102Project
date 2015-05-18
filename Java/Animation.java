@@ -8,7 +8,7 @@ public class Animation
     
     private int animation_rate;
     
-    public Animation(String name, Point position, List<String> imgs, int animation_rate)
+    public Animation(String name, Point position, List<PImage> imgs, int animation_rate)
     {
         super(name,position, imgs);
         this.animation_rate = animation_rate;
