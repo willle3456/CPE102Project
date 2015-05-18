@@ -12,19 +12,109 @@ public class WorldView
 	public final static int[] MOUSE_HOVER_OCC_COLOR = {255,0,0};
 	
 	private Rectangle view;
-	//screen
-	private Point mousePt = new Point(0,0);
+	private PApplet screen;
+	private Point mousePt;
 	private WorldModel world;
 	private int tileWidth, tileHeight;
+	private int numRows, numCols;
 	private PImage mouseImg;
-	private PApplet p;
-	public WorldView(Rectangle view, Point mousePt, WorldModel world, int tileWidth, int tileHeight, int numRows, int numCols, PImage mouseImg, PApplet p)
+	public WorldView(int viewCols, int viewRows, PApplet screen, WorldModel world, int tileWidth, int tileHeight, PImage mouseImg)
 	{
-		this.view = view;
-		this.mousePt = mousePt;
-		this.world = new WorldModel(numRows, numCols);
-		this.p = p;
+		this.view = new Rectangle(0,0,viewCols, viewRows);
+		this.screen = screen; 
+		this.mousePt = new Point(0,0);
+		this.world = world; 
+		this.tileWidth = tileWidth;
+		this.tileHeight = tileHeight; 
+		this.numRows = world.getNum_rows();
+		this.numCols = world.getNum_cols();
 		this.mouseImg = mouseImg;
+	}
+	
+	public void drawBackground()
+	{
+		for(int y = 0; y < view.height; y++)
+		{
+			for(int x = 0; x < view.width; x++)
+			{
+				Point wPt = viewportToWorld(new Point(x,y));
+				PImage img = world.getBackgroundImage(wPt);
+				screen.image(img, x * this.tileWidth, y * this.tileHeight);	
+			}
+		}
+	}
+	
+	public void drawEntities()
+	{
+		for( Entities e: world.getEntities())
+		{
+			if(contains(view,e.getPosition()))
+			{
+				Point vPt = worldToViewport(e.getPosition());
+				screen.image(e.getImage(), (int)vPt.getX() * this.tileWidth, (int)vPt.getY() * this.tileHeight);
+			}
+		}
+	}
+	
+	public void drawViewport()
+	{
+		drawBackground();
+		drawEntities();
+	}
+	
+	public Rectangle updateTile(Point viewTilePt, PImage surface)
+	{
+		int absX = (int)viewTilePt.getX() * this.tileWidth;
+		int absY = (int)viewTilePt.getY() * this.tileHeight;
+		
+		screen.image(surface, absX, absY);
+		
+		return new Rectangle(absX, absY, this.tileWidth, this.tileHeight);
+		
+	}
+	
+	public PImage getTileImage(Point viewTilePt)
+	{
+		Point pt = viewportToWorld(viewTilePt);
+		PImage bgnd = this.world.getBackgroundImage(pt);
+		Entities occupant = this.world.getTileOccupant(pt);
+		if(occupant != null)
+		{
+			screen.image(bgnd, 0, 0);
+			screen.image(occupant.getImage(), 0, 0);
+			return null; 
+			
+		}
+		return bgnd; 
+	}
+	
+	public void mouseMove()
+	{
+		Point temp = new Point(screen.mouseX + this.view.x, screen.mouseY + this.view.y);
+		if(contains(this.view, temp))
+		{
+			this.mousePt = temp;
+		}
+	}
+	
+	public void updateView()
+	{
+		this.view = createShiftedViewport(0,0, this.numRows, this.numCols);
+		this.mouseImg = null;
+		drawViewport();
+		mouseMove(); 
+	}
+	
+	public void updateViewTiles(ArrayList<Point> tiles)
+	{
+		for(Point tile: tiles)
+		{
+			if(contains(this.view,tile))
+			{
+				Point vPt = worldToViewport(tile);
+				PImage img = getTileImage(vPt);
+			}
+		}
 	}
 	
 	public Point viewportToWorld(Point pt)
@@ -41,33 +131,20 @@ public class WorldView
 	{
 		return Math.min(high, Math.max(v, low));
 	}
-	/***
-	 * moves the viewport around
-	 * @param deltaX: movement in x dir
-	 * @param deltaY: movement in y dir
-	 * @param numRows: num rows in grid
-	 * @param numCols num cols in grid
-	 * @return a new viewport
-	 */
 	public Rectangle createShiftedViewport(int deltaX, int deltaY, int numRows, int numCols)
 	{
+		/***
+		 * moves the viewport around
+		 * @param deltaX: movement in x dir
+		 * @param deltaY: movement in y dir
+		 * @param numRows: num rows in grid
+		 * @param numCols num cols in grid
+		 * @return a new viewport
+		 */
 		int newX = clamp(view.x + deltaX,0,numCols - (int)view.getWidth());
 		int newY = clamp(view.y + deltaY,0,numRows + (int)view.getHeight());
 		
 		return new Rectangle(newX, newY, view.width, view.height);
-	}
-	
-	public void drawBackground()
-	{
-		for(int y = 0; y < view.height; y++)
-		{
-			for(int x = 0; x < view.width; x++)
-			{
-				Point wPt = viewportToWorld(new Point(x,y));
-				PImage img = world.getBackgroundImage(wPt);
-				p.image(img, x * this.tileWidth, y * this.tileHeight);	
-			}
-		}
 	}
 	
 	public boolean contains(Rectangle rect, Point pt)
@@ -76,24 +153,6 @@ public class WorldView
 		boolean b = pt.getY() > rect.getY() && pt.getY() < rect.getHeight();
 		
 		return a && b;
-	}
-	
-	public void drawEntities()
-	{
-		for( Entities e: world.getEntities())
-		{
-			if(contains(view,e.getPosition()))
-			{
-				Point vPt = worldToViewport(e.getPosition());
-				p.image(e.getImage(), (int)vPt.getX() * this.tileWidth, (int)vPt.getY() * this.tileHeight);
-			}
-		}
-	}
-	
-	public void drawViewport()
-	{
-		drawBackground();
-		drawEntities();
 	}
 	
 }
