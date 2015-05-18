@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
+import processing.core.*;
+
 public class Ore
     extends Actions
 {
@@ -27,7 +29,7 @@ public class Ore
     }
        
        
-    public void scheduleOre(WorldModel world, int ticks, List<String> i_store)
+    public void scheduleOre(WorldModel world, long ticks, List<String> i_store)
     {
        this.scheduleAction(world,
           this.createOreTransformAction(world, i_store),

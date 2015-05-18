@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
+import processing.core.*;
 
 public abstract class Miner
     extends Animation

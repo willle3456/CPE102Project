@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
+import processing.core.*;
+
 class MinerNotFull
     extends Miner
 {

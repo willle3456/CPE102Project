@@ -8,7 +8,7 @@ public class Actions
     
     private List<Object> pending_actions;
     
-    public Actions(String name, Point position, List<String> imgs)
+    public Actions(String name, Point position, List<PImage> imgs)
     {
         super(name, position, imgs);
         this.pending_actions = new LinkedList<Object>();
