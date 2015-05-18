@@ -14,19 +14,19 @@ public class Background
         this.current_img = 0;
     }
     
-    public String[] getImages()
+    public List<PImage> getImages()
     {
         return this.imgs;
     }
     
-    public String getImage()
+    public PImage getImage()
     {
-        return this.imgs[this.current_img];
+        return this.imgs.get(this.current_img);
     }
 
     
     public void nextImage()
     {
-        this.current_img = (this.current_img + 1) % self.imgs.size();
+        this.current_img = (this.current_img + 1) % this.imgs.size();
     }
 }

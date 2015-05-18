@@ -53,7 +53,7 @@ public class Ore
           
           List<Point> v = new LinkedList<Point>();
        };
-       return action;
+       return action[0];
     }
        
     public void scheduleEntity(WorldModel world, List<String> i_store)
