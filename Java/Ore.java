@@ -61,7 +61,7 @@ public class Ore
 
           //List<Point> v = new LinkedList<Point>();
        };
-       return action;
+       return action[0];
     }
        
     public void scheduleEntity(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)

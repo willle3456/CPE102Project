@@ -89,7 +89,7 @@ class MinerNotFull
                             current_ticks + new_entity.getRate());
         };
 
-        return action;
+        return action[0];
     }
 
 
