@@ -3,11 +3,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
-<<<<<<< HEAD
 import java.util.HashMap.*;
 
-=======
->>>>>>> 6ce5cddcbfaf6914eb6925b8500ec8cd01d955c1
 import processing.core.*;
 
 public class Actions

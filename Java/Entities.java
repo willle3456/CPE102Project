@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
 import processing.core.*;
-
-import processing.core.*;
-
 public class Entities 
 {
 	
@@ -22,7 +19,7 @@ public class Entities
 		this.position = position;
         this.current_img = 0;
 		this.setImgs(imgs2);
-		
+	
 	}
 
 	/***

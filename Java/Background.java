@@ -24,20 +24,16 @@ public class Background
     
     public PImage getImage()
     {
-<<<<<<< HEAD
         return this.getImages().get(this.current_img);
-=======
         return this.imgs.get(this.current_img);
->>>>>>> 6ce5cddcbfaf6914eb6925b8500ec8cd01d955c1
+        return this.imgs.get(this.current_img);
     }
 
     
     public void nextImage()
     {
-<<<<<<< HEAD
         this.current_img = (this.current_img + 1) % this.getImages().size();
-=======
         this.current_img = (this.current_img + 1) % this.imgs.size();
->>>>>>> 6ce5cddcbfaf6914eb6925b8500ec8cd01d955c1
+        this.current_img = (this.current_img + 1) % this.imgs.size();
     }
 }
