@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.function.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import processing.core.*;
+import java.util.HashMap;
 
 
 public class Quake
@@ -15,7 +16,7 @@ public class Quake
     public Quake(String name, Point position, List<PImage> imgs, int animation_rate)
     {
         super(name, position, imgs, animation_rate);
-        this.pending_actions = new LinkedList<Object>();
+        this.pending_actions = new ArrayList<Object>();
     }
     
     public void scheduleQuake(WorldModel world, int ticks)

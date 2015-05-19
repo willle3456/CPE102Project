@@ -1,7 +1,8 @@
 import java.util.List;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.function.*;
 import processing.core.*;
+import java.util.HashMap;
 
 public class MinerFull
     extends Miner
@@ -15,7 +16,7 @@ public class MinerFull
     public TilesBool minerToSmith(WorldModel world, Blacksmith smith)
     {
         Point entity_pt = this.getPosition();
-        LinkedList<Point> tiles = new LinkedList<Point>();
+        List<Point> tiles = new ArrayList<Point>();
         
         if(!(smith instanceof Blacksmith))
         {
@@ -50,7 +51,7 @@ public class MinerFull
         return new_entity;
     }
 
-    public Object createMinerFullAction(WorldModel world, List<String> i_store)
+    public LongConsumer createMinerFullAction(WorldModel world, List<String> i_store)
     {
         LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 

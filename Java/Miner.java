@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.function.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import processing.core.*;
+import java.util.HashMap;
 
 public abstract class Miner
     extends Animation
@@ -21,7 +22,7 @@ public abstract class Miner
         this.resource_limit = resource_limit;
         this.current_img = 0;
         this.resource_count = 0;
-        this.pending_actions = new LinkedList<Object>();
+        this.pending_actions = new ArrayList<Object>();
     }
     
     public long getRate()

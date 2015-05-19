@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.function.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import processing.core.*;
+import java.util.HashMap;
 
 public class Ore
     extends Actions
@@ -13,7 +14,7 @@ public class Ore
     {
         super(name, position, imgs);
         this.rate = rate;
-        this.pending_actions = new LinkedList<Object>();
+        this.pending_actions = new ArrayList<Object>();
     }
     
     public long getRate()
@@ -51,7 +52,7 @@ public class Ore
           world.removeEntity(this);
           world.addEntity(blob);
           
-          List<Point> v = new LinkedList<Point>();
+          List<Point> v = new ArrayList<Point>();
        };
        return action[0];
     }

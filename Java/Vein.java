@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.function.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import processing.core.*;
+import java.util.HashMap;
 
 public class Vein
     extends Actions
@@ -15,7 +16,7 @@ public class Vein
         super(name,position,imgs);
         this.rate = rate;
         this.resource_distance = resource_distance;
-        this.pending_actions = new LinkedList<Object>();
+        this.pending_actions = new ArrayList<Object>();
     }
     
     public long getRate()
@@ -46,7 +47,7 @@ public class Vein
         action[0] = (long current_ticks) -> 
        {
           this.removePendingAction(action[0]);
-          List<Point> tiles = new LinkedList<Point>();
+          List<Point> tiles = new ArrayList<Point>();
           
           Point open_pt = world.findOpenAround(this.getPosition(),
              this.getResourceDistance());
@@ -60,7 +61,7 @@ public class Vein
           }
           else
           {
-             tiles = new LinkedList<Point>();
+             tiles = new ArrayList<Point>();
           }
           this.scheduleAction(world,
              this.createVeinAction(world, i_store),

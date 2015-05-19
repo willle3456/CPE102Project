@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.function.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import processing.core.*;
+import java.util.HashMap;
 
 public class Blacksmith
     extends Actions
@@ -21,7 +22,7 @@ public class Blacksmith
         this.resource_distance = resource_distance;
         this.resource_count= 0;
         this.current_img = 0;
-        this.pending_actions = new LinkedList<Object>();
+        this.pending_actions = new ArrayList<Object>();
     }
     
     public long getRate()

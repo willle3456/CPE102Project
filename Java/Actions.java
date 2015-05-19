@@ -1,6 +1,6 @@
 import java.util.List;
 import java.util.function.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import processing.core.*;
 
 public class Actions
@@ -12,7 +12,7 @@ public class Actions
     public Actions(String name, Point position, List<PImage> imgs)
     {
         super(name, position, imgs);
-        this.pending_actions = new LinkedList<Object>();
+        this.pending_actions = new ArrayList<Object>();
     }
     
     public List<Object> getPendingActions()
@@ -23,7 +23,7 @@ public class Actions
         }
         else
         {
-            return new LinkedList<Object>();
+            return new ArrayList<Object>();
         }
     }
 
@@ -47,7 +47,7 @@ public class Actions
     {
         if(this instanceof Actions)
         {
-            this.pending_actions = new LinkedList<Object>();
+            this.pending_actions = new ArrayList<Object>();
         }
     }
 }

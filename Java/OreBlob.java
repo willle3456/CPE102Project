@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.function.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import processing.core.*;
+import java.util.HashMap;
 
 public class OreBlob
     extends Animation
@@ -13,7 +14,7 @@ public class OreBlob
     {
         super(name,position,imgs,animation_rate);
         this.rate = rate;
-        this.pending_actions = new LinkedList<Object>();
+        this.pending_actions = new ArrayList<Object>();
     }
     
     public long getRate()
@@ -57,7 +58,7 @@ public class OreBlob
     public TilesBool blobToVein(WorldModel world, Vein vein)
     {
            Point entity_pt = this.getPosition();
-           List<Point> tiles = new LinkedList<Point>();
+           List<Point> tiles = new ArrayList<Point>();
            
            if(!(vein instanceof Vein))
            {
