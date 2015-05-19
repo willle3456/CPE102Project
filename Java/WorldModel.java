@@ -27,6 +27,7 @@ public class WorldModel {
 	private OrderedList actionQueue;
 	public WorldModel(int num_rows, int num_cols)
 	{
+		System.out.println("bye");
 		this.num_cols = num_cols;
 		this.num_rows = num_rows;
 		this.background = new OCCGrid(100,100, null);
@@ -34,6 +35,9 @@ public class WorldModel {
 	}
 	public WorldModel(int num_rows, int num_cols, Entities background)
 	{
+		System.out.println("hello");
+		System.out.println(num_rows);
+		System.out.println(num_cols);
 		this.num_rows = num_rows;
 		this.num_cols = num_cols;
 		this.background = new OCCGrid(num_cols, num_rows, background);
@@ -44,13 +48,14 @@ public class WorldModel {
 	
 	public void addEntity(Entities e)
 	{
+		System.out.println("hiello");
 		Point pt = e.getPosition();
 		if(withinBounds(pt))
 		{
-			Entities oldEntity = this.occupancy.getCell(pt);
-			if(oldEntity == null)
+			Actions oldEntity = (Actions) this.occupancy.getCell(pt);
+			if(oldEntity != null)
 			{
-				old_entity.clear_pending_actions();
+				oldEntity.clearPendingActions();
 			}
 		}
 		this.occupancy.setCell(pt, e);
@@ -75,7 +80,7 @@ public class WorldModel {
 		return withinBounds(pt) && (this.occupancy.getCell(pt) != null);
 	}
 	
-	public Entities findNearest(Point pt, Entities e)
+	public Entities findNearest(Point pt, Class type)
 	{
 		/***
 		 * returns index of the ones of the same type w/ nearest
@@ -86,7 +91,7 @@ public class WorldModel {
 		ArrayList<Integer> same = new ArrayList<Integer>();
 		for(int i = 0; i < this.entity.size(); i++)
 		{
-			if( this.entity.get(i).getClass() == e.getClass())
+			if( this.entity.get(i).getClass() == type)
 			{
 				same.add(i);
 			}
@@ -94,7 +99,7 @@ public class WorldModel {
 		return nearestEntity(same, pt);
 	}
 	
-	public Point[] moveEntity(Entities e, Point pt)
+	public List<Point> moveEntity(Entities e, Point pt)
 	{
 		/***
 		 * moves entity to a new point
@@ -102,14 +107,14 @@ public class WorldModel {
 		 * @param pt, a point
 		 * @return the points where the entity was and will be
 		 */
-		Point [] tiles = new Point [2];
+		ArrayList<Point> tiles = new ArrayList<Point>();
 		if (withinBounds(pt))
 		{
 			Point oldPoint = e.getPosition();
 			this.occupancy.setCell(oldPoint, null);
-			tiles[0] = oldPoint;
+			tiles.add(oldPoint);
 			this.occupancy.setCell(pt, e);
-			tiles[1] = pt;
+			tiles.add(pt);
 			e.setPosition(pt);
 		}
 		return tiles;
@@ -133,6 +138,7 @@ public class WorldModel {
 	
 	public void scheduleAction(Object action, long time)
 	{
+		System.out.println("OMFG");
 		this.actionQueue.insert(action, time);
 	}
 	
@@ -141,16 +147,16 @@ public class WorldModel {
 		this.actionQueue.remove(action);
 	}
 	
-	public Object updateOnTime(int ticks)
+	public Object updateOnTime(long ticks)
 	{
+		System.out.println("hi");
 		List<Object> tiles = new ArrayList<Object>();
 		
 		Object next = this.actionQueue.head();
-		
 		while(next != null && ((ListItem)next).getOrd() < ticks)
 		{
 			this.actionQueue.pop();
-			tiles.add(((ListItem)next).getItem(ticks));
+			tiles.add(((ListItem)next).getItem((int) ticks));
 			next = this.actionQueue.head();
 		}
 		
@@ -240,16 +246,16 @@ public class WorldModel {
 		return newPoint;
 	}
 	
-	public Vein createVein(String name, Point pt, long ticks, HashMap<String,String> iStore)
+	public Vein createVein(String name, Point pt, long ticks, HashMap<String, ArrayList<PImage>> iStore)
 	{
 		Random rand = new Random();
 		int randInt = rand.nextInt(this.VEIN_RATE_MAX- this.VEIN_RATE_MIN) + this.VEIN_RATE_MIN;
 		
-		Vein vein = new Vein("vein" + name, randInt, pt, ImageStore.getImages(iStore, "vein"));
+		Vein vein = new Vein("vein" + name, pt, ImageStore.getImages(iStore, "vein"), randInt);
 		return vein;
 	}
 	
-	public void clearPendingActions(Entities e)
+	public void clearPendingActions(Actions e)
 	{
 		for(Object action: e.getPendingActions())
 		{
@@ -280,30 +286,30 @@ public class WorldModel {
 		return null;
 	}	
 	
-	public Ore createOre(String name, Point pt, int ticks, Hashmap<String,String> iStore)
+	public Ore createOre(String name, Point pt, long current_ticks, HashMap<String, ArrayList<PImage>> iStore)
 	{
 		Random rand = new Random();
 		int temp = rand.nextInt(ORE_CORRUPT_MAX - ORE_CORRUPT_MIN) + ORE_CORRUPT_MIN;
 		Ore ore = new Ore(name, pt, ImageStore.getImages(iStore, "ore"),temp);
-		ore.scheduleOre(ticks, iStore);
+		ore.scheduleOre(this,current_ticks, iStore);
 		
 		return ore;
 	}
 	
-	public OreBlob createBlob(String name, Point pt, int rate, int ticks, Hashmap<String, String> iStore)
+	public OreBlob createBlob(String name, Point pt, long rate, long ticks, HashMap<String, ArrayList<PImage>> i_store)
 	{
 		Random rand = new Random();
 		int temp = rand.nextInt(BLOB_ANIMATION_MAX - BLOB_ANIMATION_MIN) + BLOB_ANIMATION_MIN;
 		
-		OreBlob blob = new OreBlob(name, pt, rate, ImageStore.getImages(iStore, "blob"), temp * BLOB_ANIMATION_RATE_SCALE);
-		blob.scheduleBlob(ticks,iStore);
+		OreBlob blob = new OreBlob(name, pt,ImageStore.getImages(i_store, "blob"), temp * BLOB_ANIMATION_RATE_SCALE, rate);
+		blob.scheduleBlob(this,ticks,i_store);
 		return blob;
 	}
 	
-	public Quake createQuake(Point pt, long ticks, Hashmap<String, String> iStore)
+	public Quake createQuake(Point pt, long ticks, HashMap<String, ArrayList<PImage>> iStore)
 	{
 		Quake quake = new Quake("quake", pt, ImageStore.getImages(iStore, "quake"), QUAKE_ANIMATION_RATE);
-		quake.scheduleQuake(ticks);
+		quake.scheduleQuake(this,ticks);
 		return quake;
 	}
 	

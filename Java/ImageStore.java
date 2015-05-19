@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -15,42 +16,50 @@ public class ImageStore
 	
 	public PImage createDefaultImage(int tileWidth, int tileHeight, PApplet p)
 	{
-		PImage surf = createImage(tileWidth, tileHeight, RGB);
-		p.fill(DEFAULT_IMAGE_COLOR[0], DEFAULT_IMAGE_COLOR[1], DEFAULT_IMAGE_COLOR[2], DEFAULT_IMAGE_COLOR[3]);
+		
+		//PImage surf = p.createImage(tileWidth, tileHeight, p.RGB);
+		PImage surf = p.loadImage("../images/none.bmp");
+		//p.fill(DEFAULT_IMAGE_COLOR[0], DEFAULT_IMAGE_COLOR[1], DEFAULT_IMAGE_COLOR[2], DEFAULT_IMAGE_COLOR[3]);
 		return surf;
 	}
 	
-	public HashMap<String,String> loadImages(String fileName, int tileWidth, int tileHeight, PApplet p) throws FileNotFoundException
+	public HashMap<String,ArrayList<PImage>> loadImages(String fileName, int tileWidth, int tileHeight, PApplet p) throws FileNotFoundException
 	{
-		HashMap images = new HashMap<String,String>();
+		HashMap<String, ArrayList<PImage>> images = new HashMap<String,ArrayList<PImage>>();
 		
-		try(Scanner s = new Scanner(new File(fileName)))
+		try(Scanner s = new Scanner(new FileReader(fileName)))
 		{
-			processImageLine(images, s.nextLine(),p);
+			while(s.hasNextLine())
+			{
+				processImageLine(images, s.nextLine(),p);
+			}
 		}
 		
 		if(images.get(DEFAULT_IMAGE_NAME) == null)
 		{
 			PImage defaultImage = createDefaultImage(tileWidth, tileHeight, p);
-			images.put(DEFAULT_IMAGE_NAME, defaultImage);
+			ArrayList<PImage> temp = new ArrayList<PImage>();
+			temp.add(defaultImage);
+			images.put(DEFAULT_IMAGE_NAME,temp);
 			
 		}
 		
 		return images;
 	}
-	public void processImageLine(HashMap <String,String> images, String line, PApplet p)
+	public void processImageLine(HashMap <String,ArrayList<PImage>> images, String line, PApplet p)
 	{
 		String[] attrs = line.split(" ");
+		System.out.println(line);
 		if(attrs.length >= 2)
 		{
 			String key = attrs[0];
-			PImage img = p.loadImage(attrs[1]);
+			PImage img = p.loadImage("../" + attrs[1]);
 			
 			if( img != null)
 			{
-				List<PImage> imgs = getImagesInternal(images, key);
+				List<PImage> imgs = getImagesInternal(images,key);
 				imgs.add(img);
-				images[key] = imgs;
+				images.put(key,(ArrayList<PImage>) imgs);
 				
 				if(attrs.length == 6)
 				{
@@ -66,15 +75,16 @@ public class ImageStore
 		}
 		
 	}
-	public String getImagesInternal(HashMap<String,String> images, String key)
+	public ArrayList<PImage> getImagesInternal(HashMap<String,ArrayList<PImage>> images, String key)
 	{
 		if(images.containsKey(key))
 		{
 			return images.get(key);
 		}
-		return null; 
+		return new ArrayList<PImage>(); 
 	}
-	public static String getImages(HashMap<String,String> images, String key)
+	
+	public static ArrayList<PImage> getImages(HashMap<String, ArrayList<PImage>> images, String key)
 	{
 		if(images.containsKey(key))
 		{

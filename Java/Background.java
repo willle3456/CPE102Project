@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.ArrayList;
+
+import java.util.LinkedList;
+
 import processing.core.*;
 import java.util.HashMap;
 
@@ -17,17 +22,17 @@ public class Background
     
     public List<PImage> getImages()
     {
-        return this.imgs;
+        return this.getImgs();
     }
     
     public PImage getImage()
     {
-        return this.imgs.get(this.current_img);
+        return this.getImages().get(this.current_img);
     }
 
     
     public void nextImage()
     {
-        this.current_img = (this.current_img + 1) % this.imgs.size();
+        this.current_img = (this.current_img + 1) % this.getImages().size();
     }
 }

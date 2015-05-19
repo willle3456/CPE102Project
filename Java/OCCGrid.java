@@ -10,9 +10,9 @@ public class OCCGrid {
 	public OCCGrid(int width, int height, Entities occupancy_value)
 	{
 		this.cells = new Entities[width][height];
-		for (int i = 0; i < height; i++)
+		for (int i = 0; i < width; i++)
 		{
-			for (int j = 0; j < width; j++)
+			for (int j = 0; j < height; j++)
 			{
 				cells[i][j] = occupancy_value;
 			}

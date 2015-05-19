@@ -1,27 +1,31 @@
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.function.*;
+
 import processing.core.*;
 import java.util.HashMap;
 
 public class MinerFull
     extends Miner
 {
-    public MinerFull(String name, Point position, List<PImage> imgs, int animation_rate, int rate, int resource_limit)
+    public MinerFull(String name, Point position, List<PImage> imgs, int animation_rate, long rate, int resource_limit)
     {
         super(name,position,imgs,animation_rate,rate,resource_limit);
     }
    
     
-    public TilesBool minerToSmith(WorldModel world, Blacksmith smith)
+    public boolean minerToSmith(WorldModel world, Blacksmith smith)
     {
         Point entity_pt = this.getPosition();
         List<Point> tiles = new ArrayList<Point>();
+
+        ArrayList<Point> tiles = new ArrayList<Point>();
         
         if(!(smith instanceof Blacksmith))
         {
-            tiles.add(entity_pt);
-            return new TilesBool(tiles, false);
+            //tiles.add(entity_pt);
+            return false;
         }
         Point smith_pt = smith.getPosition();
         if( entity_pt.adjacent(smith_pt))
@@ -30,14 +34,16 @@ public class MinerFull
                 smith.getResourceCount() +
                 this.getResourceCount());
             this.setResourceCount(0);
-            tiles.clear();
-            return new TilesBool(tiles,true);
+            /*tiles.clear();
+            return new TilesBool(tiles,true);*/
+            return true;
         }
         else
         {
             Point new_pt = this.nextPosition(world, smith_pt);
-            tiles.add(world.moveEntity(this, new_pt));
-            return new TilesBool(tiles ,false);
+            //tiles.addAll(world.moveEntity(this, new_pt));
+           // return new TilesBool(tiles ,false);
+            return false;
         }
     }
             
@@ -51,7 +57,8 @@ public class MinerFull
         return new_entity;
     }
 
-    public LongConsumer createMinerFullAction(WorldModel world, List<String> i_store)
+
+    public Object createMinerFullAction(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)
     {
         LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -59,11 +66,11 @@ public class MinerFull
           this.removePendingAction(action[0]);
 
             Point entity_pt = this.getPosition();
-            Blacksmith smith = world.findNearest(entity_pt, Blacksmith);
-            TilesBool tiles_found = this.minerToSmith(world, smith);
+            Blacksmith smith = (Blacksmith) world.findNearest(entity_pt, Blacksmith.class);
+            boolean found = this.minerToSmith(world, smith);
 
             Miner new_entity = this;
-            if(tiles_found.getBool())
+            if(found)
             {
                 new_entity = this.tryTransformMiner(world, 
                                                       this::tryTransformMinerFull);
@@ -74,13 +81,15 @@ public class MinerFull
             }
         };
 
-        return action[0];
+        return action;
     }
 
 
 
-    public Object createMinerAction(WorldModel world, List<String> image_store)
+    Object createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store)
     {
         return this.createMinerFullAction(world, image_store);
     }
+
+
 }

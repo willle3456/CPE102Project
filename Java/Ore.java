@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.ArrayList;
+
+import java.util.LinkedList;
+
 import processing.core.*;
 import java.util.HashMap;
 
@@ -23,21 +28,21 @@ public class Ore
     }
 
         
-    public void scheduleAction(WorldModel world, Object action, int time)
+    public void scheduleAction(WorldModel world, Object action, long time)
     {
        this.addPendingAction(action);
        world.scheduleAction(action, time);
     }
        
        
-    public void scheduleOre(WorldModel world, long ticks, List<String> i_store)
+    public void scheduleOre(WorldModel world, long ticks, HashMap<String, ArrayList<PImage>> i_store)
     {
        this.scheduleAction(world,
           this.createOreTransformAction(world, i_store),
           ticks + this.getRate());
     }
           
-    public Object createOreTransformAction(WorldModel world, List<String> i_store)
+    public Object createOreTransformAction(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
     {
        LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -53,11 +58,13 @@ public class Ore
           world.addEntity(blob);
           
           List<Point> v = new ArrayList<Point>();
+
+          //List<Point> v = new LinkedList<Point>();
        };
-       return action[0];
+       return action;
     }
        
-    public void scheduleEntity(WorldModel world, List<String> i_store)
+    public void scheduleEntity(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)
     {
         this.scheduleOre(world, 0, i_store);
     }        

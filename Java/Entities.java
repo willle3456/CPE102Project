@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
+
 import java.util.ArrayList;
+
+import java.util.LinkedList;
 import processing.core.*;
 
 public class Entities 
@@ -12,12 +17,12 @@ public class Entities
 	private List<PImage> imgs;
 	private int current_img;
 	
-	public Entities(String name, Point position, List<PImage> imgs)
+	public Entities(String name, Point position, List<PImage> imgs2)
 	{
 		this.name = name;
 		this.position = position;
         this.current_img = 0;
-		this.imgs = imgs;
+		this.setImgs(imgs2);
 		
 	}
 
@@ -82,7 +87,7 @@ public class Entities
 	
     public List<PImage> getImages()
 	{
-		return this.imgs;
+		return this.getImgs();
 	}
 	
 	public String getName()
@@ -92,7 +97,7 @@ public class Entities
 	
 	public void nextImage()
 	{
-		this.current_img = (this.current_img + 1) % imgs.size();
+		this.current_img = (this.current_img + 1) % getImgs().size();
 	}
     
     public Integer getCurrentImage()
@@ -100,12 +105,20 @@ public class Entities
         return this.current_img;
     }
     
-    public void scheduleEntity(WorldModel world, List<String> i_store)
+    public void scheduleEntity(WorldModel world, HashMap<String, ArrayList<PImage>> iStore)
     {
     }
     
     public PImage getImage()
     {
-        return this.imgs(this.current_img);
+        return this.getImgs().get(this.current_img);
     }
+
+	public List<PImage> getImgs() {
+		return imgs;
+	}
+
+	public void setImgs(List<PImage> imgs) {
+		this.imgs = imgs;
+	}
 }

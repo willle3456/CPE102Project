@@ -1,6 +1,10 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 import processing.core.*;
 import java.util.HashMap;
 
@@ -13,7 +17,7 @@ public abstract class Miner
     private int resource_count;
     private List<Object> pending_actions;
     
-    abstract Object createMinerAction(WorldModel world, List<PImage> image_store);
+    abstract Object createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store);
     
     public Miner(String name, Point position, List<PImage> imgs, int animation_rate, long rate, int resource_limit)
     {
@@ -88,7 +92,7 @@ public abstract class Miner
         world.removeEntity(this);
     }
 
-    public void scheduleMiner(WorldModel world, int ticks, List<String> i_store)
+    public void scheduleMiner(WorldModel world, int ticks, HashMap<String,ArrayList<PImage>> i_store)
     {
         this.scheduleAction(world, this.createMinerAction(world, i_store), ticks + this.getRate());
         this.scheduleAnimation(world,0);

@@ -34,10 +34,5 @@ public class Controller extends PApplet{
 		int[] a = {x_delta,y_delta};
 		return a;
 	}
-	
-	public void mouseToTile(int x, int y)
-	{
-		
-	}
 
 }

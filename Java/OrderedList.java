@@ -11,7 +11,15 @@ public class OrderedList
 		this.list = list; 
 	}
 	
-	public void insert(Object item, int ord)
+	public ArrayList<ListItem> getList() {
+		return list;
+	}
+
+	public void setList(ArrayList<ListItem> list) {
+		this.list = list;
+	}
+
+	public void insert(Object item, long ord)
 	{
 		int size = this.list.size();
 		int idx = 0;
