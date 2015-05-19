@@ -25,15 +25,11 @@ public class Background
     public PImage getImage()
     {
         return this.getImages().get(this.current_img);
-        return this.imgs.get(this.current_img);
-        return this.imgs.get(this.current_img);
     }
 
     
     public void nextImage()
     {
         this.current_img = (this.current_img + 1) % this.getImages().size();
-        this.current_img = (this.current_img + 1) % this.imgs.size();
-        this.current_img = (this.current_img + 1) % this.imgs.size();
     }
 }

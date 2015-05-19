@@ -54,7 +54,7 @@ public class OreBlob
              next_time);
 
         };
-       return action[0];
+       return action;
     }
        
     public boolean blobToVein(WorldModel world, Vein vein)

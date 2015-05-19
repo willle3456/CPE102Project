@@ -77,7 +77,7 @@ public class MinerFull
             }
         };
 
-        return action[0];
+        return action;
     }
 
 

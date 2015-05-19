@@ -67,7 +67,7 @@ class MinerNotFull
         LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
        {
-            this.removePendingAction(action[0]);
+          this.removePendingAction(action[0]);
 
             Point entity_pt = this.getPosition();
             Ore ore = (Ore) world.findNearest(entity_pt, Ore.class);
@@ -84,7 +84,7 @@ class MinerNotFull
                             current_ticks + new_entity.getRate());
         };
 
-        return action[0];
+        return action;
     }
 
     public Object createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store)

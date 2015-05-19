@@ -77,7 +77,7 @@ public class Vein
              current_ticks + this.getRate());
           
        };
-       return action[0];
+       return action;
     }
 
     public void removeEntity(WorldModel world)

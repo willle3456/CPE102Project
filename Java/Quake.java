@@ -37,7 +37,7 @@ public class Quake
           Point pt = this.getPosition();
           world.removeEntity(this);
        };
-       return action[0];
+       return action;
     }
 
 }
