@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
+
 import processing.core.*;
 
 
@@ -18,7 +21,7 @@ public class Quake
         this.pending_actions = new LinkedList<Object>();
     }
     
-    public void scheduleQuake(WorldModel world, int ticks)
+    public void scheduleQuake(WorldModel world, long ticks)
     {
         this.scheduleAnimation(world, QUAKE_STEPS);
         this.scheduleAction(world, this.createEntityDeathAction(world),
@@ -34,6 +37,7 @@ public class Quake
           Point pt = this.getPosition();
           world.removeEntity(this);
        };
-       return action;
+       return action[0];
     }
+
 }

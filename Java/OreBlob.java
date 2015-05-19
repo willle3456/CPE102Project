@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
+
 import processing.core.*;
 
 public class OreBlob
@@ -21,14 +24,14 @@ public class OreBlob
         return this.rate;
     }
        
-    public void scheduleBlob(WorldModel world, int ticks,List<String> i_store)
+    public void scheduleBlob(WorldModel world, long ticks,HashMap<String, ArrayList<PImage>> i_store)
     {
        this.scheduleAction(world, this.createOreBlobAction(world, i_store),
           ticks + this.getRate());
        this.scheduleAnimation(world,0);
     }
        
-    public Object createOreBlobAction(WorldModel world, List<String> i_store)
+    public Object createOreBlobAction(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)
     {
        LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -36,13 +39,13 @@ public class OreBlob
           this.removePendingAction(action[0]);
 
           Point entity_pt = this.getPosition();
-          Vein vein = world.findNearest(entity_pt, Vein);
-          TilesBool tiles_found = this.blobToVein(world,  vein);
+          Vein vein = (Vein) world.findNearest(entity_pt, Vein.class);
+          boolean found = this.blobToVein(world,  vein);
 
            long next_time = current_ticks + this.getRate();
-          if(tiles_found.getBool())
+          if(found)
           {
-            Quake quake = world.createQuake(tiles_found.getTiles().get(0), current_ticks, i_store);
+            Quake quake = world.createQuake(vein.getPosition(), current_ticks, i_store);
              world.addEntity(quake);
              next_time = current_ticks + this.getRate() * 2;
           }
@@ -51,25 +54,27 @@ public class OreBlob
              next_time);
 
         };
-       return action;
+       return action[0];
     }
        
-    public TilesBool blobToVein(WorldModel world, Vein vein)
+    public boolean blobToVein(WorldModel world, Vein vein)
     {
            Point entity_pt = this.getPosition();
-           List<Point> tiles = new LinkedList<Point>();
+           //List<Point> tiles = new LinkedList<Point>();
            
            if(!(vein instanceof Vein))
            {
-              tiles.add(entity_pt);
-              return new TilesBool(tiles, false); 
+              //tiles.add(entity_pt);
+              //return new TilesBool(tiles, false); 
+        	   return false;
            }
            Point vein_pt = vein.getPosition();
            if (entity_pt.adjacent(vein_pt))
            {
               world.removeEntity(vein);
-              tiles.add(vein_pt);
-              return new TilesBool(tiles, true); 
+              //tiles.add(vein_pt);
+             // return new TilesBool(tiles, true); 
+              return true;
            }
            else
            {
@@ -79,8 +84,9 @@ public class OreBlob
               {
                  world.removeEntity(old_entity);
               }
-              tiles.add(new_pt);
-              return new TilesBool(tiles, false);
+              //tiles.add(new_pt);
+             // return new TilesBool(tiles, false);
+              return false;
            }
     }
 }

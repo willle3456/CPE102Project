@@ -17,8 +17,7 @@ public class WorldView
 	private WorldModel world;
 	private int tileWidth, tileHeight;
 	private int numRows, numCols;
-	private PImage mouseImg;
-	public WorldView(int viewCols, int viewRows, PApplet screen, WorldModel world, int tileWidth, int tileHeight, PImage mouseImg)
+	public WorldView(int viewCols, int viewRows, PApplet screen, WorldModel world, int tileWidth, int tileHeight)
 	{
 		this.view = new Rectangle(0,0,viewCols, viewRows);
 		this.screen = screen; 
@@ -28,14 +27,13 @@ public class WorldView
 		this.tileHeight = tileHeight; 
 		this.numRows = world.getNum_rows();
 		this.numCols = world.getNum_cols();
-		this.mouseImg = mouseImg;
 	}
 	
 	public void drawBackground()
 	{
-		for(int y = 0; y < view.height; y++)
+		for(int y = this.view.y; y < view.height; y++)
 		{
-			for(int x = 0; x < view.width; x++)
+			for(int x = this.view.x ; x < view.width; x++)
 			{
 				Point wPt = viewportToWorld(new Point(x,y));
 				PImage img = world.getBackgroundImage(wPt);
@@ -44,22 +42,26 @@ public class WorldView
 		}
 	}
 	
-	public void drawEntities()
+	public void drawEntities(int x, int y)
 	{
 		for( Entities e: world.getEntities())
 		{
 			if(contains(view,e.getPosition()))
 			{
+				System.out.println(e.getPosition().getX() + " " + e.getPosition().getY());
 				Point vPt = worldToViewport(e.getPosition());
-				screen.image(e.getImage(), (int)vPt.getX() * this.tileWidth, (int)vPt.getY() * this.tileHeight);
+				if(this.view.width -x < this.view.width && this.view.width - x > 0 &&  this.view.height -y < this.view.height && this.view.height - y > 0)
+				{
+					screen.image(e.getImage(), ((int)vPt.getX() - x) * this.tileWidth, ((int)vPt.getY() - y) * this.tileHeight);
+				}
 			}
 		}
 	}
 	
-	public void drawViewport()
+	public void drawViewport(int x, int y)
 	{
 		drawBackground();
-		drawEntities();
+		drawEntities(x,y);
 	}
 	
 	public Rectangle updateTile(Point viewTilePt, PImage surface)
@@ -97,12 +99,11 @@ public class WorldView
 		}
 	}
 	
-	public void updateView()
+	public void updateView(int deltaX, int deltaY)
 	{
-		this.view = createShiftedViewport(0,0, this.numRows, this.numCols);
-		this.mouseImg = null;
-		drawViewport();
-		mouseMove(); 
+		this.view = createShiftedViewport(deltaX,deltaY, this.numRows + deltaX, this.numCols + deltaY);
+		drawViewport(deltaX, deltaY);
+		//mouseMove(); 
 	}
 	
 	public void updateViewTiles(ArrayList<Point> tiles)

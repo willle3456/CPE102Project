@@ -1,6 +1,7 @@
 
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -20,6 +21,7 @@ public class SaveLoad
 	
 	public static final String MINER_KEY = "miner";
 	public static final int MINER_NUM_PROPERTIES = 7;
+	public static final int MINER_LIMIT = 4; 
 	public static final int MINER_NAME = 1;
 	public static final int MINER_COL = 2;
 	public static final int MINER_ROW = 3;
@@ -56,44 +58,46 @@ public class SaveLoad
 	public static final int VEIN_RATE = 4;
 	public static final int VEIN_REACH = 5;
 	
-	public Miner createMiner(String[] props, HashMap<String,String> iStore)
+	public Miner createMiner(String[] props, HashMap<String,ArrayList<PImage>> iStore)
 	{
 		if(props.length == MINER_NUM_PROPERTIES)
 		{
-			Miner miner = new MinerNotFull(props[MINER_NAME], Integer.parseInt(props[MINER_LIMIT]), 
-					new Point(Integer.parseInt(props[MINER_COL]),Integer.parseInt(props[MINER_ROW])),
-							Integer.parseInt(props[MINER_RATE]),ImageStore.getImage(iStore,props[PROPERTY_KEY]), 
+			System.out.println("!!!!!");
+			Miner miner = new MinerNotFull(props[MINER_NAME], new Point(Integer.parseInt(props[MINER_COL]),Integer.parseInt(props[MINER_ROW])),ImageStore.getImages(iStore,props[PROPERTY_KEY]), 
+					Integer.parseInt(props[MINER_RATE]),Integer.parseInt(props[MINER_LIMIT]), 
 							Integer.parseInt(props[MINER_ANIMATION_RATE]));
+			System.out.println("!!!!!");
 			return miner;
 		}
+		System.out.println("hello");
 		return null;
 	}
 			
-	public Vein createVein(String[] props, HashMap<String,String> iStore)
+	public Vein createVein(String[] props, HashMap<String,ArrayList<PImage>> iStore)
 	{
+		System.out.println("v");
 		if(props.length == VEIN_NUM_PROPERTIES)
 		{
-			Vein vein = new Vein(props[VEIN_NAME], Integer.parseInt(props[VEIN_RATE]), 
-					new Point(Integer.parseInt(props[VEIN_COL]),Integer.parseInt(props[VEIN_ROW])),
-					getImages(iStore,props[PROPERTY_KEY]), Integer.parseInt(props[VEIN_REACH]));
+			Vein vein = new Vein(props[VEIN_NAME], new Point(Integer.parseInt(props[VEIN_COL]),Integer.parseInt(props[VEIN_ROW])),ImageStore.getImages(iStore,props[PROPERTY_KEY]), 
+					Integer.parseInt(props[VEIN_RATE]), Integer.parseInt(props[VEIN_REACH]));
 			return vein;
 		}
 		return null;
 	}
 	
-	public Ore createOre(String[] props, HashMap<String,String> iStore)
+	public Ore createOre(String[] props, HashMap<String,ArrayList<PImage>> iStore)
 	{
 		if(props.length == ORE_NUM_PROPERTIES)
 		{
 			Ore ore = new Ore(props[ORE_NAME],
 					new Point(Integer.parseInt(props[ORE_COL]),Integer.parseInt(props[ORE_ROW])),
-					getImages(iStore,props[PROPERTY_KEY]), Integer.parseInt(props[ORE_RATE]));
+					ImageStore.getImages(iStore,props[PROPERTY_KEY]), Integer.parseInt(props[ORE_RATE]));
 			return ore;
 		}
 		return null;
 	}
 	
-	public Blacksmith createBlacksmith(String[] props, HashMap<String,String> iStore)
+	public Blacksmith createBlacksmith(String[] props, HashMap<String,ArrayList<PImage>> iStore)
 	{
 		if(props.length == SMITH_NUM_PROPERTIES)
 		{
@@ -108,7 +112,7 @@ public class SaveLoad
 		return null;
 	}
 	
-	public Obstacle createObstacle(String[] props, HashMap<String,String> iStore)
+	public Obstacle createObstacle(String[] props, HashMap<String,ArrayList<PImage>> iStore)
 	{
 		if(props.length == OBSTACLE_NUM_PROPERTIES)
 		{
@@ -120,7 +124,7 @@ public class SaveLoad
 		return null;
 	}
 	
-	public Actions createFromProperties(String[] props, HashMap<String,String> iStore)
+	public Entities createFromProperties(String[] props, HashMap<String,ArrayList<PImage>> iStore)
 	{
 		String key = props[PROPERTY_KEY];
 		
@@ -128,6 +132,7 @@ public class SaveLoad
 		{
 			if(key.equals(MINER_KEY))
 			{
+				System.out.println("miner");
 				return createMiner(props,iStore);
 			}
 			else if(key.equals(VEIN_KEY))
@@ -150,51 +155,70 @@ public class SaveLoad
 		return null;
 	}
 	
-	public void addBackground(WorldModel world, String[] props, HashMap<String,String> iStore)
+	public void addBackground(WorldModel world, String[] props, HashMap<String,ArrayList<PImage>> iStore)
 	{
 		if(props.length >= BGND_NUM_PROPERTIES)
 		{
 			Point pt = new Point(Integer.parseInt(props[BGND_COL]), Integer.parseInt(props[BGND_ROW]));
 			String name = props[BGND_NAME];
-			world.setBackground(pt,Backgound(name, ImageStore.getImages(iStore,name)));
+			world.setBackground(pt,new Background(name, new Point(0,0), ImageStore.getImages(iStore,name)));
 		}
 	}
 	
-	public void addEntity(WorldModel world, String[] props, HashMap<String,String> iStore, boolean run)
+	public void addEntity(WorldModel world, String[] props, HashMap<String,ArrayList<PImage>> iStore, boolean run)
 	{
-		Actions e = createFromProperties(props, iStore);
-		if (e != null)
+		if(createFromProperties(props,iStore).getClass() == Obstacle.class)
 		{
-			world.addEntity(e);
+			Entities e = createFromProperties(props,iStore);
+			if(e != null)
+			{
+				world.addEntity(e);
+			}
+			System.out.println("hh");
+			return; 
+		}
+		
+		Actions eT = (Actions) createFromProperties(props, iStore);
+		if (eT != null)
+		{
+			System.out.println(run);
+			world.addEntity(eT);
 			if(run)
 			{
 				if(props[PROPERTY_KEY].equals(MINER_KEY) || props[PROPERTY_KEY].equals(VEIN_KEY) || props[PROPERTY_KEY].equals(ORE_KEY))
 				{
-					e.scheduleEntity(world,iStore);
+					eT.scheduleEntity(world,iStore);
 				}
 			}
 		}
 		
 	}
-	public void loadWorld(WorldModel world, HashMap<String,String> images, FileReader f)
+	public void loadWorld(WorldModel world, HashMap<String,ArrayList<PImage>> images, Scanner file)
 	{
 		try
 		{
-			Scanner s = new Scanner(f);
-			String temp = s.next();
-			String [] props = temp.split(" ");
-			if(props[PROPERTY_KEY].equals(BGND_KEY))
+			while(file.hasNextLine())
 			{
-				addBackground(world,props,images);
-			}
-			else
-			{
-				addEntity(world,props,images,false);
+				String temp = file.nextLine();
+				System.out.println(temp);
+				String [] props = temp.split(" ");
+				for(int i = 0; i < props.length; i++)
+				{
+					System.out.println(props[i]);
+				}
+				if(props[PROPERTY_KEY].equals(BGND_KEY))
+				{
+					addBackground(world,props,images);
+				}
+				else
+				{
+					addEntity(world,props,images,false);
+				}
 			}
 		}
-		catch(FileNotFoundException e)
+		finally
 		{
-			System.err.println(e.getMessage());
+			
 		}
 
 	}

@@ -1,6 +1,11 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
+import processing.core.*;
+
+import processing.core.*;
 
 public class Animation
     extends Actions
@@ -48,6 +53,6 @@ public class Animation
                 current_ticks + this.getAnimationRate());
           }
        };
-       return action;
+       return action[0];
     }
 }

@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.LinkedList;
+
 import processing.core.*;
 
 public class Background
@@ -14,19 +17,27 @@ public class Background
         this.current_img = 0;
     }
     
-    public String[] getImages()
+    public List<PImage> getImages()
     {
-        return this.imgs;
+        return this.getImgs();
     }
     
-    public String getImage()
+    public PImage getImage()
     {
-        return this.imgs[this.current_img];
+<<<<<<< HEAD
+        return this.getImages().get(this.current_img);
+=======
+        return this.imgs.get(this.current_img);
+>>>>>>> 6ce5cddcbfaf6914eb6925b8500ec8cd01d955c1
     }
 
     
     public void nextImage()
     {
-        this.current_img = (this.current_img + 1) % self.imgs.size();
+<<<<<<< HEAD
+        this.current_img = (this.current_img + 1) % this.getImages().size();
+=======
+        this.current_img = (this.current_img + 1) % this.imgs.size();
+>>>>>>> 6ce5cddcbfaf6914eb6925b8500ec8cd01d955c1
     }
 }
