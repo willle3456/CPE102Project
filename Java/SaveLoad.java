@@ -182,9 +182,9 @@ public class SaveLoad
 				
 				if(props[PROPERTY_KEY].equals(MINER_KEY) || props[PROPERTY_KEY].equals(VEIN_KEY) || props[PROPERTY_KEY].equals(ORE_KEY))
 				{
-					System.out.println("here");
+					//System.out.println("here");
 					eT.scheduleEntity(world,time + eT.getRate() ,iStore);
-					System.out.println("scheduled");
+					//System.out.println("scheduled");
 				}
 		}
 		

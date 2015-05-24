@@ -59,7 +59,7 @@ public class Main extends PApplet
 		Background defaultBackground = createDefaultBackground(image_store.getImages(iStore, image_store.DEFAULT_IMAGE_NAME));
 		
 		 world = new WorldModel(numCols, numRows, defaultBackground);
-		 System.out.println(world.actionQueue.size());
+		 //System.out.println(world.actionQueue.size());
 		 view = new WorldView(this.SCREEN_WIDTH/ this.TILE_WIDTH , this.SCREEN_HEIGHT/ this.TILE_HEIGHT, this, world, TILE_WIDTH, TILE_HEIGHT);
 		//System.out.println(view);
 		
@@ -116,7 +116,7 @@ public class Main extends PApplet
 		{
 			//System.out.println("ionofei");
 			world.updateOnTime(time);
-			nextTime += 100; 
+			nextTime += 10; 
 			//System.out.println(nextTime);
 		}
 		view.drawViewport();

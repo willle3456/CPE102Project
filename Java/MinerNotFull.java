@@ -4,6 +4,7 @@ import java.util.function.*;
 import java.util.ArrayList;
 
 import processing.core.*;
+
 import java.util.HashMap;
 
 public class MinerNotFull
@@ -38,9 +39,12 @@ public class MinerNotFull
         else
         {
             Point new_pt = this.nextPosition(world, ore_pt);
-            //return TilesBool(new ArrayList<Point>(world.moveEntity(this, new_pt)),false);
+            world.moveEntity(this, new_pt);
+            System.out.println(this.getPosition().getX());
+            System.out.println(this.getPosition().getY());
+            
+
            // tiles.clear();
-           // tiles.addAll(world.moveEntity(this, new_pt));
             //return new TilesBool(tiles,false);
             return false;
         }
