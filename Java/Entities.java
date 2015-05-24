@@ -105,9 +105,7 @@ public class Entities
         return this.current_img;
     }
     
-    public void scheduleEntity(WorldModel world, HashMap<String, ArrayList<PImage>> iStore)
-    {
-    }
+    
     
     public PImage getImage()
     {

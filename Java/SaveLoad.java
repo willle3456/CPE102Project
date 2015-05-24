@@ -160,10 +160,12 @@ public class SaveLoad
 		}
 	}
 	
-	public void addEntity(WorldModel world, String[] props, HashMap<String,ArrayList<PImage>> iStore, boolean run)
+	public void addEntity(WorldModel world, String[] props, HashMap<String,ArrayList<PImage>> iStore,  long time)
 	{
+	
 		if(createFromProperties(props,iStore).getClass() == Obstacle.class)
 		{
+			
 			Entities e = createFromProperties(props,iStore);
 			if(e != null)
 			{
@@ -175,18 +177,19 @@ public class SaveLoad
 		Actions eT = (Actions) createFromProperties(props, iStore);
 		if (eT != null)
 		{
+			
 			world.addEntity(eT);
-			if(run)
-			{
+				
 				if(props[PROPERTY_KEY].equals(MINER_KEY) || props[PROPERTY_KEY].equals(VEIN_KEY) || props[PROPERTY_KEY].equals(ORE_KEY))
 				{
-					eT.scheduleEntity(world,iStore);
+					System.out.println("here");
+					eT.scheduleEntity(world,time + eT.getRate() ,iStore);
+					System.out.println("scheduled");
 				}
-			}
 		}
 		
 	}
-	public void loadWorld(WorldModel world, HashMap<String,ArrayList<PImage>> images, Scanner file)
+	public void loadWorld(WorldModel world, HashMap<String,ArrayList<PImage>> images, Scanner file, long time)
 	{
 		try
 		{
@@ -201,7 +204,7 @@ public class SaveLoad
 				}
 				else
 				{
-					addEntity(world,props,images,false);
+					addEntity(world,props,images, time);
 				}
 			}
 		}

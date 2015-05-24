@@ -10,14 +10,14 @@ public class Vein
 {
     private long rate;
     private int resource_distance = 1;
-    private List<Object> pending_actions;
+    private List<LongConsumer> pending_actions;
     
     public Vein(String name, Point position, ArrayList<PImage> images, long rate, int resource_distance)
     {
         super(name,position,images);
         this.rate = rate;
         this.resource_distance = resource_distance;
-        this.pending_actions = new ArrayList<Object>();
+        this.pending_actions = new ArrayList<LongConsumer>();
 
     }
     
@@ -26,7 +26,7 @@ public class Vein
         super(name,position,images);
         this.rate = rate;
         this.resource_distance = 1;
-        this.pending_actions = new ArrayList<Object>();
+        this.pending_actions = new ArrayList<LongConsumer>();
     }
     
     public long getRate()
@@ -39,7 +39,7 @@ public class Vein
         return this.resource_distance;
     }
        
-    public void scheduleAction(WorldModel world, Object action, long time)
+    public void scheduleAction(WorldModel world, LongConsumer action, long time)
     {
         this.addPendingAction(action);
         world.scheduleAction(action, time);
@@ -51,7 +51,7 @@ public class Vein
         ticks + this.getRate());
     }
 
-    public Object createVeinAction(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
+    public LongConsumer createVeinAction(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
     {
        LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -84,7 +84,7 @@ public class Vein
 
     public void removeEntity(WorldModel world)
     {
-       for(Object action : this.getPendingActions())
+       for(LongConsumer action : this.getPendingActions())
        {
           world.unscheduleAction(action);
        }
@@ -92,7 +92,7 @@ public class Vein
        world.removeEntity(this);
     }
        
-    public void scheduleEntity(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
+    public void scheduleEntity(WorldModel world, long ticks, HashMap<String, ArrayList<PImage>> i_store)
     {
         this.scheduleVein(world, 0, i_store);
     }

@@ -13,13 +13,13 @@ public class Ore
     extends Actions
 {
     private long rate = 5000;
-    private List<Object> pending_actions;
+    private List<LongConsumer> pending_actions;
     
     public Ore(String name, Point position, List<PImage> imgs, long rate)
     {
         super(name, position, imgs);
         this.rate = rate;
-        this.pending_actions = new ArrayList<Object>();
+        this.pending_actions = new ArrayList<LongConsumer>();
     }
     
     public long getRate()
@@ -28,7 +28,7 @@ public class Ore
     }
 
         
-    public void scheduleAction(WorldModel world, Object action, long time)
+    public void scheduleAction(WorldModel world, LongConsumer action, long time)
     {
        this.addPendingAction(action);
        world.scheduleAction(action, time);
@@ -42,7 +42,7 @@ public class Ore
           ticks + this.getRate());
     }
           
-    public Object createOreTransformAction(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
+    public LongConsumer createOreTransformAction(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
     {
        LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -64,7 +64,7 @@ public class Ore
        return action[0];
     }
        
-    public void scheduleEntity(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)
+    public void scheduleEntity(WorldModel world,long ticks, HashMap<String,ArrayList<PImage>> i_store)
     {
         this.scheduleOre(world, 0, i_store);
     }        

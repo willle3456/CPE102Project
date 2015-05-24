@@ -40,7 +40,7 @@ public class WorldView
 			for(int x = 0; x < this.viewCols; x++)
 			{
 				Point wPt = viewportToWorld(new Point(x,y));
-				System.out.println("bacground points" + " " + (wPt.getX() <  this.view.x)+ " " + wPt.getY()); 
+				//System.out.println("bacground points" + " " + (wPt.getX() <  this.view.x)+ " " + wPt.getY()); 
 				PImage img = world.getBackgroundImage(wPt);
 				screen.image(img, x * this.tileWidth, y * this.tileHeight);	
 			}
@@ -166,8 +166,8 @@ public class WorldView
 	
 	public boolean contains(Rectangle rect, Point pt)
 	{
-		System.out.println(rect.getX() + rect.getWidth());
-		System.out.println(rect.getY() + rect.getHeight());
+		//System.out.println(rect.getX() + rect.getWidth());
+		//System.out.println(rect.getY() + rect.getHeight());
 		boolean a = pt.getX() > rect.getX() && pt.getX() < rect.getWidth() + rect.getX();
 		boolean b = pt.getY() > rect.getY() && pt.getY() < rect.getHeight() + rect.getY();
 		

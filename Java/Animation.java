@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import processing.core.*;
 
-public class Animation
+ abstract public class Animation
     extends Actions
 {
     
@@ -31,7 +31,7 @@ public class Animation
         this.getAnimationRate());
     }
         
-    public void scheduleAction(WorldModel world, Object action, long time)
+    public void scheduleAction(WorldModel world, LongConsumer action, long time)
     {
        this.addPendingAction(action);
        world.scheduleAction(action, time);

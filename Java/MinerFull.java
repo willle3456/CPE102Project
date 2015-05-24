@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.function.*;
 
 import processing.core.*;
+
 import java.util.HashMap;
 
 public class MinerFull
@@ -55,7 +56,7 @@ public class MinerFull
     }
 
 
-    public Object createMinerFullAction(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)
+    public LongConsumer createMinerFullAction(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)
     {
         LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -83,9 +84,13 @@ public class MinerFull
 
 
 
-    Object createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store)
+    LongConsumer createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store)
     {
         return this.createMinerFullAction(world, image_store);
+    }
+    
+    public void scheduleEntity(WorldModel world,long ticks, HashMap<String, ArrayList<PImage>> iStore)
+    {
     }
 
 

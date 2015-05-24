@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.function.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
 import processing.core.*;
+
 import java.util.HashMap;
 
 
@@ -22,14 +24,14 @@ public class Quake
         this.pending_actions = new ArrayList<Object>();
     }
     
-    public void scheduleQuake(WorldModel world, long ticks)
+    public void scheduleEntity(WorldModel world, long ticks, HashMap<String, ArrayList<PImage>> iStore)
     {
         this.scheduleAnimation(world, QUAKE_STEPS);
         this.scheduleAction(world, this.createEntityDeathAction(world),
         ticks + QUAKE_DURATION);
     }
        
-    public Object createEntityDeathAction(WorldModel world)
+    public LongConsumer createEntityDeathAction(WorldModel world)
     {
        LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -38,7 +40,12 @@ public class Quake
           Point pt = this.getPosition();
           world.removeEntity(this);
        };
-       return action;
+       return action[0];
+    }
+    
+    public long getRate()
+    {
+    	return 0;
     }
 
 }

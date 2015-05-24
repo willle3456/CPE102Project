@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.function.LongConsumer;
 
 import processing.core.*;
 
@@ -24,7 +25,7 @@ public class WorldModel {
 	private int num_rows, num_cols;
 	private OCCGrid background, occupancy;
 	private List<Entities> entity;
-	private OrderedList actionQueue;
+	public OrderedList<LongConsumer> actionQueue;
 	public WorldModel(int num_rows, int num_cols)
 	{
 		this.num_cols = num_cols;
@@ -42,7 +43,7 @@ public class WorldModel {
 		this.background = new OCCGrid(num_cols, num_rows, background);
 		this.occupancy = new OCCGrid(num_cols, num_rows, null);
 		this.entity = new ArrayList<Entities>();
-		this.actionQueue = new OrderedList(new ArrayList<ListItem>());
+		this.actionQueue = new OrderedList<LongConsumer>();
 	}
 	
 	public void addEntity(Entities e)
@@ -134,30 +135,30 @@ public class WorldModel {
 		}
 	}
 	
-	public void scheduleAction(Object action, long time)
+	public void scheduleAction(LongConsumer action, long time)
 	{
-		System.out.println("OMFG");
-		this.actionQueue.insert(action, time);
+		actionQueue.insert(action, time);
+		System.out.println(actionQueue.size());
 	}
 	
-	public void unscheduleAction(Object action)
+	public void unscheduleAction(LongConsumer action)
 	{
-		this.actionQueue.remove(action);
+		actionQueue.remove(action);
 	}
 	
-	public Object updateOnTime(long ticks)
+	public void updateOnTime(long ticks)
 	{
-		List<Object> tiles = new ArrayList<Object>();
+		OrderedList.ListItem<LongConsumer> next = actionQueue.head();
 		
-		Object next = this.actionQueue.head();
-		while(next != null && ((ListItem)next).getOrd() < ticks)
+		while(next != null && next.ord < ticks)
 		{
-			this.actionQueue.pop();
-			tiles.add(((ListItem)next).getItem((int) ticks));
-			next = this.actionQueue.head();
+			actionQueue.pop();
+			next.item.accept(ticks);
+			System.out.println("here");
+			next = actionQueue.head();
 		}
 		
-		return tiles;
+
 	}
 	
 	public PImage getBackgroundImage(Point pt)
@@ -254,7 +255,7 @@ public class WorldModel {
 	
 	public void clearPendingActions(Actions e)
 	{
-		for(Object action: e.getPendingActions())
+		for(LongConsumer action: e.getPendingActions())
 		{
 			unscheduleAction(action);
 		}
@@ -299,14 +300,14 @@ public class WorldModel {
 		int temp = rand.nextInt(BLOB_ANIMATION_MAX - BLOB_ANIMATION_MIN) + BLOB_ANIMATION_MIN;
 		
 		OreBlob blob = new OreBlob(name, pt,ImageStore.getImages(i_store, "blob"), temp * BLOB_ANIMATION_RATE_SCALE, rate);
-		blob.scheduleBlob(this,ticks,i_store);
+		blob.scheduleEntity(this,ticks,i_store);
 		return blob;
 	}
 	
 	public Quake createQuake(Point pt, long ticks, HashMap<String, ArrayList<PImage>> iStore)
 	{
 		Quake quake = new Quake("quake", pt, ImageStore.getImages(iStore, "quake"), QUAKE_ANIMATION_RATE);
-		quake.scheduleQuake(this,ticks);
+		quake.scheduleEntity(this,ticks, iStore);
 		return quake;
 	}
 	

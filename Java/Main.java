@@ -11,8 +11,8 @@ import processing.core.*;
 public class Main extends PApplet
 {
 	public static final boolean RUN_AFTER_LOAD = true;
-	public static final String IMAGE_LIST_FILE_NAME = "../images/imagelist";
-	public static final String WORLD_FILE = "../images/gaia.sav";
+	public static final String IMAGE_LIST_FILE_NAME = "imagelist";
+	public static final String WORLD_FILE = "gaia.sav";
 	public static final int WORLD_WIDTH_SCALE = 2;
 	public static final int WORLD_HEIGHT_SCALE = 2;
 	public static final int SCREEN_WIDTH = 640;
@@ -26,6 +26,7 @@ public class Main extends PApplet
 	private WorldModel world;
 	private WorldView view; 
 	
+	private long stime = 0;
 	private Background createDefaultBackground(List<PImage> img)
 	{
 		return new Background(ImageStore.DEFAULT_IMAGE_NAME, new Point(0,0), img);
@@ -34,7 +35,7 @@ public class Main extends PApplet
 	{
 		Scanner in = new Scanner(new FileReader(filename)); 
 		SaveLoad save = new SaveLoad();
-		save.loadWorld(w, iStore, in);
+		save.loadWorld(w, iStore, in, stime);
 	}
 	
 	HashMap<String, ArrayList<PImage>> iStore = null;
@@ -58,7 +59,7 @@ public class Main extends PApplet
 		Background defaultBackground = createDefaultBackground(image_store.getImages(iStore, image_store.DEFAULT_IMAGE_NAME));
 		
 		 world = new WorldModel(numCols, numRows, defaultBackground);
-
+		 System.out.println(world.actionQueue.size());
 		 view = new WorldView(this.SCREEN_WIDTH/ this.TILE_WIDTH , this.SCREEN_HEIGHT/ this.TILE_HEIGHT, this, world, TILE_WIDTH, TILE_HEIGHT);
 		//System.out.println(view);
 		
@@ -68,8 +69,6 @@ public class Main extends PApplet
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 
 	}
 	
@@ -103,24 +102,24 @@ public class Main extends PApplet
 	
 	public void draw()
 	{
+		long time = System.currentTimeMillis();
 		//this.background(255); 
 		//need to redraw background
-		view.drawViewport();
-		if(this.mousePressed)
+		/*if(this.mousePressed)
 		{
-			System.out.println(this.mouseX/this.TILE_WIDTH + " " + this.mouseY/this.TILE_HEIGHT); 
-		}
-		
-/*		long time = System.currentTimeMillis();
-		System.out.println(time >= nextTime);
+			//System.out.println(this.mouseX/this.TILE_WIDTH + " " + this.mouseY/this.TILE_HEIGHT); 
+		}*/
+		//System.out.println(world.actionQueue.size());
+		//long time = System.currentTimeMillis();
+		//System.out.println(time >= nextTime);
 		if(time >= nextTime)
 		{
-			System.out.println("ionofei");
+			//System.out.println("ionofei");
 			world.updateOnTime(time);
 			nextTime += 100; 
-			System.out.println(nextTime);
-		}*/
-		
+			//System.out.println(nextTime);
+		}
+		view.drawViewport();
 		
 		/*Controller ctrl = new Controller();
 		

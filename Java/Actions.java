@@ -3,25 +3,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.ArrayList;
-
 import java.util.LinkedList;
 import java.util.HashMap.*;
 
 import processing.core.*;
 
-public class Actions
+abstract public class Actions
     extends Entities
 {
     
-    private List<Object> pending_actions;
+    private List<LongConsumer> pending_actions;
     
     public Actions(String name, Point position, List<PImage> imgs)
     {
         super(name, position, imgs);
-        this.pending_actions = new ArrayList<Object>();
+        this.pending_actions = new ArrayList<LongConsumer>();
     }
     
-    public List<Object> getPendingActions()
+    public List<LongConsumer> getPendingActions()
     {
         if(this instanceof Actions)
         {
@@ -29,11 +28,11 @@ public class Actions
         }
         else
         {
-            return new ArrayList<Object>();
+            return new ArrayList<LongConsumer>();
         }
     }
 
-    public void removePendingAction(Object action)
+    public void removePendingAction(LongConsumer action)
     {
         if(this instanceof Actions)
         {
@@ -41,7 +40,7 @@ public class Actions
         }
     }
 
-    public void addPendingAction(Object action)
+    public void addPendingAction(LongConsumer action)
     {
         if(this instanceof Actions)
         {
@@ -53,7 +52,11 @@ public class Actions
     {
         if(this instanceof Actions)
         {
-            this.pending_actions = new ArrayList<Object>();
+            this.pending_actions = new ArrayList<LongConsumer>();
         }
     }
+
+	abstract public void scheduleEntity(WorldModel world,long ticks, HashMap<String, ArrayList<PImage>> iStore);
+	abstract public long getRate();
+	
 }

@@ -26,14 +26,14 @@ public class OreBlob
         return this.rate;
     }
        
-    public void scheduleBlob(WorldModel world, long ticks,HashMap<String, ArrayList<PImage>> i_store)
+    public void scheduleEntity(WorldModel world, long ticks,HashMap<String, ArrayList<PImage>> i_store)
     {
        this.scheduleAction(world, this.createOreBlobAction(world, i_store),
           ticks + this.getRate());
        this.scheduleAnimation(world,0);
     }
        
-    public Object createOreBlobAction(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)
+    public LongConsumer createOreBlobAction(WorldModel world, HashMap<String,ArrayList<PImage>> i_store)
     {
        LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -41,7 +41,7 @@ public class OreBlob
           this.removePendingAction(action[0]);
 
           Point entity_pt = this.getPosition();
-          Vein vein = (Vein) world.findNearest(entity_pt, Vein.class);
+          Entities vein = world.findNearest(entity_pt, Vein.class);
           boolean found = this.blobToVein(world,  vein);
 
            long next_time = current_ticks + this.getRate();
@@ -59,7 +59,7 @@ public class OreBlob
        return action[0];
     }
        
-    public boolean blobToVein(WorldModel world, Vein vein)
+    public boolean blobToVein(WorldModel world, Entities vein)
     {
            Point entity_pt = this.getPosition();
            List<Point> tiles = new ArrayList<Point>();

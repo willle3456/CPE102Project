@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import processing.core.*;
 import java.util.HashMap;
 
-class MinerNotFull
+public class MinerNotFull
     extends Miner
 {
     public MinerNotFull(String name, Point position, List<PImage> images, int animation_rate, long rate, int resource_limit)
@@ -14,7 +14,7 @@ class MinerNotFull
         super(name,position,images,animation_rate,rate,resource_limit);
     }
     
-    public boolean minerToOre(WorldModel world, Ore ore)
+    public boolean minerToOre(WorldModel world, Entities ore)
     {
         Point entity_pt = this.getPosition();
        // ArrayList<Point> tiles = new ArrayList<Point>();
@@ -64,7 +64,7 @@ class MinerNotFull
     }
 
 
-    public Object createMinerNotFullAction(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
+    public LongConsumer createMinerNotFullAction(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
     {
         LongConsumer[] action = { null };
         action[0] = (long current_ticks) -> 
@@ -72,7 +72,7 @@ class MinerNotFull
           this.removePendingAction(action[0]);
 
             Point entity_pt = this.getPosition();
-            Ore ore = (Ore) world.findNearest(entity_pt, Ore.class);
+            Entities ore = world.findNearest(entity_pt, Ore.class);
             boolean tiles_found = this.minerToOre(world, ore);
 
             Miner new_entity = this;
@@ -90,14 +90,11 @@ class MinerNotFull
     }
 
 
-    public Object createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store)
+    public LongConsumer createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store)
     {
         return this.createMinerNotFullAction(world, image_store);
     }
 
 
-    public void scheduleEntity(WorldModel world, HashMap<String, ArrayList<PImage>> i_store)
-    {
-        this.scheduleMiner(world, 0, i_store);
-    }
+    
 }

@@ -1,117 +1,83 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
-public class OrderedList 
+public class OrderedList<LongConsumer>
 {
-	private ArrayList<ListItem> list;
-	
-	public OrderedList()
-	{
-		list = null; 
-	}
-	
-	public OrderedList(ArrayList<ListItem> list)
-	{
-		this.list = list; 
-	}
-	
-	public ArrayList<ListItem> getList() {
-		return list;
-	}
+   private List<ListItem<LongConsumer>> list;
 
-	public void setList(ArrayList<ListItem> list) {
-		this.list = list;
-	}
+   public OrderedList()
+   {
+      list = new LinkedList<>();
+   }
 
-	public void insert(Object item, long ord)
-	{
-		int size = this.list.size();
-		int idx = 0;
-		ArrayList<ListItem> temp = new ArrayList<ListItem>();
-		
-		while(idx < size && this.list.get(idx).getOrd() < ord)
-		{
-			idx ++;
-		}
-		
-		this.list.addAll(temp);
-	}
-	
-	public void remove(Object item)
-	{
-		int size = this.list.size();
-		int idx = 0;
-		
-		while(idx < size && this.list.get(idx).getItem() != item)
-		{
-			idx++;
-		}
-		
-		if(idx < size)
-		{
-			this.list.remove(idx);
-		}
-	}
-	
-	public Object head()
-	{
-		System.out.println(this.list);
-		if(this.list != null){
-			System.out.println(this.list.get(0));
-			return this.list.get(0);
-		}
-		return null; 
-	}
-	
-	public Object pop()
-	{
-		if(this.list != null)
-		{
-			ListItem temp = this.list.get(0);
-			this.list.remove(0);
-			return temp;
-		}
-		return null; 
-	}
-	
-}
+   public void insert(LongConsumer item, long ord)
+   {
+      int idx = 0;
+      for (ListItem<LongConsumer> lItem : list)
+      {
+         if (lItem.ord >= ord)
+         {
+            break;
+         }
+         idx++;
+      }
 
-class ListItem
-{
-	private Object item;
-	private int ord;
-	
-	public ListItem(Object item, int ord)
-	{
-		this.item = item;
-		this.ord = ord;
-	}
-	public Object getItem()
-	{
-		return this.item;
-	}
-	
-	public Object getItem(int ord)
-	{
-		if(ord == this.ord)
-		{
-			return this.item;
-		}
-		return null; 
-	}
-	
-	public int getOrd()
-	{
-		return this.ord;
-	}
-	
-	public boolean equals(Object o)
-	{
-		if(o instanceof ListItem)
-		{
-			return ((ListItem) o).item.equals(this.item) && ((ListItem)o).ord == this.ord;
-		}
-		return false;
-	}
+      list.add(idx, new ListItem<>(item, ord));
+   }
+
+   public void remove(LongConsumer item)
+   {
+      int idx = 0;
+      for (ListItem<LongConsumer> lItem : list)
+      {
+         if (lItem.item.equals(item))
+         {
+            break;
+         }
+         idx++;
+      }
+
+      if (idx < list.size())
+      {
+         list.remove(idx);
+      }
+   }
+
+   public ListItem<LongConsumer> head()
+   {
+      if (!list.isEmpty())
+      {
+         return list.get(0);
+      }
+      else
+      {
+         return null;
+      }
+   }
+
+   public void pop()
+   {
+      if (!list.isEmpty())
+      {
+         list.remove(0);
+      }
+   }
+
+   public int size()
+   {
+      return list.size();
+   }
+
+   public static class ListItem<LongConsumer>
+   {
+      public final LongConsumer item;
+      public final long ord;
+
+      public ListItem(LongConsumer item, long ord)
+      {
+         this.item = item;
+         this.ord = ord;
+      }
+   }
 }

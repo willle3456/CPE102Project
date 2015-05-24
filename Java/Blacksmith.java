@@ -3,10 +3,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.*;
 import java.util.ArrayList;
-
 import java.util.LinkedList;
 
 import processing.core.*;
+
 import java.util.HashMap;
 
 public class Blacksmith
@@ -55,8 +55,9 @@ public class Blacksmith
         return this.resource_distance;
     }
     
-    /*public void scheduleEntity(WorldModel world, List<String> i_store)
+    public void scheduleEntity(WorldModel world,long ticks, HashMap<String, ArrayList<PImage>> iStore)
     {
-        this.schedule_(world, 0, i_store);
-    }   */
+    }
+    
+    
 }

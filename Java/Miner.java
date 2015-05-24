@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import processing.core.*;
+
 import java.util.HashMap;
 
 public abstract class Miner
@@ -15,9 +16,9 @@ public abstract class Miner
     private int resource_limit;
     private int current_img;
     private int resource_count;
-    private List<Object> pending_actions;
+    private List<LongConsumer> pending_actions;
     
-    abstract Object createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store);
+    abstract LongConsumer createMinerAction(WorldModel world, HashMap<String, ArrayList<PImage>> image_store);
     
     public Miner(String name, Point position, List<PImage> imgs, int animation_rate, long rate, int resource_limit)
     {
@@ -26,7 +27,7 @@ public abstract class Miner
         this.resource_limit = resource_limit;
         this.current_img = 0;
         this.resource_count = 0;
-        this.pending_actions = new ArrayList<Object>();
+        this.pending_actions = new ArrayList<LongConsumer>();
     }
     
     public long getRate()
@@ -84,7 +85,7 @@ public abstract class Miner
 
     public void removeEntity(WorldModel world)
     {
-        for(Object action : this.getPendingActions())
+        for(LongConsumer action : this.getPendingActions())
         {
             world.unscheduleAction(action);
         }
@@ -92,7 +93,7 @@ public abstract class Miner
         world.removeEntity(this);
     }
 
-    public void scheduleMiner(WorldModel world, int ticks, HashMap<String,ArrayList<PImage>> i_store)
+    public void scheduleEntity(WorldModel world, long ticks, HashMap<String,ArrayList<PImage>> i_store)
     {
         this.scheduleAction(world, this.createMinerAction(world, i_store), ticks + this.getRate());
         this.scheduleAnimation(world,0);
