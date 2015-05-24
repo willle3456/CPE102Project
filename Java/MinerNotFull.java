@@ -12,7 +12,6 @@ class MinerNotFull
     public MinerNotFull(String name, Point position, List<PImage> images, int animation_rate, long rate, int resource_limit)
     {
         super(name,position,images,animation_rate,rate,resource_limit);
-        System.out.println("created");
     }
     
     public boolean minerToOre(WorldModel world, Ore ore)
@@ -22,26 +21,24 @@ class MinerNotFull
         
         if(!(ore instanceof Ore))
         {
-            return TilesBool(new ArrayList<Point>(entity_pt), false);
+            return false;
         	//tiles.add(entity_pt);
             //return new TilesBool(tiles, false);
-        	return false;
         }
         Point ore_pt = ore.getPosition();
         if( entity_pt.adjacent(ore_pt))
         {
             this.setResourceCount(1 + this.getResourceCount());
             world.removeEntity(ore);
-            return TilesBool(new ArrayList<Point>(ore_pt),true);
+            return true;
            // tiles.clear();
            // tiles.add(ore_pt);
            // return new TilesBool(tiles,true);
-            return true;
         }
         else
         {
             Point new_pt = this.nextPosition(world, ore_pt);
-            return TilesBool(new ArrayList<Point>(world.moveEntity(this, new_pt)),false);
+            //return TilesBool(new ArrayList<Point>(world.moveEntity(this, new_pt)),false);
            // tiles.clear();
            // tiles.addAll(world.moveEntity(this, new_pt));
             //return new TilesBool(tiles,false);

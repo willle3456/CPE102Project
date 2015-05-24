@@ -43,8 +43,7 @@ public class Main extends PApplet
 	public void setup()
 	{
 		size(SCREEN_WIDTH,SCREEN_HEIGHT);
-		//protected Background defaultBackground = createDefaultBackground(img);
-		//size(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
+
 		ImageStore image_store = new ImageStore();
 		try {
 			iStore = image_store.loadImages(IMAGE_LIST_FILE_NAME, TILE_WIDTH, TILE_HEIGHT, this);
@@ -58,8 +57,8 @@ public class Main extends PApplet
 		
 		Background defaultBackground = createDefaultBackground(image_store.getImages(iStore, image_store.DEFAULT_IMAGE_NAME));
 		
-		 world = new WorldModel(numRows, numCols, defaultBackground);
-		
+		 world = new WorldModel(numCols, numRows, defaultBackground);
+
 		 view = new WorldView(this.SCREEN_WIDTH/ this.TILE_WIDTH , this.SCREEN_HEIGHT/ this.TILE_HEIGHT, this, world, TILE_WIDTH, TILE_HEIGHT);
 		//System.out.println(view);
 		
@@ -69,13 +68,8 @@ public class Main extends PApplet
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		for(Entities e: world.getEntities())
-		{
-			System.out.println(e.getName());
-		}
-		
-		view.drawViewport(0,0);
+
+
 
 	}
 	
@@ -90,13 +84,16 @@ public class Main extends PApplet
 			view.updateView(-1,0);
 			break;
 		case RIGHT:
+			System.out.println("right");
 			view.updateView(1, 0);
 			break;
 		case DOWN:
+			System.out.println("down");
 			view.updateView(0, 1);
 			break;
 		case UP:
-			view.updateView(1, 0);
+			System.out.println("up");
+			view.updateView(0, -1);
 			break;
 			default:
 				view.updateView(0, 0);
@@ -106,8 +103,15 @@ public class Main extends PApplet
 	
 	public void draw()
 	{
+		//this.background(255); 
+		//need to redraw background
+		view.drawViewport();
+		if(this.mousePressed)
+		{
+			System.out.println(this.mouseX/this.TILE_WIDTH + " " + this.mouseY/this.TILE_HEIGHT); 
+		}
 		
-		/*long time = System.currentTimeMillis();
+/*		long time = System.currentTimeMillis();
 		System.out.println(time >= nextTime);
 		if(time >= nextTime)
 		{
@@ -115,8 +119,7 @@ public class Main extends PApplet
 			world.updateOnTime(time);
 			nextTime += 100; 
 			System.out.println(nextTime);
-		}
-		*/
+		}*/
 		
 		
 		/*Controller ctrl = new Controller();

@@ -27,17 +27,16 @@ public class WorldModel {
 	private OrderedList actionQueue;
 	public WorldModel(int num_rows, int num_cols)
 	{
-		System.out.println("bye");
 		this.num_cols = num_cols;
 		this.num_rows = num_rows;
 		this.background = new OCCGrid(100,100, null);
 		this.occupancy = new OCCGrid(100,100, null);
 	}
-	public WorldModel(int num_rows, int num_cols, Entities background)
+	public WorldModel(int num_cols, int num_rows, Entities background)
 	{
-		System.out.println("hello");
-		System.out.println(num_rows);
-		System.out.println(num_cols);
+
+		//System.out.println("rows: " + num_rows);
+		//System.out.println("cols: " + num_cols);
 		this.num_rows = num_rows;
 		this.num_cols = num_cols;
 		this.background = new OCCGrid(num_cols, num_rows, background);
@@ -48,7 +47,6 @@ public class WorldModel {
 	
 	public void addEntity(Entities e)
 	{
-		System.out.println("hiello");
 		Point pt = e.getPosition();
 		if(withinBounds(pt))
 		{
@@ -149,7 +147,6 @@ public class WorldModel {
 	
 	public Object updateOnTime(long ticks)
 	{
-		System.out.println("hi");
 		List<Object> tiles = new ArrayList<Object>();
 		
 		Object next = this.actionQueue.head();

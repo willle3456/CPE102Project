@@ -19,9 +19,6 @@ public class MinerFull
     {
         Point entity_pt = this.getPosition();
         List<Point> tiles = new ArrayList<Point>();
-
-        ArrayList<Point> tiles = new ArrayList<Point>();
-        
         if(!(smith instanceof Blacksmith))
         {
             //tiles.add(entity_pt);

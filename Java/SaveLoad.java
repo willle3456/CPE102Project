@@ -62,20 +62,16 @@ public class SaveLoad
 	{
 		if(props.length == MINER_NUM_PROPERTIES)
 		{
-			System.out.println("!!!!!");
 			Miner miner = new MinerNotFull(props[MINER_NAME], new Point(Integer.parseInt(props[MINER_COL]),Integer.parseInt(props[MINER_ROW])),ImageStore.getImages(iStore,props[PROPERTY_KEY]), 
 					Integer.parseInt(props[MINER_RATE]),Integer.parseInt(props[MINER_LIMIT]), 
 							Integer.parseInt(props[MINER_ANIMATION_RATE]));
-			System.out.println("!!!!!");
 			return miner;
 		}
-		System.out.println("hello");
 		return null;
 	}
 			
 	public Vein createVein(String[] props, HashMap<String,ArrayList<PImage>> iStore)
 	{
-		System.out.println("v");
 		if(props.length == VEIN_NUM_PROPERTIES)
 		{
 			Vein vein = new Vein(props[VEIN_NAME], new Point(Integer.parseInt(props[VEIN_COL]),Integer.parseInt(props[VEIN_ROW])),ImageStore.getImages(iStore,props[PROPERTY_KEY]), 
@@ -132,7 +128,6 @@ public class SaveLoad
 		{
 			if(key.equals(MINER_KEY))
 			{
-				System.out.println("miner");
 				return createMiner(props,iStore);
 			}
 			else if(key.equals(VEIN_KEY))
@@ -161,7 +156,7 @@ public class SaveLoad
 		{
 			Point pt = new Point(Integer.parseInt(props[BGND_COL]), Integer.parseInt(props[BGND_ROW]));
 			String name = props[BGND_NAME];
-			world.setBackground(pt,new Background(name, new Point(0,0), ImageStore.getImages(iStore,name)));
+			world.setBackground(pt,new Background(name, pt, ImageStore.getImages(iStore,name)));
 		}
 	}
 	
@@ -174,14 +169,12 @@ public class SaveLoad
 			{
 				world.addEntity(e);
 			}
-			System.out.println("hh");
 			return; 
 		}
 		
 		Actions eT = (Actions) createFromProperties(props, iStore);
 		if (eT != null)
 		{
-			System.out.println(run);
 			world.addEntity(eT);
 			if(run)
 			{
@@ -200,12 +193,8 @@ public class SaveLoad
 			while(file.hasNextLine())
 			{
 				String temp = file.nextLine();
-				System.out.println(temp);
 				String [] props = temp.split(" ");
-				for(int i = 0; i < props.length; i++)
-				{
-					System.out.println(props[i]);
-				}
+
 				if(props[PROPERTY_KEY].equals(BGND_KEY))
 				{
 					addBackground(world,props,images);

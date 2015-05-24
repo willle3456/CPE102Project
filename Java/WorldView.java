@@ -15,10 +15,14 @@ public class WorldView
 	private PApplet screen;
 	private Point mousePt;
 	private WorldModel world;
+	private int viewCols,viewRows; 
 	private int tileWidth, tileHeight;
 	private int numRows, numCols;
 	public WorldView(int viewCols, int viewRows, PApplet screen, WorldModel world, int tileWidth, int tileHeight)
 	{
+
+		this.viewCols = viewCols;
+		this.viewRows = viewRows; 
 		this.view = new Rectangle(0,0,viewCols, viewRows);
 		this.screen = screen; 
 		this.mousePt = new Point(0,0);
@@ -31,40 +35,39 @@ public class WorldView
 	
 	public void drawBackground()
 	{
-		for(int y = this.view.y; y < view.height; y++)
+		for(int y = 0; y < this.viewRows; y++)
 		{
-			for(int x = this.view.x ; x < view.width; x++)
+			for(int x = 0; x < this.viewCols; x++)
 			{
 				Point wPt = viewportToWorld(new Point(x,y));
+				System.out.println("bacground points" + " " + (wPt.getX() <  this.view.x)+ " " + wPt.getY()); 
 				PImage img = world.getBackgroundImage(wPt);
 				screen.image(img, x * this.tileWidth, y * this.tileHeight);	
 			}
 		}
 	}
 	
-	public void drawEntities(int x, int y)
+	public void drawEntities()
 	{
 		for( Entities e: world.getEntities())
 		{
 			if(contains(view,e.getPosition()))
 			{
-				System.out.println(e.getPosition().getX() + " " + e.getPosition().getY());
+				//System.out.println("Entities shown: " + e.getName());
 				Point vPt = worldToViewport(e.getPosition());
-				if(this.view.width -x < this.view.width && this.view.width - x > 0 &&  this.view.height -y < this.view.height && this.view.height - y > 0)
-				{
-					screen.image(e.getImage(), ((int)vPt.getX() - x) * this.tileWidth, ((int)vPt.getY() - y) * this.tileHeight);
-				}
+				screen.image(e.getImage(), ((int)vPt.getX()) * this.tileWidth, ((int)vPt.getY()) * this.tileHeight);
 			}
 		}
 	}
 	
-	public void drawViewport(int x, int y)
+	public void drawViewport()
 	{
+		//System.out.println(view.x + " " + view.y + " " + view.height + " " + view.width);
 		drawBackground();
-		drawEntities(x,y);
+		drawEntities();
 	}
 	
-	public Rectangle updateTile(Point viewTilePt, PImage surface)
+	/*public Rectangle updateTile(Point viewTilePt, PImage surface)
 	{
 		int absX = (int)viewTilePt.getX() * this.tileWidth;
 		int absY = (int)viewTilePt.getY() * this.tileHeight;
@@ -90,23 +93,22 @@ public class WorldView
 		return bgnd; 
 	}
 	
-	public void mouseMove()
+	/*public void mouseMove()
 	{
 		Point temp = new Point(screen.mouseX + this.view.x, screen.mouseY + this.view.y);
 		if(contains(this.view, temp))
 		{
 			this.mousePt = temp;
 		}
-	}
+	}*/
 	
 	public void updateView(int deltaX, int deltaY)
 	{
-		this.view = createShiftedViewport(deltaX,deltaY, this.numRows + deltaX, this.numCols + deltaY);
-		drawViewport(deltaX, deltaY);
-		//mouseMove(); 
+		this.view = createShiftedViewport(deltaX,deltaY, this.numCols, this.numRows);
+		drawViewport();
 	}
 	
-	public void updateViewTiles(ArrayList<Point> tiles)
+	/*public void updateViewTiles(ArrayList<Point> tiles)
 	{
 		for(Point tile: tiles)
 		{
@@ -116,7 +118,7 @@ public class WorldView
 				PImage img = getTileImage(vPt);
 			}
 		}
-	}
+	}*/
 	
 	public Point viewportToWorld(Point pt)
 	{
@@ -125,14 +127,24 @@ public class WorldView
 	
 	public Point worldToViewport(Point pt)
 	{
-		return new Point(pt.getX() - view.getX(), pt.getY() - view.getY());
+		return new Point(pt.getX() - view.getX(), pt.getY() - view.getY()); 
 	}
 	
 	public int clamp(int v, int low, int high)
 	{
-		return Math.min(high, Math.max(v, low));
+		//System.out.println("high " + high);
+		if(v <= low)
+		{
+			return low;
+		}
+		else if(v >= high)
+		{
+			return high;
+		}
+		return v; 
+
 	}
-	public Rectangle createShiftedViewport(int deltaX, int deltaY, int numRows, int numCols)
+	public Rectangle createShiftedViewport(int deltaX, int deltaY, int numCols, int numRows)
 	{
 		/***
 		 * moves the viewport around
@@ -142,16 +154,22 @@ public class WorldView
 		 * @param numCols num cols in grid
 		 * @return a new viewport
 		 */
-		int newX = clamp(view.x + deltaX,0,numCols - (int)view.getWidth());
-		int newY = clamp(view.y + deltaY,0,numRows + (int)view.getHeight());
+		//System.out.println("view cols: " + numCols);
+		//System.out.println("rows: " + numRows);
+		int newX = clamp((int)this.view.getX() + deltaX, 0, numCols - this.viewCols);
+		int newY = clamp((int)this.view.getY() + deltaY, 0, numRows - this.viewRows);
 		
-		return new Rectangle(newX, newY, view.width, view.height);
+		return new Rectangle(newX, newY, this.viewCols, this.viewRows); 
+
+
 	}
 	
 	public boolean contains(Rectangle rect, Point pt)
 	{
-		boolean a = pt.getX() > rect.getX() && pt.getX() < rect.getWidth();
-		boolean b = pt.getY() > rect.getY() && pt.getY() < rect.getHeight();
+		System.out.println(rect.getX() + rect.getWidth());
+		System.out.println(rect.getY() + rect.getHeight());
+		boolean a = pt.getX() > rect.getX() && pt.getX() < rect.getWidth() + rect.getX();
+		boolean b = pt.getY() > rect.getY() && pt.getY() < rect.getHeight() + rect.getY();
 		
 		return a && b;
 	}

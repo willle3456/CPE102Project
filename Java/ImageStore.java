@@ -49,7 +49,6 @@ public class ImageStore
 	public void processImageLine(HashMap <String,ArrayList<PImage>> images, String line, PApplet p)
 	{
 		String[] attrs = line.split(" ");
-		System.out.println(line);
 		if(attrs.length >= 2)
 		{
 			String key = attrs[0];

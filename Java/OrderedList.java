@@ -6,6 +6,11 @@ public class OrderedList
 {
 	private ArrayList<ListItem> list;
 	
+	public OrderedList()
+	{
+		list = null; 
+	}
+	
 	public OrderedList(ArrayList<ListItem> list)
 	{
 		this.list = list; 
@@ -51,7 +56,9 @@ public class OrderedList
 	
 	public Object head()
 	{
+		System.out.println(this.list);
 		if(this.list != null){
+			System.out.println(this.list.get(0));
 			return this.list.get(0);
 		}
 		return null; 

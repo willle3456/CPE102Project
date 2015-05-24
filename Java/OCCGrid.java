@@ -5,11 +5,12 @@ public class OCCGrid {
 		EMPTY, GATHERER, GENERATOR, RESOURCE;
 	}*/
 	private int height, width;
-	private Entities[][] cells = new Entities[width][height];
+	private Entities[][] cells;
 
 	public OCCGrid(int width, int height, Entities occupancy_value)
 	{
 		this.cells = new Entities[width][height];
+		//System.out.println(width + " " + height);
 		for (int i = 0; i < width; i++)
 		{
 			for (int j = 0; j < height; j++)
