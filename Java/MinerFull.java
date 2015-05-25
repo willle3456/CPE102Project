@@ -39,7 +39,7 @@ public class MinerFull
         else
         {
             Point new_pt = this.nextPosition(world, smith_pt);
-            //tiles.addAll(world.moveEntity(this, new_pt));
+            world.moveEntity(this, new_pt);
            // return new TilesBool(tiles ,false);
             return false;
         }

@@ -98,7 +98,7 @@ public class WorldModel {
 		return nearestEntity(same, pt);
 	}
 	
-	public List<Point> moveEntity(Entities e, Point pt)
+	public void moveEntity(Entities e, Point pt)
 	{
 		/***
 		 * moves entity to a new point
@@ -106,17 +106,16 @@ public class WorldModel {
 		 * @param pt, a point
 		 * @return the points where the entity was and will be
 		 */
-		ArrayList<Point> tiles = new ArrayList<Point>();
+
 		if (withinBounds(pt))
 		{
 			Point oldPoint = e.getPosition();
 			this.occupancy.setCell(oldPoint, null);
-			tiles.add(oldPoint);
+			
 			this.occupancy.setCell(pt, e);
-			tiles.add(pt);
+		
 			e.setPosition(pt);
 		}
-		return tiles;
 	}
 	
 	public void removeEntity(Entities e)
@@ -138,7 +137,7 @@ public class WorldModel {
 	public void scheduleAction(LongConsumer action, long time)
 	{
 		actionQueue.insert(action, time);
-		System.out.println(actionQueue.size());
+		//System.out.println(actionQueue.size());
 	}
 	
 	public void unscheduleAction(LongConsumer action)
@@ -154,7 +153,7 @@ public class WorldModel {
 		{
 			actionQueue.pop();
 			next.item.accept(ticks);
-			System.out.println("here");
+			//System.out.println("here");
 			next = actionQueue.head();
 		}
 		
