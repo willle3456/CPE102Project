@@ -66,7 +66,7 @@ public class WorldView
       return Math.min(max, Math.max(v, min));
    }
 
-   private static Point viewportToWorld(Viewport viewport, int col, int row)
+   public static Point viewportToWorld(Viewport viewport, int col, int row)
    {
       return new Point(col + viewport.getCol(), row + viewport.getRow());
    }

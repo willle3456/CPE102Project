@@ -140,6 +140,8 @@ public abstract class MobileAnimatedActor
 	   return ret;
    }
    
+
+   
    public Point pathFind(WorldModel world, Point startPt, Point goalPt)
    {
 	   return traceback(world, getClosedSet(world, startPt, goalPt), goalPt, startPt);

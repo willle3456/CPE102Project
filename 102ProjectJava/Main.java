@@ -63,13 +63,26 @@ public class Main extends PApplet
 
    public void draw()
    {
+	   int num_cols = SCREEN_WIDTH / TILE_WIDTH * WORLD_WIDTH_SCALE;
+	   int num_rows = SCREEN_HEIGHT / TILE_HEIGHT * WORLD_HEIGHT_SCALE;
+	      
       long time = System.currentTimeMillis();
       if (time >= next_time)
       {
          world.updateOnTime(time);
          next_time = time + TIMER_ACTION_DELAY;
       }
-
+      Viewport viewP = new Viewport(num_rows, num_cols);
+      Point mouse = WorldView.viewportToWorld(viewP, mouseX/32, mouseY/32);
+      
+      for(WorldEntity e : world.getEntities())
+      {
+    	  if(mouse.x == e.getPosition().x && mouse.y == e.getPosition().y && e instanceof MobileAnimatedActor)
+    	  {
+    		  Point pt = new Point(e.getPosition().x + 1, e.getPosition().y);
+    		  image(imageStore.get("quakeS").get(0), pt.x, pt.y);
+    	  }
+      }
       view.drawViewport();
    }
 
