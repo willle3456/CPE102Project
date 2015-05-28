@@ -34,7 +34,7 @@ public abstract class MobileAnimatedActor
 	   {
 		   if((world.withinBounds(pt1) && canPassThrough(world, pt1)) || (goalPt.x == pt1.x && goalPt.y == pt1.y))
 		   {
-			   adj.add(pt1); 
+			   adj.add(new Point(pt1.x,pt1.y, pt)); 
 		   }
 	   }
 	   
@@ -76,21 +76,16 @@ public abstract class MobileAnimatedActor
    
    public List<Point> getClosedSet(WorldModel world, Point startPt, Point goalPt)
    {
+	   System.out.println("do it agina");
 	   Point currPt = startPt; 
 	   List<Point> open = new LinkedList<Point>();
 	   List<Point> closed = new LinkedList<Point>(); 
+	   
+	   open.add(startPt);
 	   closed.add(startPt); 
 	   
-	   while(open != null)
+	   while(!open.isEmpty())
 	   {
-		   List<Point>  temp = getAdjacentPts(world, currPt, goalPt);
-		   for(int i = 0; i < temp.size(); i++)
-		   {
-			   if(!open.contains(temp.get(i)) && !closed.contains(temp.get(i)))
-			   {
-				   open.add(temp.get(i));
-			   }
-		   }
 		   open = sortOpen(open,startPt,goalPt);
 		   
 		   currPt = open.get(0);
@@ -101,6 +96,14 @@ public abstract class MobileAnimatedActor
 		   //world.setBackground(currPt, new Background("checked",temp1));
  
 		   open.remove(0); 
+		   List<Point>  temp = getAdjacentPts(world, currPt, goalPt);
+		   for(int i = 0; i < temp.size(); i++)
+		   {
+			   if(!open.contains(temp.get(i)) && !closed.contains(temp.get(i)))
+			   {
+				   open.add(temp.get(i));
+			   }
+		   }
 		   
 		   if(!closed.contains(currPt))
 		   {
@@ -119,34 +122,22 @@ public abstract class MobileAnimatedActor
    public Point traceback(WorldModel world, List<Point> closedSet, Point goal, Point start)
    {
 	   List<Point> path = new LinkedList<Point>();
-	   if(closedSet.contains(goal))
+	   Point current = closedSet.get(closedSet.size()-1);
+	   System.out.println(start.x + " " + start.y);
+	   System.out.println(goal.x + " " + goal.y);
+	   System.out.println(current.x + " " + current.y);
+	   //path.add(current);
+	   while(current != start)
 	   {
-		   path.add(goal);
-		   Point current = goal;
+		   current = current.cameFrom;
+		   path.add(current);
+		   System.out.println(path);
+	   }
 	   
+	   Point ret = path.get(path.size()-2);
+	   path.remove(path.size()-2);
 	   
-		   while(current != start)
-		   {
-			   List<Point> temp = new LinkedList<Point>();
-			   for(Point pt: closedSet)
-			   {
-				   if(MobileAnimatedActor.adjacent(pt, current) && !path.contains(pt))
-				   {
-					   temp.add(pt);
-				   }
-			   }
-
-			   if(temp.size() != 0)
-			   {
-				   temp = sortOpen(temp,start,goal);
-				   path.add(temp.get(0));
-				   closedSet.remove(temp.get(0));
-				   current = temp.get(0);
-			   }
-			   
-		   }
-	   } 
-	   return path.get(path.size() -2);
+	   return ret;
    }
    
    public Point pathFind(WorldModel world, Point startPt, Point goalPt)
@@ -158,8 +149,8 @@ public abstract class MobileAnimatedActor
    {
 
       Point new_pt = pathFind(world, getPosition(), dest_pt);
-      //System.out.println("current position: " + getPosition().x + " " + getPosition().y);
-      //System.out.println(new_pt.x + " " + new_pt.y);
+      System.out.println("current position: " + getPosition().x + " " + getPosition().y);
+      System.out.println(new_pt.x + " " + new_pt.y);
       
       //List<PImage> temp1 = new LinkedList<PImage>();
 	   //temp1.add(p.loadImage("../images/pathgrass.bmp")); 
