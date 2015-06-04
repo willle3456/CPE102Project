@@ -27,17 +27,6 @@ public class Dive
 
 			if (adjacent(getPosition(), target.getPosition()))
 			{
-				Random ran = new Random();
-				int x = ran.nextInt(1) + 1;
-				
-				if(x == 1)
-				{
-					target.remove(world);
-				}
-				else
-				{
-					this.remove(world);
-				}
 				return true;
 			}
 			else
