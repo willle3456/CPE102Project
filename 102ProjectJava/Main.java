@@ -1,6 +1,8 @@
 import processing.core.*;
+
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.List;
 import java.util.Scanner;
@@ -29,6 +31,8 @@ public class Main extends PApplet
    private long next_time;
    private WorldModel world;
    private WorldView view;
+   
+   private LinkedList<Point> DK = new LinkedList<Point>();
 
 
    public void setup()
@@ -62,7 +66,7 @@ public class Main extends PApplet
    }
 
    public void draw()
-   {	      
+   {	        
       long time = System.currentTimeMillis();
       if (time >= next_time)
       {
@@ -70,6 +74,20 @@ public class Main extends PApplet
          next_time = time + TIMER_ACTION_DELAY;
       }
       
+      for(WorldEntity e : world.getEntities())
+      {
+    	  if(e instanceof Miner)
+    	  {
+    		  for(Point p : DK)
+    		  {
+    			  if(e.getPosition().x == p.x && e.getPosition().y == p.y)
+    			  {
+    				  world.removeEntity(e);
+    				  world.addEntity(new OreBlob("blob", new Point(p.x, p.y), 100, 100, imageStore.get("oreblob")));
+    			  }
+    		  }
+    	  }
+      }
       
       view.drawViewport();
    }
@@ -109,12 +127,15 @@ public class Main extends PApplet
 		      loadImages(IMAGE_LIST_FILE_NAME, imageStore, this);
 	   
 	   world.addEntity(new Kick("kick", new Point(mx, my), 100, 100, imageStore.get("kick")));
-	   world.setBackground(new Point(mx + 1, my), new Background("bgnd", imageStore.get("dive")));
-	   world.setBackground(new Point(mx + 2, my), new Background("bgnd", imageStore.get("dive")));
-	   world.setBackground(new Point(mx + 1, my + 1), new Background("bgnd", imageStore.get("dive")));
-	   world.setBackground(new Point(mx + 1, my + 2), new Background("bgnd", imageStore.get("dive")));
-	   world.setBackground(new Point(mx + 2, my + 2), new Background("bgnd", imageStore.get("dive")));
 	   
+	   for(int i = -3; i <= 3; i++ )
+	   {
+		   for(int j = -3; j <= 3; j++)
+		   {
+			   world.setBackground(new Point(mx + i, my + j), new Background("bgnd", imageStore.get("dive")));
+			   DK.add(new Point(mx + i, my + j));
+		   }
+	   }
 	   
    }
    
