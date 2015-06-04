@@ -28,5 +28,5 @@ quake images/quake6.bmp 255 255 255 0
 rocks images/rock.bmp
 vein images/vein.bmp
 background_default images/none.bmp
-checked_grass images/checkedgrass.bmp
-path_grass images/pathgrass.bmp
+dive images/Dive.bmp
+kick images/Kick.bmp
