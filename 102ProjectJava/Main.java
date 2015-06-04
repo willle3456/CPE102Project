@@ -109,6 +109,12 @@ public class Main extends PApplet
 		      loadImages(IMAGE_LIST_FILE_NAME, imageStore, this);
 	   
 	   world.addEntity(new Kick("kick", new Point(mx, my), 100, 100, imageStore.get("kick")));
+	   world.setBackground(new Point(mx + 1, my), new Background("bgnd", imageStore.get("dive")));
+	   world.setBackground(new Point(mx + 2, my), new Background("bgnd", imageStore.get("dive")));
+	   world.setBackground(new Point(mx + 1, my + 1), new Background("bgnd", imageStore.get("dive")));
+	   world.setBackground(new Point(mx + 1, my + 2), new Background("bgnd", imageStore.get("dive")));
+	   world.setBackground(new Point(mx + 2, my + 2), new Background("bgnd", imageStore.get("dive")));
+	   
 	   
    }
    
