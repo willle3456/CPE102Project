@@ -99,6 +99,19 @@ public class Main extends PApplet
       }
    }
    
+   public void mousePressed()
+   {
+	   int mx = mouseX / 32;
+	   int my = mouseY / 32;
+	   
+	   imageStore = new ImageStore(
+		         createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
+		      loadImages(IMAGE_LIST_FILE_NAME, imageStore, this);
+	   
+	   world.addEntity(new Kick("kick", new Point(mx, my), 100, 100, imageStore.get("kick")));
+	   
+   }
+   
    private static Background createDefaultBackground(ImageStore imageStore)
    {
       List<PImage> bgndImgs = imageStore.get(DEFAULT_IMAGE_NAME);
