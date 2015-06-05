@@ -75,4 +75,9 @@ public class WorldView
    {
       return new Point(col - viewport.getCol(), row - viewport.getRow());
    }
+   
+   public Viewport getViewport()
+   {
+	   return this.viewport;
+   }
 }
