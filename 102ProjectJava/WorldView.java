@@ -99,5 +99,8 @@ public class WorldView
    public static Point worldToViewportDK(Viewport viewport, int col, int row)
    {
       return new Point(col - viewport.getCol() * 32, row - viewport.getRow() * 32);
+   public Viewport getViewport()
+   {
+	   return this.viewport;
    }
 }
