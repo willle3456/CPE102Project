@@ -92,7 +92,9 @@ public class Main extends PApplet
       
       for(Point pt : toRemove)
       {
-    	  world.removeEntityAt(pt);
+    	  WorldEntity ent = world.getTileOccupant(pt);
+    	  ent.remove(world);
+    	  
     	  world.addEntity(new Kick("kick", new Point(pt.x, pt.y), 100, 100, imageStore.get("kick")));
     	  
       }
@@ -129,19 +131,22 @@ public class Main extends PApplet
    {
 	   int mx = mouseX / 32;
 	   int my = mouseY / 32;
+	   Point mousePt = WorldView.viewportToWorld(view.getViewport(), mx, my);
 	   
 	   imageStore = new ImageStore(
 		         createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
 		      loadImages(IMAGE_LIST_FILE_NAME, imageStore, this);
-	   
-	   world.addEntity(new Kick("kick", new Point(mx, my), 100, 100, imageStore.get("kick")));
+	   if(!world.isOccupied(new Point(mx,my)))
+	   {
+		   world.addEntity(new Kick("kick", new Point(mousePt.x, mousePt.y), 100, 100, imageStore.get("kick")));
+	   }
 	   
 	   for(int i = -3; i <= 3; i++ )
 	   {
 		   for(int j = -3; j <= 3; j++)
 		   {
-			   world.setBackground(new Point(mx + i, my + j), new Background("bgnd", imageStore.get("dive")));
-			   DK.add(new Point(mx + i, my + j));
+			   world.setBackground(new Point(mousePt.x + i, mousePt.y + j), new Background("bgnd", imageStore.get("dive")));
+			   DK.add(new Point(mousePt.x + i, mousePt.y + j));
 		   }
 	   }
 	   
