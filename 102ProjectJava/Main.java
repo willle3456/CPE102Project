@@ -68,6 +68,8 @@ public class Main extends PApplet
    public void draw()
    {	        
       long time = System.currentTimeMillis();
+      LinkedList<Point> toRemove = new LinkedList<Point>();
+      
       if (time >= next_time)
       {
          world.updateOnTime(time);
@@ -82,11 +84,17 @@ public class Main extends PApplet
     		  {
     			  if(e.getPosition().x == p.x && e.getPosition().y == p.y)
     			  {
-    				  world.removeEntity(e);
-    				  world.addEntity(new OreBlob("blob", new Point(p.x, p.y), 100, 100, imageStore.get("oreblob")));
+    				  toRemove.add(new Point(e.getPosition().x, e.getPosition().y));
     			  }
     		  }
     	  }
+      }
+      
+      for(Point pt : toRemove)
+      {
+    	  world.removeEntityAt(pt);
+    	  world.addEntity(new Kick("kick", new Point(pt.x, pt.y), 100, 100, imageStore.get("kick")));
+    	  
       }
       
       view.drawViewport();
