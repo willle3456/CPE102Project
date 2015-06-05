@@ -18,6 +18,11 @@ public class WorldView
       this.tileHeight = tileHeight;
       this.viewport = new Viewport(numRows, numCols);
    }
+   
+   public Viewport getViewport()
+   {
+	   return this.viewport; 
+   }
 
    public void drawViewport()
    {
@@ -42,13 +47,28 @@ public class WorldView
    {
       for (WorldEntity entity : world.getEntities())
       {
-         Point pt = entity.getPosition();
-         if (viewport.contains(pt))
-         {
-            Point vPt = worldToViewport(viewport, pt.x, pt.y);
-            screen.image(entity.getImage(), vPt.x * tileWidth,
-               vPt.y * tileHeight);
-         }
+    	  if(!(entity instanceof DiveKick))
+    	  {
+	         Point pt = entity.getPosition();
+	         if (viewport.contains(pt))
+	         {
+	            Point vPt = worldToViewport(viewport, pt.x, pt.y);
+	            screen.image(entity.getImage(), vPt.x * tileWidth,
+	               vPt.y * tileHeight);
+	         }
+    	  }
+    	  else
+    	  {
+    		  DiveKick temp = (DiveKick) entity;
+    		  Point pt = temp.getPixelPosition();
+    		  if(temp instanceof Dive)
+    		  {
+    			  System.out.println("drawn" + pt.toString());
+    		  }
+    		  Point vPt = worldToViewportDK(viewport, pt.x, pt.y);
+	            screen.image(entity.getImage(), vPt.x ,
+	               vPt.y);
+    	  }
       }
    }
 
@@ -71,8 +91,13 @@ public class WorldView
       return new Point(col + viewport.getCol(), row + viewport.getRow());
    }
 
-   private static Point worldToViewport(Viewport viewport, int col, int row)
+   public static Point worldToViewport(Viewport viewport, int col, int row)
    {
       return new Point(col - viewport.getCol(), row - viewport.getRow());
+   }
+   
+   public static Point worldToViewportDK(Viewport viewport, int col, int row)
+   {
+      return new Point(col - viewport.getCol() * 32, row - viewport.getRow() * 32);
    }
 }

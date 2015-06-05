@@ -76,7 +76,6 @@ public abstract class MobileAnimatedActor
    
    public List<Point> getClosedSet(WorldModel world, Point startPt, Point goalPt)
    {
-	   System.out.println("do it agina");
 	   Point currPt = startPt; 
 	   List<Point> open = new LinkedList<Point>();
 	   List<Point> closed = new LinkedList<Point>(); 
@@ -119,40 +118,29 @@ public abstract class MobileAnimatedActor
 	   
    }
    
-   public Point traceback(WorldModel world, List<Point> closedSet, Point goal, Point start)
+   public List<Point> traceback(WorldModel world, List<Point> closedSet, Point goal, Point start)
    {
 	   List<Point> path = new LinkedList<Point>();
 	   Point current = closedSet.get(closedSet.size()-1);
-	   System.out.println(start.x + " " + start.y);
-	   System.out.println(goal.x + " " + goal.y);
-	   System.out.println(current.x + " " + current.y);
 	   //path.add(current);
 	   while(current != start)
 	   {
 		   current = current.cameFrom;
 		   path.add(current);
-		   System.out.println(path);
-	   }
-	   
-	   Point ret = path.get(path.size()-2);
-	   path.remove(path.size()-2);
-	   
-	   return ret;
+	   }	   
+	   return path;
    }
-   
-
    
    public Point pathFind(WorldModel world, Point startPt, Point goalPt)
    {
-	   return traceback(world, getClosedSet(world, startPt, goalPt), goalPt, startPt);
+	   List<Point>path = traceback(world, getClosedSet(world, startPt, goalPt), goalPt, startPt);
+	   return path.get(path.size()-2);
    }
 
    protected Point nextPosition(WorldModel world, Point dest_pt)
    {
 
       Point new_pt = pathFind(world, getPosition(), dest_pt);
-      System.out.println("current position: " + getPosition().x + " " + getPosition().y);
-      System.out.println(new_pt.x + " " + new_pt.y);
       
       //List<PImage> temp1 = new LinkedList<PImage>();
 	   //temp1.add(p.loadImage("../images/pathgrass.bmp")); 

@@ -4,7 +4,7 @@ import java.util.List;
 public class WorldEntity
    extends WorldObject
 {
-   private Point position;
+   public Point position;
 
    public WorldEntity(String name, Point position, List<PImage> imgs)
    {

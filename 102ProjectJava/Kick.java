@@ -2,80 +2,68 @@ import java.util.List;
 import java.util.Random;
 
 import processing.core.PImage;
+import processing.core.PApplet;
 
 
-public class Kick 
-		extends MobileAnimatedActor
+public class Kick //from miner
+		extends DiveKick
 {
+
 	public Kick(String name, Point position, int rate, int animation_rate,
-		      List<PImage> imgs)
-		   {
-		      super(name, position, rate, animation_rate, imgs);
-		   }
-	
-	   protected boolean canPassThrough(WorldModel world, Point pt)
-	   {
-	      return !world.isOccupied(pt) || world.getTileOccupant(pt) instanceof Ore;
-	   }
-	
-	   private boolean move(WorldModel world, WorldEntity target)
-	   {
-	      if (target == null)
-	      {
-	         return false;
-	      }
+			List<PImage> imgs) {
+		super(name, position, rate, animation_rate, imgs);
+		// TODO Auto-generated constructor stub
+	}
 
-	      if (adjacent(getPosition(), target.getPosition()))
-	      {
-	         return true;
-	      }
-	      else
-	      {
-	         Point new_pt = nextPosition(world, target.getPosition());
-	         WorldEntity old_entity = world.getTileOccupant(new_pt);
-	         if (old_entity != null && old_entity != this)
-	         {
-	            old_entity.remove(world);
-	         }
-	         world.moveEntity(this, new_pt);
-	         return false;
-	      }
-	   }	
-	
-	
-	   public Action createAction(WorldModel world, ImageStore imageStore)
-	   {
-	      Action[] action = { null };
-	      action[0] = ticks -> {
-	         removePendingAction(action[0]);
+	@Override
+	public Action createAction(WorldModel world, ImageStore imageStore) {
+		// TODO Auto-generated method stub
+		Action[] action = { null };
+		action[0] = ticks -> {
+			removePendingAction(action[0]);
 
-	         WorldEntity target = world.findNearest(getPosition(), Dive.class);
-	         long nextTime = ticks + getRate();
+			WorldEntity target = world.findNearest(getPosition(), DiveKick.class);
+			long nextTime = ticks + getRate();
 
-	         if (target != null)
-	         {
-	            Point tPt = target.getPosition();
+			if (target != null)
+			{
+				DiveKick temp = (DiveKick) target;
+				int diffX = (this.getPixelPosition().x - temp.getPixelPosition().x);
+				int diffY = (this.getPixelPosition().y - temp.getPixelPosition().y);
+				int speedX = diffX;
+				int speedY = diffY;
+				//System.out.println("hi");
+				this.move(speedX, speedY, target);
+				//System.out.println("hi1");
+				/*System.out.println(this.getPixelPosition().toString());
+				System.out.println(this.getPosition().toString());
+				System.out.println();
+				System.out.println(temp.getPixelPosition().toString());
+				System.out.println(temp.getPosition().toString() +"\n");*/
+				
+				if(hit(this.getPixelPosition(), temp.getPixelPosition()))
+				{
+					int roll = this.roll();
+					int enemyRoll = temp.roll();
+					
+					if(victory(roll,enemyRoll))
+					{
+						
+						this.setPixelPosition(new Point(this.getPosition().x * 32, this.getPosition().y *32));
+						world.removeEntity(target);
+					}
+					else
+					{
+						this.losingAnimation();
+						world.removeEntity(this);
+					}
+				}
+		     }
 
-	            if (move(world, target))
-	            {
-	  	    	  Random ran = new Random();
-		    	  int x = ran.nextInt(1) + 1;
-		    	  if(x == 1)
-		    	  {
-		    		  target.remove(world);
-		    	  }
-		    	  else
-		    	  {
-		    		  this.remove(world);
-		    	  }
-	               nextTime = nextTime + getRate();
-	            }
-	         }
+			scheduleAction(world, this, createAction(world, imageStore),nextTime);
+		         
+		      };
+		      return action[0];
+	}
 
-	         scheduleAction(world, this, createAction(world, imageStore),
-	            nextTime);
-	         
-	      };
-	      return action[0];
-	   }
 }

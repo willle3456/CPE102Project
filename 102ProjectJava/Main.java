@@ -68,36 +68,39 @@ public class Main extends PApplet
    public void draw()
    {	        
       long time = System.currentTimeMillis();
-      LinkedList<Point> toRemove = new LinkedList<Point>();
-      
       if (time >= next_time)
       {
          world.updateOnTime(time);
          next_time = time + TIMER_ACTION_DELAY;
       }
       
+      LinkedList<Point> toRemove = new LinkedList<Point>();
+
       for(WorldEntity e : world.getEntities())
       {
-    	  if(e instanceof Miner)
-    	  {
-    		  for(Point p : DK)
-    		  {
-    			  if(e.getPosition().x == p.x && e.getPosition().y == p.y)
-    			  {
-    				  toRemove.add(new Point(e.getPosition().x, e.getPosition().y));
-    			  }
-    		  }
-    	  }
+          if(e instanceof Miner)
+          {
+                  for(Point p : DK)
+                  {
+                          if(e.getPosition().x == p.x && e.getPosition().y == p.y)
+                          {
+                                  toRemove.add(new Point(e.getPosition().x, e.getPosition().y));
+                          }
+                  }
+          }
       }
-      
+
       for(Point pt : toRemove)
       {
-    	  WorldEntity ent = world.getTileOccupant(pt);
-    	  ent.remove(world);
-    	  
-    	  world.addEntity(new Kick("kick", new Point(pt.x, pt.y), 100, 100, imageStore.get("kick")));
-    	  
+          WorldEntity ent = world.getTileOccupant(pt);
+          ent.remove(world);
+          //Kick bob = new Kick("kick", new Point(pt.x * 32, pt.y * 32), 100, 100, imageStore.get("kick"));
+          Kick bob = new Kick("kick", new Point(pt.x, pt.y), 100, 100, imageStore.get("kick"));
+          world.addEntity(bob);
+          bob.schedule(world, bob.getRate(), imageStore);
+
       }
+
       
       view.drawViewport();
    }
@@ -129,25 +132,32 @@ public class Main extends PApplet
    
    public void mousePressed()
    {
-	   int mx = mouseX / 32;
-	   int my = mouseY / 32;
-	   Point mousePt = WorldView.viewportToWorld(view.getViewport(), mx, my);
+	   int mx = mouseX/ 32;
+	   int my = mouseY/ 32;
 	   
 	   imageStore = new ImageStore(
 		         createImageColored(TILE_WIDTH, TILE_HEIGHT, DEFAULT_IMAGE_COLOR));
 		      loadImages(IMAGE_LIST_FILE_NAME, imageStore, this);
-	   if(!world.isOccupied(new Point(mx,my)))
-	   {
-		   world.addEntity(new Kick("kick", new Point(mousePt.x, mousePt.y), 100, 100, imageStore.get("kick")));
-	   }
+		      
+	Point clickPt = new Point(mouseX, mouseY);
+	clickPt = WorldView.viewportToWorld(view.getViewport(), mx, my);
+	//clickPt = new Point(clickPt.x * 32, clickPt.y * 32);
+	   Dive bob = new Dive("dive", clickPt, 100, 100, imageStore.get("dive"));
+	   world.addEntity(bob);
+	   bob.schedule(world, bob.getRate(), imageStore);
 	   
 	   for(int i = -3; i <= 3; i++ )
 	   {
 		   for(int j = -3; j <= 3; j++)
 		   {
-			   world.setBackground(new Point(mousePt.x + i, mousePt.y + j), new Background("bgnd", imageStore.get("dive")));
-			   DK.add(new Point(mousePt.x + i, mousePt.y + j));
+			   Point temp = new Point(mx + i, my + j);
+			   temp = WorldView.viewportToWorld(view.getViewport(), i + mx, j + my); 
+			   //System.out.println(temp.x + " " + temp.y);
+			   world.setBackground(temp, new Background("arena", imageStore.get("arena")));
+			   DK.add(new Point(clickPt.x + i, clickPt.y + j));
+
 		   }
+		   //System.out.println();
 	   }
 	   
    }
