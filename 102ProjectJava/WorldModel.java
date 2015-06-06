@@ -33,6 +33,12 @@ public class WorldModel
    {
       return pt.x >= 0 && pt.x < numCols && pt.y >= 0 && pt.y < numRows;
    }
+   
+   public boolean withinBoundsDK(Point pt)
+   {
+      return pt.x >= 0 && pt.x < (numCols  *32) && pt.y >= 0 && pt.y < (numRows * 32);
+   }
+   
 
    public int getNumRows()
    {

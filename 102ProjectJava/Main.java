@@ -100,6 +100,14 @@ public class Main extends PApplet
           bob.schedule(world, bob.getRate(), imageStore);
 
       }
+      
+      for(WorldEntity e: world.getEntities())
+      {
+    	  if(e instanceof DiveKick)
+    	  {
+    		  System.out.println(e.getName() + " " + e.getPosition().toString());
+    	  }
+      }
 
       
       view.drawViewport();

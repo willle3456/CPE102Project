@@ -21,34 +21,33 @@ public class Dive //created by click
 		action[0] = ticks -> {
 			removePendingAction(action[0]);
 
-			WorldEntity target = world.findNearest(getPosition(), DiveKick.class);
+			WorldEntity target = world.findNearest(getPosition(), Kick.class);
 			long nextTime = ticks + getRate();
 
-			if (target != null)
+			if (target != null && world.getBackground(target.getPosition()).getName() == "arena")
 			{
-				DiveKick temp = (DiveKick) target;
+				Kick temp = (Kick) target;
+				System.out.println(" dive state your enemy: " + target.getName());
 				int diffX = (this.getPixelPosition().x - temp.getPixelPosition().x);
 				int diffY = (this.getPixelPosition().y - temp.getPixelPosition().y);
-				int speedX = (diffX/15);
-				int speedY = (diffY/15);
-				System.out.println(speedX + " " + speedY);
+				int speedX = -(diffX/10);
+				int speedY = -(diffY/10);
 				this.move(speedX, speedY, target);
-				//System.out.println(temp.getPixelPosition().toString());
 				if(hit(this.getPixelPosition(), temp.getPixelPosition()))
 				{
 					this.lastSpeedX = speedX;
 					this.lastSpeedY = speedY; 
+					
 					int roll = this.roll();
 					int enemyRoll = temp.roll();
+					
 					if(victory(roll, enemyRoll))
 					{
 						this.setPixelPosition(new Point(this.getPosition().x * 32, this.getPosition().y *32));
-						world.removeEntity(target);
-					}
-					else
-					{
-						this.losingAnimation();
-						world.removeEntity(this);
+						target.remove(world);
+						//world.removeEntity(target);
+						System.out.println("victory dive");
+						System.out.println("good bye" + target.getName() + target.getPosition().toString());
 					}
 				}
 		     }

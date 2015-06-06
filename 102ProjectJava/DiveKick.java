@@ -8,7 +8,7 @@ import processing.core.PApplet;
 public abstract class DiveKick extends AnimatedActor{
 
 	public int lastSpeedX, lastSpeedY;
-	private PApplet screen = new PApplet(); 
+	//private PApplet screen = new PApplet(); 
 	private Point pixelPoint;
 	
 	public DiveKick(String name, Point position, int rate, int animation_rate,
@@ -41,10 +41,10 @@ public abstract class DiveKick extends AnimatedActor{
 	}
 
 	public void move(int speedX, int speedY, WorldEntity target)
-	{
+	{		
 		this.setPixelPosition(new Point(this.getPixelPosition().x + speedX, this.getPixelPosition().y + speedY));
-		System.out.println("Speed components: " + " " + speedX + " " + speedY);
-		System.out.println(this.getPixelPosition().toString());
+		//System.out.println("Speed components: " + " " + speedX + " " + speedY);
+		//System.out.println(this.getPixelPosition().toString());
 		//this.setPosition(new Point(this.getPosition().x + speedX, this.getPosition().y + speedY));
 	}
 	
@@ -94,9 +94,9 @@ public abstract class DiveKick extends AnimatedActor{
 		int tempX = this.getPixelPosition().x;
 		int tempY = this.getPixelPosition().y;
 		
-		this.setPosition(new Point(tempX + speedX, tempY + speedY));
-		screen.scale((float) 1.25);
-		screen.rotate((float) 90);
+		this.setPixelPosition(new Point(tempX + speedX, tempY + speedY));
+		//screen.scale((float) 1.25);
+		//screen.rotate((float) 90);
 		
 	}
 	

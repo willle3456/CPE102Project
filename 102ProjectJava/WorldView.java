@@ -61,10 +61,14 @@ public class WorldView
     	  {
     		  DiveKick temp = (DiveKick) entity;
     		  Point pt = temp.getPixelPosition();
-    		  if(temp instanceof Dive)
+    		  /*if(temp instanceof Dive)
     		  {
-    			  System.out.println("drawn" + pt.toString());
+    			  //System.out.println("drawn" + pt.toString());
     		  }
+    		  if(!world.withinBoundsDK(pt))
+    		  {
+    			  pt = new Point(temp.getPosition().x * 32, temp.getPosition().y * 32);
+    		  }*/
     		  Point vPt = worldToViewportDK(viewport, pt.x, pt.y);
 	            screen.image(entity.getImage(), vPt.x ,
 	               vPt.y);
@@ -99,8 +103,5 @@ public class WorldView
    public static Point worldToViewportDK(Viewport viewport, int col, int row)
    {
       return new Point(col - viewport.getCol() * 32, row - viewport.getRow() * 32);
-   public Viewport getViewport()
-   {
-	   return this.viewport;
    }
 }

@@ -22,24 +22,19 @@ public class Kick //from miner
 		action[0] = ticks -> {
 			removePendingAction(action[0]);
 
-			WorldEntity target = world.findNearest(getPosition(), DiveKick.class);
+			WorldEntity target = world.findNearest(getPosition(), Dive.class);
 			long nextTime = ticks + getRate();
 
-			if (target != null)
+			if (target != null && world.getBackground(target.getPosition()).getName() == "arena")
 			{
-				DiveKick temp = (DiveKick) target;
+				Dive temp = (Dive) target;
+				System.out.println(" kick state your enemy: " + target.getName());
 				int diffX = (this.getPixelPosition().x - temp.getPixelPosition().x);
 				int diffY = (this.getPixelPosition().y - temp.getPixelPosition().y);
-				int speedX = diffX;
-				int speedY = diffY;
-				//System.out.println("hi");
+				int speedX = -(diffX/10);
+				int speedY = -(diffY/10);
 				this.move(speedX, speedY, target);
-				//System.out.println("hi1");
-				/*System.out.println(this.getPixelPosition().toString());
-				System.out.println(this.getPosition().toString());
-				System.out.println();
-				System.out.println(temp.getPixelPosition().toString());
-				System.out.println(temp.getPosition().toString() +"\n");*/
+
 				
 				if(hit(this.getPixelPosition(), temp.getPixelPosition()))
 				{
@@ -49,13 +44,11 @@ public class Kick //from miner
 					if(victory(roll,enemyRoll))
 					{
 						
-						this.setPixelPosition(new Point(this.getPosition().x * 32, this.getPosition().y *32));
-						world.removeEntity(target);
-					}
-					else
-					{
-						this.losingAnimation();
-						world.removeEntity(this);
+						this.setPixelPosition(new Point(temp.getPosition().x * 32, temp.getPosition().y *32));
+						target.remove(world);
+						//world.removeEntity(target);
+						System.out.println("victory kick");
+						System.out.println("good bye" + target.getName() + target.getPosition().toString());
 					}
 				}
 		     }
