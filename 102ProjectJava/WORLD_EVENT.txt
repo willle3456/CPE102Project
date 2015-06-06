@@ -1,4 +1,4 @@
 1. Event Trigger: Click on any tile.
 2. What Should Happen: 7x7 area background change with "Kick" entity spawned at the click location.
 3. Affected Entity: When a Miner enters the area, it will turn into a "Dive" entity and seek out the "Kick" entity.
-4. New Entity: Should stay within the affected area and "Divekick" towards any Dives in the area.
+4. New Entity: Should move towards any of the affected miners and remove them.
